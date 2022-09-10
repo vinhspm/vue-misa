@@ -34,3 +34,85 @@
 button+button {
     margin-left: 10px;
 }
+
+table, th, td {
+    border: 1px solid #bbbbbb;
+}
+
+/* table tbody {
+    display: table;
+    width: 100%;
+} */
+.page__table {
+    position:relative;
+    /* width: 100%; */
+}
+.table__content {
+    
+    overflow-x: scroll;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    position: relative;
+}
+#tbEmployeeList {
+    /* table-layout: fixed; */
+    min-width: 120%;
+
+    /* overflow: scroll; */
+    
+} 
+
+
+.table__header th {
+    background-color: #eceef1;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+}
+.table__paging {
+    background-color: #fff;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+}
+.sticky_header_left {
+    position: sticky;
+    left: 0;
+    background-color: #eceef1;
+    z-index: 2;
+}
+
+.sticky_header_left_1 {
+    position: sticky;
+    left: 60px;
+    background-color: #eceef1;
+    z-index: 2;
+}
+
+.sticky_body_left {
+    display: table-cell;
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+.sticky_body_left_1 {
+    position: sticky;
+    left: 60px;
+    background: #fff;
+    z-index: 2;
+}
+
+.sticky_header_right {
+    position: sticky;
+    right: 0;
+    background-color: #eceef1;
+    z-index: 2;
+}
+.sticky_col_right {
+    position: sticky;
+    right: 0;
+    background-color: #fff;
+    z-index: 2;
+}

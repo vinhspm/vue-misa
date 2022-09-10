@@ -4,16 +4,7 @@
         <button id="btnAdd" class="page__header--button button button__icon button__icon--employee">Thêm mới nhân
             viên</button>
     </div>
-    <!-- <div class="page__toolbar">
-        <div class="page__toolbar--left">
-            <input type="text" class="input input__icon input__icon--search">
-        </div>
-        <div class="page__toolbar--right">
-            <button id="btnDelete"></button>
-            <button id="btnDuplicate"></button>
-            <button id="btnRefresh"></button>
-        </div>
-    </div> -->
+
     <div class="page__table">
         <div class="page__toolbar">
             <div class="page__toolbar--left">
@@ -24,61 +15,39 @@
             </div>
         </div>
         <div class="table__content">
-            <table id="tbEmployeeList" class="table" border="0">
-                <thead style="text-transform:uppercase">
+            <table id="tbEmployeeList" class="table">
+                <thead class="table__header">
                     <tr>
-                        <th class="text-align--left" title="Số thứ tự" style="width:50px">STT</th>
-                        <th class="text-align--left" style="width:100px">Mã nhân viên</th>
-                        <th class="text-align--left">Tên nhân viên</th>
-                        <th class="text-align--left" style="width:50px">Giới tính</th>
-                        <th class="text-align--center" style="width:100px">Ngày sinh</th>
-                        <th class="text-align--left" style="width:100px">Điện thoại</th>
-                        <th class="text-align--left" style="width:150px">Email</th>
-                        <th class="text-align--left" style="width:200px">Vị trí</th>
-                        <th class="text-align--left" style="width:200px">Phòng ban</th>
-                        <th class="text-align--right" style="width:150px">Mức lương cơ bản</th>
-                        <th class="text-align--left" style="width:150px">Tình trạng công việc</th>
+                        <th class="text-align--left sticky_header_left" title="Số thứ tự" style="width:50px">STT</th>
+                        <th class="text-align--left sticky_header_left_1" style="width:150px">Mã nhân viên</th>
+                        <th class="text-align--left"  style="width:200px">Tên nhân viên</th>
+                        <th class="text-align--left" style="width:150px">Giới tính</th>
+                        <th class="text-align--left" style="width:150px">Ngày sinh</th>
+                        <th class="text-align--left" style="width:150px">số cmnd</th>
+                        <th class="text-align--left" style="width:200px">chức danh</th>
+                        <th class="text-align--left" style="width:250px">tên đơn vị</th>
+                        <th class="text-align--left" style="width:200px">Số tài khoản</th>
+                        <th class="text-align--left" style="width:250px">Tên ngân hàng</th>
+                        <th class="text-align--left" style="width:250px">chi nhánh tk ngân hàng</th>
+                        <th class="text-align--left sticky_header_right" style="width:100px">chức năng</th>
+
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(emp,index) in employees" :key="emp.EmployeeId">
-                        <td>{{index + 1}}</td>
-                        <td>{{emp.EmployeeCode}}</td>
+                        <td class="sticky_body_left">{{index + 1}}</td>
+                        <td class="sticky_body_left_1">{{emp.EmployeeCode}}</td>
                         <td>{{emp.FullName}}</td>
                         <td>{{emp.GenderName}}</td>
-                        <td class="text-align--center"></td>
-                        <td>09466826887</td>
-                        <td>Stratton@misa.com</td>
+                        <td>22/08/1996</td>
+                        <td>001929838172</td>
                         <td>Giám đốc</td>
                         <td>Phòng Công Nghệ Thông Tin</td>
-                        <td class="text-align--right"></td>
+                        <td>1902093827182711</td>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>NV-522328</td>
-                        <td>Võ Thị Dương</td>
-                        <td>Nữ</td>
-                        <td class="text-align--center">1/9/1958</td>
-                        <td>09366854222</td>
-                        <td>AdelaAbney@misa.com</td>
-                        <td>Trưởng phòng</td>
-                        <td>Phòng Công Nghệ Thông Tin</td>
-                        <td class="text-align--right">22178937</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>NV-723225</td>
-                        <td>Võ Thị Dương</td>
-                        <td>Nữ</td>
-                        <td class="text-align--center">1/9/1958</td>
-                        <td>09366854222</td>
-                        <td>AdelaAbney@misa.com</td>
-                        <td>Trưởng phòng</td>
-                        <td>Phòng Công Nghệ Thông Tin</td>
-                        <td class="text-align--right">22178937</td>
-                        <td>1</td>
+                        <td></td>
+                        <td class="sticky_col_right"></td>
                     </tr>
                 </tbody>
             </table>
