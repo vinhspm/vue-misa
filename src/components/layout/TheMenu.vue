@@ -15,22 +15,6 @@
       <div class="menu__text">{{item.text}}</div>
     </router-link>
 
-    <!-- <router-link to="/" class="menu__item">
-      <div class="menu__icon icon icon-24 icon__dashboard"></div>
-      <div class="menu__text">Tổng quan</div>
-    </router-link>
-    <router-link to="/nhan-vien" class="menu__item">
-      <div class="menu__icon icon icon-24 icon__dashboard"></div>
-      <div class="menu__text">Tiền mặt</div>
-    </router-link>
-    <router-link to="/1" class="menu__item">
-      <div class="menu__icon icon icon-24 icon__employee"></div>
-      <div class="menu__text">Danh sách khách</div>
-    </router-link>
-    <router-link to="/2" class="menu__item">
-      <div class="menu__icon icon icon-24 icon__report"></div>
-      <div class="menu__text">Báo cáo</div>
-    </router-link> -->
   </div>
 </template>
 <script>
