@@ -6,8 +6,8 @@
     box-sizing: border-box;
     border-top: 1px solid #ccc;
     background-color: #e9ebee;
+    width: calc(100% - 178px);
 }
-
 .page__header {
     display: flex;
     justify-content: space-between;

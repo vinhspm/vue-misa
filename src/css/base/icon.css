@@ -35,3 +35,7 @@
 .icon--save {
     background-image: url(../../assets/icon/save.svg);
 }
+
+.sprite_icon {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat;
+}

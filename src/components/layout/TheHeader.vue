@@ -5,7 +5,8 @@
                 <div class="header__logo"></div>
             </div>
             <div class="header__right">
-                <div>
+                <div class="right__header__1">
+                    <button id="menuCollapseBtn"></button>
                     <select name="" id="">
                         <option value="1">Nhà hàng hải sản Biển Đông</option>
                         <option value="1">Nhà hàng Hoàng Mai</option>

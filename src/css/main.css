@@ -101,6 +101,10 @@ label~* {
     bottom: 0;
     right: 0;
     background-color: #4545459b;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .loading__content {
