@@ -9,7 +9,16 @@
     min-width: 250px;
     font-family: MISA Fonts;
 }
-
+.input__form {
+    height: 32px;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #bbbbbb;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: MISA Fonts;
+}
 textarea {
     border-radius: 4px;
     outline: none;
