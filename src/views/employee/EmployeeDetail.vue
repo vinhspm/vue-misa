@@ -11,7 +11,7 @@
           </div>
           <div>
             <input type="checkbox" name="employeeType" id="supplierTypeCheckbox">
-            <label for="supplierTypeCheckbox">Là khách hàng</label>
+            <label for="supplierTypeCheckbox">Là nhà cung cấp</label>
           </div>
 
         </div>
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="dialog__footer">
-        <button id="btnSave" class="button button__icon icon icon--save" style="order: 1">
+        <button id="btnSave" @click="onSave" class="button button__icon icon icon--save" style="order: 1">
           {{txtSaveButton}}
         </button>
         <button class="button button--cancel" style="order: 2" @click="closeDialog">Hủy</button>
@@ -162,6 +162,9 @@ export default {
   methods: {
     closeDialog: function() {
       this.$emit('close-dialog');
+    },
+    onSave: function () {
+      console.log('save');
     }
   },
   created() {

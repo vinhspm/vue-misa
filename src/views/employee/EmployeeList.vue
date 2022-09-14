@@ -1,16 +1,24 @@
 <template>
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên" @click="toggleDialog">
+    <m-button
+      id="btnAdd"
+      class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên"
+      @click="toggleDialog"
+    >
     </m-button>
   </div>
 
   <div class="page__table">
     <div class="page__toolbar">
       <div class="page__toolbar--left">
-        <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
-          placeholder="Tìm theo mã, tên nhân viên" />
+        <input
+          type="text"
+          class="input input__icon input__icon--search"
+          v-model="searchInputValue"
+          placeholder="Tìm theo mã, tên nhân viên"
+        />
         <button @click="onSearch"></button>
       </div>
       <div class="page__toolbar--right">
@@ -21,10 +29,17 @@
       <table id="tbEmployeeList" class="table">
         <thead class="table__header">
           <tr>
-            <th class="text-align--center sticky_header_left" title="" style="min-width: 40px">
+            <th
+              class="text-align--center sticky_header_left"
+              title=""
+              style="min-width: 40px"
+            >
               <input type="checkbox" name="checkAll" />&nbsp;
             </th>
-            <th class="text-align--left sticky_header_left_1" style="min-width: 150px">
+            <th
+              class="text-align--left sticky_header_left_1"
+              style="min-width: 150px"
+            >
               Mã nhân viên
             </th>
             <th class="text-align--left" style="min-width: 200px">
@@ -46,32 +61,47 @@
             <th class="text-align--left" style="min-width: 350px">
               chi nhánh tk ngân hàng
             </th>
-            <th class="text-align--left sticky_header_right" style="min-width: 100px">
+            <th
+              class="text-align--left sticky_header_right"
+              style="min-width: 100px"
+            >
               chức năng
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="emp in employees" :key="emp.EmployeeId" @dblclick="toggleDialog(emp)">
+          <tr
+            v-for="emp in employees"
+            :key="emp.EmployeeId"
+            @dblclick="toggleDialog(emp)"
+          >
             <td class="sticky_body_left text-align--center">
               <input type="checkbox" name="checkItem" />&nbsp;
             </td>
             <td class="sticky_body_left_1">{{ emp.EmployeeCode }}</td>
             <td>{{ emp.FullName }}</td>
             <td>{{ emp.GenderName }}</td>
-            <td>{{emp.DateOfBirth?emp.DateOfBirth:"09/12/1997"}}</td>
-            <td>{{emp.PositionName?emp.PositionName:"Giám đốc"}}</td>
-            <td>{{emp.IdentityNumber?emp.IdentityNumber:"3123213213"}}</td>
-            <td>{{emp.DepartmentName}}</td>
+            <td>{{ emp.DateOfBirth ? emp.DateOfBirth : "09/12/1997" }}</td>
+            <td>{{ emp.PositionName ? emp.PositionName : "Giám đốc" }}</td>
+            <td>
+              {{ emp.IdentityNumber ? emp.IdentityNumber : "3123213213" }}
+            </td>
+            <td>{{ emp.DepartmentName }}</td>
             <td>1902093827182711</td>
             <td></td>
             <td></td>
             <th class="sticky_col_right">
               <button id="editButton" @click="toggleDialog(emp)">Sửa</button>
               <div class="dropdown" style="float: right">
-                <button class="dropbtn" @click="toggleDropdownFuntion(employees.indexOf(emp))"
-                  @focusout="closeFuntionDropdown(employees.indexOf(emp))"></button>
-                <div class="dropdown-content" v-show="isShowDropdownFunction[employees.indexOf(emp)]">
+                <button
+                  class="dropbtn"
+                  @click="toggleDropdownFuntion(employees.indexOf(emp))"
+                  @focusout="closeFuntionDropdown(employees.indexOf(emp))"
+                ></button>
+                <div
+                  class="dropdown-content"
+                  v-show="isShowDropdownFunction[employees.indexOf(emp)]"
+                >
                   <a href="#">Nhân bản</a>
                   <a href="#">Xoá</a>
                   <a href="#">Ngưng sử dụng</a>
@@ -110,7 +140,11 @@
     </div>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"></EmployeeDetail>
+  <EmployeeDetail
+    v-if="isShow"
+    @close-dialog="toggleDialog"
+    :selectedEmployee="selectedEmployee"
+  ></EmployeeDetail>
   <!-- DIALOG CẢNH BÁO -->
   <div class="dialog dialog--warning" hidden="">
     <div class="dialog__content">
@@ -152,7 +186,7 @@
 <script>
 import MButton from "../../components/base/MButton.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
-import { formatDate } from "../../js/base.js"
+import { formatDate } from "../../js/base.js";
 export default {
   components: { MButton, EmployeeDetail },
   name: "EmployeeList",
@@ -167,7 +201,7 @@ export default {
       isLoading: false,
       isShow: false,
       isShowDropdownFunction: [],
-      searchInputValue: ""
+      searchInputValue: "",
     };
   },
   methods: {
@@ -178,9 +212,7 @@ export default {
           this.selectedEmployee = emp;
           console.log("selected", emp);
         }
-
-      }
-      else {
+      } else {
         this.selectedEmployee = {};
       }
     },
@@ -198,46 +230,54 @@ export default {
           this.employees = data;
 
           for (let index = 0; index < this.employees.length; index++) {
-            this.isShowDropdownFunction.push(false)
+            this.isShowDropdownFunction.push(false);
             if (this.employees[index].DateOfBirth) {
-              this.employees[index].DateOfBirth = formatDate(this.employees[index].DateOfBirth)
+              this.employees[index].DateOfBirth = formatDate(
+                this.employees[index].DateOfBirth
+              );
             }
           }
+          this.isLoading = false;
         })
         .catch((res) => {
+          this.isLoading = false;
           console.log(res);
         });
-      this.isLoading = false;
-
     },
     onSearch: function () {
-      console.log(this.searchInputValue);
       this.isLoading = true;
-      fetch("https://cukcuk.manhnv.net/api/v1/Employees/filter?" + new URLSearchParams({
-          employeeFilter: this.searchInputValue,
-        }), {
-        method: "GET"
-      })
+      fetch(
+        "https://cukcuk.manhnv.net/api/v1/Employees/filter?" +
+          new URLSearchParams({
+            employeeFilter: this.searchInputValue,
+          }),
+        {
+          method: "GET",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           // console.log(data);
           this.employees = data.Data;
 
           for (let index = 0; index < this.employees.length; index++) {
-            this.isShowDropdownFunction.push(false)
+            this.isShowDropdownFunction.push(false);
             if (this.employees[index].DateOfBirth) {
-              this.employees[index].DateOfBirth = formatDate(this.employees[index].DateOfBirth)
+              this.employees[index].DateOfBirth = formatDate(
+                this.employees[index].DateOfBirth
+              );
             }
           }
+          this.isLoading = false;
         })
         .catch((res) => {
-          console.log(res, "lll");
+          console.log(res);
+          this.employees = []
+          this.isLoading = false;
+
         });
-      this.isLoading = false;
-
-    }
-  }
-
+    },
+  },
 };
 </script>
 <style scoped>
