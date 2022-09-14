@@ -16,3 +16,8 @@ export const MENU_ITEMS = [
   {text: "Báo cáo", iconCoordinates: [552,1636], route: '/bao-cao'},
   {text: "Phân tích tài chính", iconCoordinates: [207,1667], route: '/phan-tich-tai-chinh'}
 ]
+
+export const SAVE_BUTTON_TXT = {
+  ADD_NEW: "Cất và Thêm",
+  EDIT: "Cất"
+}

@@ -30,7 +30,14 @@
 .page__toolbar--left {
     margin-right: 16px;
 }
-
+.page__toolbar--left button {
+    background-color: inherit;
+    border: none;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    transform: translate(-100%);
+}
 .page__toolbar--right {}
 
 .page__table {

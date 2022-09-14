@@ -27,8 +27,6 @@ export default {
   },
   created() {
     this.menuItems = MENU_ITEMS;
-    console.log(this.menuItems);
-
   }
 };
 </script>

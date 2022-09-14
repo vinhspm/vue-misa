@@ -1,17 +1,17 @@
 <template>
-  <div id="dlgEmployeeDetail" class="dialog" style="display: block">
+  <div id="dlgEmployeeDetail" class="dialog">
     <div class="dialog__content">
-      <div class="dialog__button--close"></div>
+      <div class="dialog__button--close" @click="closeDialog"></div>
       <div class="dialog__header">
         <div class="title">Thông tin nhân viên</div>
         <div class="employee__type__container">
           <div>
             <input type="checkbox" name="employeeType" id="customerTypeCheckbox">
-            <span>Là khách hàng</span>
+            <label for="customerTypeCheckbox">Là khách hàng</label>
           </div>
           <div>
             <input type="checkbox" name="employeeType" id="supplierTypeCheckbox">
-            <span>Là nhà cung cấp</span>
+            <label for="supplierTypeCheckbox">Là khách hàng</label>
           </div>
 
         </div>
@@ -23,20 +23,22 @@
             <div class="row">
               <div class="col w-30">
                 <label>Mã (<span class="input--required">*</span>)</label>
-                <input id="txtEmployeeCode" required="" name-property="Mã nhân viên" type="text" class="input__form" />
+                <input id="txtEmployeeCode" required="" name-property="Mã nhân viên" type="text" v-model="employeeDetailData.EmployeeCode" class="input__form" />
               </div>
               <div class="col w-70">
                 <label>Họ và tên (<span class="input--required">*</span>)</label>
-                <input id="txtFullName" name-property="Họ và tên" required="" type="text" class="input__form" />
+                <input id="txtFullName" name-property="Họ và tên" required="" type="text" v-model="employeeDetailData.FullName" class="input__form" />
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label>Đơn vị</label>
-                <select name="" id="cbxDepartment">
-                  <option value="0">Phòng tuyển dụng</option>
-                  <option value="1">Phòng Nhân sự</option>
-                  <option value="0">Phòng hành chính</option>
+                <select v-model="employeeDetailData.DepartmentCode" name="" id="cbxDepartment">
+                  <option value="AB88">Phòng Nhân sự</option>
+                  <option value="VT66">Phòng hành chính</option>
+                  <option value="IU61">Phòng kế toán</option>
+                  <option value="NL20">Phòng Công nghệ thông tin</option>
+
                 </select>
               </div>
             </div>
@@ -56,21 +58,21 @@
             <div class="row">
               <div class="col w-40">
                 <label>Ngày sinh</label>
-                <input id="dtDateOfBirth" type="date" class="input__form" />
+                <input v-model="employeeDetailData.DateOfBirth" id="dtDateOfBirth" type="date" class="input__form" />
               </div>
               <div class="col w-60">
                 <label>Giới tính</label>
                 <div class="row align-center h-32">
                   <div>
-                    <input type="radio" id="genderMale" name="cbxGender" value="male">
+                    <input v-model="employeeDetailData.Gender" type="radio" id="genderMale" name="cbxGender" value="0">
                     <label for="genderMale">Nam</label>
                   </div>
                   <div class="ml-10">
-                    <input type="radio" id="genderFemale" name="cbxGender" value="female">
+                    <input v-model="employeeDetailData.Gender" type="radio" id="genderFemale" name="cbxGender" value="1">
                     <label for="genderFemale">Nữ</label>
                   </div>
                   <div class="ml-10">
-                    <input type="radio" id="genderOther" name="cbxGender" value="other">
+                    <input v-model="employeeDetailData.Gender" type="radio" id="genderOther" name="cbxGender" value="2">
                     <label for="genderOther">Khác</label>
                   </div>
 
@@ -81,17 +83,17 @@
             <div class="row">
               <div class="col w-60">
                 <label>Số CMND</label>
-                <input id="nationalID" required="" type="text" class="input__form" />
+                <input v-model="employeeDetailData.IdentityNumber" id="nationalID" required="" type="text" class="input__form" />
               </div>
               <div class="col w-40">
                 <label>Ngày cấp</label>
-                <input id="dtDateOfRegistration" type="date" class="input__form" />
+                <input v-model="employeeDetailData.IdentityDate"  id="dtDateOfRegistration" type="date" class="input__form" />
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label>Nơi cấp</label>
-                <input id="nationalID" required="" type="text" class="input__form" />
+                <input v-model="employeeDetailData.IdentityPlace" id="nationalID" required="" type="text" class="input__form" />
               </div>
             </div>
           </div>
@@ -101,13 +103,13 @@
         <div class="row">
           <div class="col">
             <label for="">Địa chỉ</label>
-            <input id="txtAddress" type="text" class="input__form" />
+            <input v-model="employeeDetailData.Address" id="txtAddress" type="text" class="input__form" />
           </div>
         </div>
         <div class="row">
           <div class="col w-25">
             <label for="">ĐT di động</label>
-            <input id="txtPhoneNumber" type="text" class="input__form" />
+            <input v-model="employeeDetailData.PhoneNumber" id="txtPhoneNumber" type="text" class="input__form" />
           </div>
           <div class="col w-25">
             <label for="">ĐT cố định</label>
@@ -115,7 +117,7 @@
           </div>
           <div class="col w-25">
             <label for="">Email</label>
-            <input id="txtEmail" type="email" class="input__form" />
+            <input v-model="employeeDetailData.Email" id="txtEmail" type="email" class="input__form" />
           </div>
         </div>
         <div class="row">
@@ -135,16 +137,48 @@
       </div>
       <div class="dialog__footer">
         <button id="btnSave" class="button button__icon icon icon--save" style="order: 1">
-          Cất
+          {{txtSaveButton}}
         </button>
-        <button class="button button--cancel" style="order: 2">Hủy</button>
+        <button class="button button--cancel" style="order: 2" @click="closeDialog">Hủy</button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {formatDateInput} from "../../js/base.js"
+import {SAVE_BUTTON_TXT} from "../../constants.js"
+
 export default {
   name: "EmployeeDetail",
+  data() {
+    return {
+      employeeDetailData: {},
+      txtSaveButton: ""
+    }
+  },
+  props: {
+    selectedEmployee: Object
+  },  
+  methods: {
+    closeDialog: function() {
+      this.$emit('close-dialog');
+    }
+  },
+  created() {
+    if(Object.prototype.hasOwnProperty.call(this.selectedEmployee, 'EmployeeCode')) {
+      console.log(this.selectedEmployee);
+      this.employeeDetailData = this.selectedEmployee;
+      this.employeeDetailData.DateOfBirth = formatDateInput(this.employeeDetailData.DateOfBirth);
+      this.employeeDetailData.IdentityDate = formatDateInput(this.employeeDetailData.IdentityDate);
+      this.txtSaveButton = SAVE_BUTTON_TXT.EDIT;
+      console.log('edit');
+    } else {
+      this.txtSaveButton = SAVE_BUTTON_TXT.ADD_NEW;
+      console.log('add new');
+    }
+    
+
+  }
 }
 </script>
 <style scoped>

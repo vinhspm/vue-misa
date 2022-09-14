@@ -30,7 +30,8 @@ textarea {
 
 .input:focus,
 textarea:focus,
-select:focus {
+select:focus,
+.input__form:focus {
     border-color: #019160;
 }
 
@@ -45,6 +46,9 @@ select:focus {
 
 .input__icon--search {
     background-image: url(../../assets/icon/search.png);
+}
+.input__icon--search:hover {
+    cursor: pointer;
 }
 
 .input--required {
