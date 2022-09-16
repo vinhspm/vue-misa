@@ -38,7 +38,8 @@
               <div class="col">
                 <label>Đơn vị (<span class="input--required">*</span>)</label>
                 <select v-model="employeeDetailData.DepartmentId" name="" id="cbxDepartment">
-                  <option v-for="dpm in departments" :key="dpm.DepartmentId" :value="dpm.DepartmentId">{{dpm.DepartmentName}}</option>
+                  <option v-for="dpm in departments" :key="dpm.DepartmentId" :value="dpm.DepartmentId">
+                    {{dpm.DepartmentName}}</option>
                 </select>
               </div>
             </div>
@@ -46,7 +47,8 @@
               <div class="col">
                 <label>Vị trí</label>
                 <select v-model="employeeDetailData.PositionId" name="" id="cbxPosition">
-                  <option v-for="pst in positions" :key="pst.PositionId" :value="pst.PositionId">{{pst.PositionName}}</option>
+                  <option v-for="pst in positions" :key="pst.PositionId" :value="pst.PositionId">{{pst.PositionName}}
+                  </option>
                 </select>
               </div>
             </div>
@@ -144,7 +146,7 @@
           <button @click="onSaveOnly" class="button button--saveonly">
             Cất
           </button>
-          <button @click="onSaveAndAdd" class="button button__icon icon icon--save">
+          <button @click="saveAndContinue" class="button button__icon icon icon--save">
             Cất và Thêm
           </button>
         </div>
@@ -169,12 +171,14 @@ export default {
       positions: [],
       bodyRequest: {},
       isLoading: false,
+      isContinue: false,
     }
   },
   props: {
     selectedEmployee: Object
   },
   methods: {
+
     closeDialog: function () {
       this.$emit('close-dialog');
     },
@@ -199,44 +203,79 @@ export default {
         "homePhoneNumber": this.employeeDetailData.HomePhoneNumber,
       }
       if (this.isEdit) {
-        console.log('edit');
+        this.updateEmployee();
       } else {
-        this.addNew();
+        this.addNewEmployee();
       }
+
       // console.log(this.bodyRequest);
 
     },
-    addNew: function() {
-      this.isLoading = true;
-        fetch("https://cukcuk.manhnv.net/api/v1/Employees", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(this.bodyRequest),
-
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            this.isLoading = false;
-          })
-          .catch((res) => {
-            this.isLoading = false;
-            console.log(res);
-          });
+    saveAndContinue() {
+      this.isContinue = true;
+      this.onSaveOnly();
     },
-    getNextEmpId: function() {
-      fetch("https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode", {
-          method: "GET",
+    clearForm() {
+      this.employeeDetailData = {};
+    },
+    addNewEmployee: function () {
+      this.isLoading = true;
+      fetch("https://cukcuk.manhnv.net/api/v1/Employees", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.bodyRequest),
+
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.isLoading = false;
+          if (this.isContinue) {
+            this.clearForm();
+          } else {
+            this.closeDialog();
+          }
         })
-          .then((res) => res.text())
-          .then((data) => {
-            this.employeeDetailData.EmployeeCode = data;
-          })
-          .catch((res) => {
-            console.log(res);
-          });
+        .catch((res) => {
+          this.isLoading = false;
+          console.log(res);
+        });
+    },
+    updateEmployee: function () {
+      this.isLoading = true;
+      fetch("https://cukcuk.manhnv.net/api/v1/Employees/" + this.employeeDetailData.EmployeeId, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.bodyRequest),
+
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.isLoading = false;
+          if (this.isContinue) {
+            this.clearForm();
+          } else {
+            this.closeDialog();
+          }
+        })
+        .catch((res) => {
+          this.isLoading = false;
+          console.log(res);
+        });
+    },
+    getNextEmpId: async function () {
+      const response = await fetch('https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode');
+      if (!response.ok) {
+        console.log(response);
+        throw new Error(`Error! status: ${response.status}`);
+      } else {
+        this.employeeDetailData.EmployeeCode = response.json();
+      }
     }
   },
   created() {

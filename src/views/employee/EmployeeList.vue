@@ -145,27 +145,7 @@
     @close-dialog="toggleDialog"
     :selectedEmployee="selectedEmployee"
   ></EmployeeDetail>
-  <!-- DIALOG CẢNH BÁO -->
-  <div class="dialog dialog--warning" hidden="">
-    <div class="dialog__content">
-      <div class="dialog__button--close"></div>
-      <div class="dialog__header title">Thông báo</div>
-      <div class="dialog__body">
-        <div class="dialog__msg-item">
-          Thông tin này không được phép để trống
-        </div>
-        <div class="dialog__msg-item">
-          Thông tin này không được phép để trống
-        </div>
-        <div class="dialog__msg-item">
-          Thông tin này không được phép để trống
-        </div>
-      </div>
-      <div class="dialog__footer">
-        <button id="btnOk" class="button">Đồng ý</button>
-      </div>
-    </div>
-  </div>
+
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
