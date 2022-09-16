@@ -32,6 +32,7 @@
 
 .dialog__body {
     padding: 24px;
+    margin-bottom: 30px;
 }
 
 .dialog__msg-item {
@@ -50,13 +51,13 @@
 
 .dialog__footer {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
     background-color: #f5f5f5;
     box-sizing: border-box;
     padding: 8px 24px;
     border-radius: 0 0 4px 4px;
-    flex-direction: row-reverse;
+    /* flex-direction: row-reverse; */
 }
 
 .dialog__footer button~button {
@@ -66,8 +67,18 @@
 .dialog__footer .button--cancel {
     background-color: unset;
     color: #000;
+    border: solid 1px #bbbbbb;
 }
 
+.button--saveonly {
+    background-color: unset;
+    color: #000;
+    border: solid 1px #bbbbbb;
+}
+
+.button--saveonly:hover, .button--saveonly:focus {
+    background-color: #ccc;
+}
 .dialog__footer .button--cancel:hover,
 .button--cancel:focus {
     background-color: #ccc;

@@ -62,7 +62,7 @@
               chi nhánh tk ngân hàng
             </th>
             <th
-              class="text-align--left sticky_header_right"
+              class="text-align--left"
               style="min-width: 100px"
             >
               chức năng
@@ -82,10 +82,10 @@
             <td>{{ emp.FullName }}</td>
             <td>{{ emp.GenderName }}</td>
             <td>{{ emp.DateOfBirth ? emp.DateOfBirth : "09/12/1997" }}</td>
-            <td>{{ emp.PositionName ? emp.PositionName : "Giám đốc" }}</td>
             <td>
               {{ emp.IdentityNumber ? emp.IdentityNumber : "3123213213" }}
             </td>
+            <td>{{ emp.PositionName ? emp.PositionName : "Giám đốc" }}</td>
             <td>{{ emp.DepartmentName }}</td>
             <td>1902093827182711</td>
             <td></td>
@@ -166,29 +166,15 @@
       </div>
     </div>
   </div>
-  <div v-if="isLoading" class="loading">
-    <div class="loadingio-spinner-bean-eater-nk8yggr3a7">
-      <div class="ldio-5z24u53wm2o">
-        <div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
 import MButton from "../../components/base/MButton.vue";
+import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
 export default {
-  components: { MButton, EmployeeDetail },
+  components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
   created() {
     // Gọi api lấy dữ liệu:

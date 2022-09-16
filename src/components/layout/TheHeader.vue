@@ -13,7 +13,7 @@
                     </select>
                 </div>
                 <div class="user">
-                    <div class="user__name">Nguyễn Văn Mạnh</div>
+                    <div class="user__name">Kiều Thế Vinh</div>
                     <div class="user__avatar"></div>
                 </div>
             </div>

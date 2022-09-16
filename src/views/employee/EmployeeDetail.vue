@@ -1,5 +1,7 @@
 <template>
   <div id="dlgEmployeeDetail" class="dialog">
+    <loading-layer v-if="isLoading"></loading-layer>
+
     <div class="dialog__content">
       <div class="dialog__button--close" @click="closeDialog"></div>
       <div class="dialog__header">
@@ -23,32 +25,28 @@
             <div class="row">
               <div class="col w-30">
                 <label>Mã (<span class="input--required">*</span>)</label>
-                <input id="txtEmployeeCode" required="" name-property="Mã nhân viên" type="text" v-model="employeeDetailData.EmployeeCode" class="input__form" />
+                <input id="txtEmployeeCode" required="" name-property="Mã nhân viên" type="text"
+                  v-model="employeeDetailData.EmployeeCode" class="input__form" />
               </div>
               <div class="col w-70">
                 <label>Họ và tên (<span class="input--required">*</span>)</label>
-                <input id="txtFullName" name-property="Họ và tên" required="" type="text" v-model="employeeDetailData.FullName" class="input__form" />
+                <input id="txtFullName" name-property="Họ và tên" required="" type="text"
+                  v-model="employeeDetailData.FullName" class="input__form" />
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <label>Đơn vị</label>
-                <select v-model="employeeDetailData.DepartmentCode" name="" id="cbxDepartment">
-                  <option value="AB88">Phòng Nhân sự</option>
-                  <option value="VT66">Phòng hành chính</option>
-                  <option value="IU61">Phòng kế toán</option>
-                  <option value="NL20">Phòng Công nghệ thông tin</option>
-
+                <label>Đơn vị (<span class="input--required">*</span>)</label>
+                <select v-model="employeeDetailData.DepartmentId" name="" id="cbxDepartment">
+                  <option v-for="dpm in departments" :key="dpm.DepartmentId" :value="dpm.DepartmentId">{{dpm.DepartmentName}}</option>
                 </select>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label>Vị trí</label>
-                <select name="" id="cbxPosition">
-                  <option value="0">Giám đốc</option>
-                  <option value="1">Nhân viên</option>
-                  <option value="0">Trưởng phòng</option>
+                <select v-model="employeeDetailData.PositionId" name="" id="cbxPosition">
+                  <option v-for="pst in positions" :key="pst.PositionId" :value="pst.PositionId">{{pst.PositionName}}</option>
                 </select>
               </div>
             </div>
@@ -68,7 +66,8 @@
                     <label for="genderMale">Nam</label>
                   </div>
                   <div class="ml-10">
-                    <input v-model="employeeDetailData.Gender" type="radio" id="genderFemale" name="cbxGender" value="1">
+                    <input v-model="employeeDetailData.Gender" type="radio" id="genderFemale" name="cbxGender"
+                      value="1">
                     <label for="genderFemale">Nữ</label>
                   </div>
                   <div class="ml-10">
@@ -83,17 +82,20 @@
             <div class="row">
               <div class="col w-60">
                 <label>Số CMND</label>
-                <input v-model="employeeDetailData.IdentityNumber" id="nationalID" required="" type="text" class="input__form" />
+                <input v-model="employeeDetailData.IdentityNumber" id="nationalID" required="" type="text"
+                  class="input__form" />
               </div>
               <div class="col w-40">
                 <label>Ngày cấp</label>
-                <input v-model="employeeDetailData.IdentityDate"  id="dtDateOfRegistration" type="date" class="input__form" />
+                <input v-model="employeeDetailData.IdentityDate" id="dtDateOfRegistration" type="date"
+                  class="input__form" />
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label>Nơi cấp</label>
-                <input v-model="employeeDetailData.IdentityPlace" id="nationalID" required="" type="text" class="input__form" />
+                <input v-model="employeeDetailData.IdentityPlace" id="nationalID" required="" type="text"
+                  class="input__form" />
               </div>
             </div>
           </div>
@@ -113,7 +115,8 @@
           </div>
           <div class="col w-25">
             <label for="">ĐT cố định</label>
-            <input id="txtHomePhoneNumber" type="text" class="input__form" />
+            <input v-model="employeeDetailData.HomePhoneNumber" id="txtHomePhoneNumber" type="text"
+              class="input__form" />
           </div>
           <div class="col w-25">
             <label for="">Email</label>
@@ -123,63 +126,134 @@
         <div class="row">
           <div class="col w-25">
             <label for="">Tài khoàn ngân hàng</label>
-            <input id="txtBankAccount" type="text" class="input__form" />
+            <input v-model="employeeDetailData.BankAccount" id="txtBankAccount" type="text" class="input__form" />
           </div>
           <div class="col w-25">
             <label for="">Tên ngân hàng</label>
-            <input id="txtBankName" type="text" class="input__form" />
+            <input v-model="employeeDetailData.BankName" id="txtBankName" type="text" class="input__form" />
           </div>
           <div class="col w-25">
             <label for="">Chi nhánh</label>
-            <input id="txtBankBranch" type="text" class="input__form" />
+            <input v-model="employeeDetailData.BankBranch" id="txtBankBranch" type="text" class="input__form" />
           </div>
         </div>
       </div>
       <div class="dialog__footer">
-        <button id="btnSave" @click="onSave" class="button button__icon icon icon--save" style="order: 1">
-          {{txtSaveButton}}
-        </button>
-        <button class="button button--cancel" style="order: 2" @click="closeDialog">Hủy</button>
+        <button class="button button--cancel" @click="closeDialog">Hủy</button>
+        <div>
+          <button @click="onSaveOnly" class="button button--saveonly">
+            Cất
+          </button>
+          <button @click="onSaveAndAdd" class="button button__icon icon icon--save">
+            Cất và Thêm
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 <script>
-import {formatDateInput} from "../../js/base.js"
-import {SAVE_BUTTON_TXT} from "../../constants.js"
+import { formatDateInput } from "../../js/base.js"
+import { DEPARTMENT_DATA, POSITION_DATA } from "../../constants.js"
+import LoadingLayer from "../../components/base/LoadingLayer.vue";
 
 export default {
+  components: { LoadingLayer },
   name: "EmployeeDetail",
   data() {
     return {
+      isEdit: false,
       employeeDetailData: {},
-      txtSaveButton: ""
+      departments: [],
+      positions: [],
+      bodyRequest: {},
+      isLoading: false,
     }
   },
   props: {
     selectedEmployee: Object
-  },  
+  },
   methods: {
-    closeDialog: function() {
+    closeDialog: function () {
       this.$emit('close-dialog');
     },
-    onSave: function () {
-      console.log('save');
+    onSaveOnly: function () {
+      this.bodyRequest = {
+        "address": this.employeeDetailData.Address,
+        "bankAccount": this.employeeDetailData.BankAccount,
+        "bankBranch": this.employeeDetailData.BankBranch,
+        "bankName": this.employeeDetailData.BankName,
+        "dateOfBirth": this.employeeDetailData.DateOfBirth,
+        "departmentId": this.employeeDetailData.DepartmentId,
+        "email": this.employeeDetailData.Email,
+        "employeeCode": this.employeeDetailData.EmployeeCode,
+        "employeeId": this.employeeDetailData.EmployeeId,
+        "fullName": this.employeeDetailData.FullName,
+        "gender": this.employeeDetailData.Gender,
+        "identityDate": this.employeeDetailData.IdentityDate,
+        "identityNumber": this.employeeDetailData.IdentityNumber,
+        "identityPlace": this.employeeDetailData.IdentityPlace,
+        "phoneNumber": this.employeeDetailData.PhoneNumber,
+        "positionId": this.employeeDetailData.PositionId,
+        "homePhoneNumber": this.employeeDetailData.HomePhoneNumber,
+      }
+      if (this.isEdit) {
+        console.log('edit');
+      } else {
+        this.addNew();
+      }
+      // console.log(this.bodyRequest);
+
+    },
+    addNew: function() {
+      this.isLoading = true;
+        fetch("https://cukcuk.manhnv.net/api/v1/Employees", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.bodyRequest),
+
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            this.isLoading = false;
+          })
+          .catch((res) => {
+            this.isLoading = false;
+            console.log(res);
+          });
+    },
+    getNextEmpId: function() {
+      fetch("https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode", {
+          method: "GET",
+        })
+          .then((res) => res.text())
+          .then((data) => {
+            this.employeeDetailData.EmployeeCode = data;
+          })
+          .catch((res) => {
+            console.log(res);
+          });
     }
   },
   created() {
-    if(Object.prototype.hasOwnProperty.call(this.selectedEmployee, 'EmployeeCode')) {
-      console.log(this.selectedEmployee);
+    if (Object.prototype.hasOwnProperty.call(this.selectedEmployee, 'EmployeeCode')) {
+      // console.log(this.selectedEmployee);
       this.employeeDetailData = this.selectedEmployee;
       this.employeeDetailData.DateOfBirth = formatDateInput(this.employeeDetailData.DateOfBirth);
       this.employeeDetailData.IdentityDate = formatDateInput(this.employeeDetailData.IdentityDate);
-      this.txtSaveButton = SAVE_BUTTON_TXT.EDIT;
       console.log('edit');
+      this.isEdit = true;
     } else {
-      this.txtSaveButton = SAVE_BUTTON_TXT.ADD_NEW;
+      this.isEdit = false;
+      this.getNextEmpId();
       console.log('add new');
     }
-    
+    this.departments = DEPARTMENT_DATA;
+    this.positions = POSITION_DATA;
 
   }
 }
