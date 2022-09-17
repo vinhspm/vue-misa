@@ -21,7 +21,6 @@
     border-radius: 4px;
     background-color: #fff;
     box-sizing: border-box;
-    min-width: 900px;
 }
 
 .dialog__header {
@@ -32,7 +31,7 @@
 
 .dialog__body {
     padding: 24px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
 }
 
 .dialog__msg-item {

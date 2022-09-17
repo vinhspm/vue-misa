@@ -10,7 +10,8 @@ export default {
 <style scoped>
 .btn{
     border-radius: 4px;
-    background-color: #019160;
+    color: #fff;
+    background-color: #2ca01c;
 }
 .btn-test{
     border: none;

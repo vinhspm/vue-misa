@@ -19,7 +19,9 @@
     width: 32px;
     height: 32px;
 }
-
+.icon-48 {
+    background-size: 48px 48px;
+}
 .icon__dashboard {
     background-image: url(../../assets/icon/dashboard.png);
 }
@@ -35,7 +37,16 @@
 .icon--save {
     background-image: url(../../assets/icon/save.svg);
 }
-
+.icon--warning {
+    width: 48px;
+    height: 48px;
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -598px -455px;
+}
+.icon--alert {
+    width: 48px;
+    height: 48px;
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -752px -455px;
+}
 .sprite_icon {
     background: url(../../assets/img/Sprites.79cca840.svg) no-repeat;
 }

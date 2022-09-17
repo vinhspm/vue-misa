@@ -95,15 +95,15 @@
               <div class="dropdown" style="float: right">
                 <button
                   class="dropbtn"
-                  @click="toggleDropdownFuntion(employees.indexOf(emp))"
-                  @focusout="closeFuntionDropdown(employees.indexOf(emp))"
+                  @click="showDropdownFuntion(emp)"
+                  @blur="closeFuntionDropdown()"
                 ></button>
                 <div
                   class="dropdown-content"
-                  v-show="isShowDropdownFunction[employees.indexOf(emp)]"
+                  v-show="clickedEmployee.EmployeeId == emp.EmployeeId"
                 >
                   <a href="#">Nhân bản</a>
-                  <a href="#">Xoá</a>
+                  <a href="#" @click="warningDelete(emp)">Xoá</a>
                   <a href="#">Ngưng sử dụng</a>
                 </div>
               </div>
@@ -144,8 +144,10 @@
     v-if="isShow"
     @close-dialog="toggleDialog"
     :selectedEmployee="selectedEmployee"
+    @reload-data="getData"
   ></EmployeeDetail>
-
+  <!-- POPUP CẢNH BÁO XOÁ  -->
+  <m-warning v-if="isShowWarning"  :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning" @ok-warning="okWarning"></m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
@@ -153,6 +155,8 @@ import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
+import { DIALOG_TYPE } from "../../constants.js";
+// import MWarning from "@/components/base/MWarning.vue";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
@@ -166,8 +170,12 @@ export default {
       selectedEmployee: {},
       isLoading: false,
       isShow: false,
-      isShowDropdownFunction: [],
       searchInputValue: "",
+      DIALOG_TYPE: DIALOG_TYPE,
+      warningText: "hello",
+      isShowWarning: false,
+      clickedEmployee: {},
+      clickedEmployeeDelete: {}
     };
   },
   methods: {
@@ -182,11 +190,20 @@ export default {
         this.selectedEmployee = {};
       }
     },
-    toggleDropdownFuntion: function (index) {
-      this.isShowDropdownFunction[index] = !this.isShowDropdownFunction[index];
+    showDropdownFuntion: function (emp) {
+      if(this.clickedEmployee.EmployeeId === emp.EmployeeId) {
+        this.clickedEmployee = {};
+      } else {
+        this.clickedEmployee = emp;
+      }
     },
-    closeFuntionDropdown: function (index) {
-      this.isShowDropdownFunction[index] = false;
+    closeFuntionDropdown: function () {
+
+      this.clickedEmployee = {};
+    },
+    warningDelete: function (emp) {
+      this.clickedEmployeeDelete = emp;
+      this.isShowWarning = true;
     },
     getData: function () {
       this.isLoading = true;
@@ -196,7 +213,6 @@ export default {
           this.employees = data;
 
           for (let index = 0; index < this.employees.length; index++) {
-            this.isShowDropdownFunction.push(false);
             if (this.employees[index].DateOfBirth) {
               this.employees[index].DateOfBirth = formatDate(
                 this.employees[index].DateOfBirth
@@ -209,6 +225,12 @@ export default {
           this.isLoading = false;
           console.log(res);
         });
+    },
+    closeWarning() {
+      this.isShowWarning = false;
+    },
+    okWarning() {
+      console.log('ok');
     },
     onSearch: function () {
       this.isLoading = true;
@@ -227,7 +249,6 @@ export default {
           this.employees = data.Data;
 
           for (let index = 0; index < this.employees.length; index++) {
-            this.isShowDropdownFunction.push(false);
             if (this.employees[index].DateOfBirth) {
               this.employees[index].DateOfBirth = formatDate(
                 this.employees[index].DateOfBirth

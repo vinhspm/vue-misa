@@ -2,6 +2,11 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import MCombobox from "ms-combobox";
 import EmployeeList from "./views/employee/EmployeeList.vue";
+import MPopup from "@/components/base/MPopup.vue";
+import MWarning from "@/components/base/MWarning.vue";
+import MButton from "@/components/base/MButton.vue";
+import LoadingLayer from "@/components/base/LoadingLayer.vue";
+
 // import CustomerList from "./views/customer/CustomerList.vue";
 // import ReportList from "./views/report/ReportList.vue";
 
@@ -38,6 +43,12 @@ const router = createRouter({
 //STORE
 const app = createApp(App);
 app.component("MCombobox", MCombobox);
+app.component("MButton", MButton);
+app.component('MPopup', MPopup);
+app.component('MWarning', MWarning);
+app.component('loading-layer', LoadingLayer);
+
 // B3: sử dụng router:
 app.use(router);
+
 app.mount("#app");

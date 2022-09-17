@@ -122,3 +122,9 @@ export const POSITION_DATA = [
     "ModifiedBy": null
   }
 ]
+
+export const DIALOG_TYPE = {
+  ALERT: "alert",
+  WARNING: "warning",
+  SELECTABLE: "selectable"
+}
