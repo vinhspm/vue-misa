@@ -9,16 +9,16 @@
       <div
         class="menu__icon icon icon-24 sprite_icon"
         :style="{
-          'background-position': (-item.iconCoordinates[0])+'px' + ' ' + (-item.iconCoordinates[1])+'px',
+          'background-position':(-item.iconCoordinates[0])+'px' + ' ' + (-item.iconCoordinates[1])+'px'
         }"
+        :active-class="item.activeClass"
       ></div>
-      <div class="menu__text">{{item.text}}</div>
+      <div class="menu__text">{{ item.text }}</div>
     </router-link>
-
   </div>
 </template>
 <script>
-import {MENU_ITEMS} from "../../constants.js";
+import { MENU_ITEMS } from "../../constants.js";
 export default {
   data() {
     return {
@@ -27,7 +27,7 @@ export default {
   },
   created() {
     this.menuItems = MENU_ITEMS;
-  }
+  },
 };
 </script>
 <style scoped>

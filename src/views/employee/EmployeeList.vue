@@ -26,7 +26,13 @@
         <button id="btnRefresh" @click="getData()"></button>
       </div>
     </div>
-    <div class="table__content">
+    <m-table
+      :headers="employeeHeader"
+      :dataSource="employees"
+      @toggle-dialog="(emp) => toggleDialog(emp)"
+      @warning-delete="(emp) => warningDelete(emp)"
+    ></m-table>
+    <!-- <div class="table__content">
       <table id="tbEmployeeList" class="table">
         <thead class="table__header">
           <tr>
@@ -93,7 +99,6 @@
                   class="dropbtn"
                   @click="showDropdownFuntion(emp)"
                 ></button>
-                <!-- @blur="closeFuntionDropdown()" -->
                 <div
                   class="dropdown-content"
                   v-show="clickedEmployee.EmployeeId == emp.EmployeeId"
@@ -110,7 +115,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
     <div class="table__paging">
       <div class="table__paging--left">
         Tổng số: <b>{{ employees.length }}</b> bản ghi
@@ -160,7 +165,7 @@ import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
-import { DIALOG_TYPE, WARNING_TXT } from "../../constants.js";
+import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
 
 // import MWarning from "@/components/base/MWarning.vue";
@@ -169,9 +174,9 @@ export default {
   name: "EmployeeList",
   created() {
     // Gọi api lấy dữ liệu:
-    setInterval(() => {
-      this.functionWaitTime.canGo = true;
-    }, this.functionWaitTime.delay);
+    // setInterval(() => {
+    //   this.functionWaitTime.canGo = true;
+    // }, this.functionWaitTime.delay);
     this.getData();
   },
   data() {
@@ -186,6 +191,7 @@ export default {
       isShowWarning: false,
       clickedEmployee: {},
       clickedEmployeeDelete: {},
+      employeeHeader: EMPLOYEE_HEADER,
 
       //chỉ cho hàm nào đó chạy sau mỗi một khoảng thời gian
       functionWaitTime: {
@@ -227,24 +233,9 @@ export default {
       }
     },
 
-    // ẩn hiện dropdown chức năng xoá
-    showDropdownFuntion: function (emp) {
-      if (this.clickedEmployee.EmployeeId === emp.EmployeeId) {
-        this.clickedEmployee = {};
-      } else {
-        this.clickedEmployee = emp;
-      }
-    },
-
-    // ẩn dropdown
-    closeFuntionDropdown: function () {
-      this.clickedEmployee = {};
-    },
-
     // cảnh báo xoá
     warningDelete: function (emp) {
       this.clickedEmployeeDelete = emp;
-      this.clickedEmployee = {};
       this.isShowWarning = true;
       this.warningText =
         WARNING_TXT.DELETE + "Nhân viên " + emp.EmployeeCode + " không ?";
@@ -257,7 +248,7 @@ export default {
         .then((res) => res.json())
         .then((data) => {
           this.employees = data;
-
+          // console.log(this.employees);
           for (let index = 0; index < this.employees.length; index++) {
             if (this.employees[index].DateOfBirth) {
               this.employees[index].DateOfBirth = formatDate(

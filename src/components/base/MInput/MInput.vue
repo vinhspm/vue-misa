@@ -16,7 +16,6 @@ export default {
   //   };
   // },
   created() {
-    console.log(this.modelValue);
   },  
   methods: {
     handleInput(event) {

@@ -7,6 +7,7 @@ import MWarning from "@/components/base/MWarning.vue";
 import MButton from "@/components/base/MButton.vue";
 import MInput from "@/components/base/MInput/MInput.vue";
 import LoadingLayer from "@/components/base/LoadingLayer.vue";
+import MTable from "@/components/base/MTable.vue";
 
 // import CustomerList from "./views/customer/CustomerList.vue";
 // import ReportList from "./views/report/ReportList.vue";
@@ -50,6 +51,8 @@ app.component('MPopup', MPopup);
 app.component('MInput', MInput);
 app.component('MWarning', MWarning);
 app.component('loading-layer', LoadingLayer);
+app.component('MTable', MTable);
+
 
 // B3: sử dụng router:
 app.use(router);

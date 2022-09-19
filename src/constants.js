@@ -1,6 +1,6 @@
 // route path và data của menu
 export const MENU_ITEMS = [
-  {text: "Tổng quan", iconCoordinates: [33, 1630], route: '/tong-quan'},
+  {text: "Tổng quan", iconCoordinates: [33, 1630],activeClass:'dashboard_icon__active', route: '/tong-quan'},
   {text: "Tiền mặt", iconCoordinates: [78, 1631], route: '/nhan-vien'} ,
   {text: "Tiền gửi", iconCoordinates: [121, 1633], route: '/tien-gui'},
   {text: "Mua hàng", iconCoordinates: [165, 1631], route: '/mua-hang'},
@@ -134,3 +134,77 @@ export const WARNING_TXT = {
   DELETE : 'Bạn có thực sự muốn xoá ',
   DATA_CHANGED: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?'
 }
+
+export const EMPLOYEE_HEADER = [
+  {
+    Class: 'sticky_header_left_1',
+    CellClass: 'sticky_body_left_1',
+    Caption: 'Mã nhân viên',
+    Field: 'EmployeeCode',
+    Width: '150'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'Tên nhân viên',
+    Field: 'FullName',
+    Width: '200'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'Giới tính',
+    Field: 'GenderName',
+    Width: '150'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'Ngày sinh',
+    Field: 'DateOfBirth',
+    Width: '150'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'số cmnd',
+    Field: 'IdentityNumber',
+    Width: '150'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'chức danh',
+    Field: 'PositionName',
+    Width: '200'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'tên đơn vị',
+    Field: 'DepartmentName',
+    Width: '250'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'số tài khoản',
+    Field: 'BankAccount',
+    Width: '200'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'tên ngân hàng',
+    Field: 'BankName',
+    Width: '250'
+  },
+  {
+    Class: '',
+    CellClass: '',
+    Caption: 'chi nhánh tk ngân hàng',
+    Field: 'BankBranch',
+    Width: '350'
+  },
+  
+]

@@ -55,3 +55,6 @@
 .sprite_icon {
     background: url(../../assets/img/Sprites.79cca840.svg) no-repeat;
 }
+.dashboard_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -33px -1587px!important;
+}
