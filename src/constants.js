@@ -1,3 +1,4 @@
+// route path và data của menu
 export const MENU_ITEMS = [
   {text: "Tổng quan", iconCoordinates: [33, 1630], route: '/tong-quan'},
   {text: "Tiền mặt", iconCoordinates: [78, 1631], route: '/nhan-vien'} ,
@@ -17,11 +18,7 @@ export const MENU_ITEMS = [
   {text: "Phân tích tài chính", iconCoordinates: [207,1667], route: '/phan-tich-tai-chinh'}
 ]
 
-export const SAVE_BUTTON_TXT = {
-  ADD_NEW: "Cất và Thêm",
-  EDIT: "Cất"
-}
-
+// thông tin phòng ban
 export const DEPARTMENT_DATA = [
   {
     "DepartmentId": "3f8e6896-4c7d-15f5-a018-75d8bd200d7c",
@@ -65,6 +62,7 @@ export const DEPARTMENT_DATA = [
   }
 ]
 
+// các loại vị trí
 export const POSITION_DATA = [
   {
     "PositionId": "30d41e52-5e66-72bc-6c1c-b47866e0b131",
@@ -123,8 +121,16 @@ export const POSITION_DATA = [
   }
 ]
 
+// loại popup cảnh báo
 export const DIALOG_TYPE = {
   ALERT: "alert",
   WARNING: "warning",
-  SELECTABLE: "selectable"
+  SELECTABLE: "selectable",
+  ASK_CANCELABLE: "ask"
+}
+
+//
+export const WARNING_TXT = {
+  DELETE : 'Bạn có thực sự muốn xoá ',
+  DATA_CHANGED: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?'
 }

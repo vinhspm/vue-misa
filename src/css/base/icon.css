@@ -47,6 +47,11 @@
     height: 48px;
     background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -752px -455px;
 }
+.icon--ask {
+    width: 48px;
+    height: 48px;
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -832px -455px;
+}
 .sprite_icon {
     background: url(../../assets/img/Sprites.79cca840.svg) no-repeat;
 }

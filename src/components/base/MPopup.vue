@@ -11,6 +11,7 @@
        <div class="dialog__body">
          <slot name="content"></slot>
        </div>
+       <div class="footer__border"></div>
        <div class="dialog__footer">
          <slot name="footer"></slot>
        </div>

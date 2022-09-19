@@ -18,6 +18,7 @@
           class="input input__icon input__icon--search"
           v-model="searchInputValue"
           placeholder="Tìm theo mã, tên nhân viên"
+          v-on:keyup.enter="onSearch"
         />
         <button @click="onSearch"></button>
       </div>
@@ -61,12 +62,7 @@
             <th class="text-align--left" style="min-width: 350px">
               chi nhánh tk ngân hàng
             </th>
-            <th
-              class="text-align--left"
-              style="min-width: 100px"
-            >
-              chức năng
-            </th>
+            <th class="text-align--left" style="min-width: 100px">chức năng</th>
           </tr>
         </thead>
         <tbody>
@@ -81,11 +77,11 @@
             <td class="sticky_body_left_1">{{ emp.EmployeeCode }}</td>
             <td>{{ emp.FullName }}</td>
             <td>{{ emp.GenderName }}</td>
-            <td>{{ emp.DateOfBirth ? emp.DateOfBirth : "09/12/1997" }}</td>
+            <td>{{ emp.DateOfBirt }}</td>
             <td>
-              {{ emp.IdentityNumber ? emp.IdentityNumber : "3123213213" }}
+              {{ emp.IdentityNumber }}
             </td>
-            <td>{{ emp.PositionName ? emp.PositionName : "Giám đốc" }}</td>
+            <td>{{ emp.PositionName }}</td>
             <td>{{ emp.DepartmentName }}</td>
             <td>1902093827182711</td>
             <td></td>
@@ -96,11 +92,14 @@
                 <button
                   class="dropbtn"
                   @click="showDropdownFuntion(emp)"
-                  @blur="closeFuntionDropdown()"
                 ></button>
+                <!-- @blur="closeFuntionDropdown()" -->
                 <div
                   class="dropdown-content"
                   v-show="clickedEmployee.EmployeeId == emp.EmployeeId"
+                  @focusout="closeFuntionDropdown"
+                  tabindex="0"
+                  ref="dropdown"
                 >
                   <a href="#">Nhân bản</a>
                   <a href="#" @click="warningDelete(emp)">Xoá</a>
@@ -147,7 +146,13 @@
     @reload-data="getData"
   ></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning v-if="isShowWarning"  :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning" @ok-warning="okWarning"></m-warning>
+  <m-warning
+    v-if="isShowWarning"
+    :text="warningText"
+    :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning"
+    @ok-warning="okWarning"
+  ></m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
@@ -155,13 +160,18 @@ import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
-import { DIALOG_TYPE } from "../../constants.js";
+import { DIALOG_TYPE, WARNING_TXT } from "../../constants.js";
+import { formatDateInput } from "../../js/base.js";
+
 // import MWarning from "@/components/base/MWarning.vue";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
   created() {
     // Gọi api lấy dữ liệu:
+    setInterval(() => {
+      this.functionWaitTime.canGo = true;
+    }, this.functionWaitTime.delay);
     this.getData();
   },
   data() {
@@ -172,39 +182,75 @@ export default {
       isShow: false,
       searchInputValue: "",
       DIALOG_TYPE: DIALOG_TYPE,
-      warningText: "hello",
+      warningText: "",
       isShowWarning: false,
       clickedEmployee: {},
-      clickedEmployeeDelete: {}
+      clickedEmployeeDelete: {},
+
+      //chỉ cho hàm nào đó chạy sau mỗi một khoảng thời gian
+      functionWaitTime: {
+        canGo: true,
+        delay: 0, //ms
+      },
     };
   },
+
+  //TODO: search theo input nhập vào mà không cần nhấn enter
+  // watch: {
+  //   searchInputValue: {
+  //     handler() {
+  //         if (this.functionWaitTime.canGo) {
+  //           this.onSearch();
+  //           this.functionWaitTime.canGo = false;
+  //         }
+  //     },
+  //   },
+  // },
+
   methods: {
+    // bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
     toggleDialog: function (emp) {
       this.isShow = !this.isShow;
       if (this.isShow) {
         if (emp.EmployeeId) {
           this.selectedEmployee = emp;
+          this.selectedEmployee.DateOfBirth = formatDateInput(
+            this.selectedEmployee.DateOfBirth
+          );
+          this.selectedEmployee.IdentityDate = formatDateInput(
+            this.selectedEmployee.IdentityDate
+          );
           console.log("selected", emp);
         }
       } else {
         this.selectedEmployee = {};
       }
     },
+
+    // ẩn hiện dropdown chức năng xoá
     showDropdownFuntion: function (emp) {
-      if(this.clickedEmployee.EmployeeId === emp.EmployeeId) {
+      if (this.clickedEmployee.EmployeeId === emp.EmployeeId) {
         this.clickedEmployee = {};
       } else {
         this.clickedEmployee = emp;
       }
     },
-    closeFuntionDropdown: function () {
 
+    // ẩn dropdown
+    closeFuntionDropdown: function () {
       this.clickedEmployee = {};
     },
+
+    // cảnh báo xoá
     warningDelete: function (emp) {
       this.clickedEmployeeDelete = emp;
+      this.clickedEmployee = {};
       this.isShowWarning = true;
+      this.warningText =
+        WARNING_TXT.DELETE + "Nhân viên " + emp.EmployeeCode + " không ?";
     },
+
+    // lấy tắt cả dữ liệu từ bảng nhân viên
     getData: function () {
       this.isLoading = true;
       fetch("https://cukcuk.manhnv.net/api/v1/Employees", { method: "GET" })
@@ -226,14 +272,42 @@ export default {
           console.log(res);
         });
     },
+
+    //tắt popup cảnh báo
     closeWarning() {
       this.isShowWarning = false;
     },
+
+    // xác nhận người dùng đồng ý với popup cảnh báo
     okWarning() {
-      console.log('ok');
+      this.deleteEmployee();
+      this.closeWarning();
     },
-    onSearch: function () {
+
+    // gọi api xoá nhân viên
+    deleteEmployee() {
       this.isLoading = true;
+      fetch(
+        "https://cukcuk.manhnv.net/api/v1/Employees/" +
+          this.clickedEmployeeDelete.EmployeeId,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((res) => res.json())
+        .then(() => {
+          this.isLoading = false;
+          this.getData();
+        })
+        .catch((res) => {
+          console.log(res);
+          this.getData();
+          this.isLoading = false;
+        });
+    },
+
+    // hàm tìm kiếm nhân viên theo mã và tên
+    onSearch: function () {
       fetch(
         "https://cukcuk.manhnv.net/api/v1/Employees/filter?" +
           new URLSearchParams({
@@ -255,13 +329,10 @@ export default {
               );
             }
           }
-          this.isLoading = false;
         })
         .catch((res) => {
           console.log(res);
-          this.employees = []
-          this.isLoading = false;
-
+          this.employees = [];
         });
     },
   },
