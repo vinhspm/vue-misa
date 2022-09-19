@@ -1,20 +1,13 @@
 <template>
   <div class="menu">
-    <router-link
-      v-for="item in menuItems"
-      :key="menuItems.indexOf(item)"
-      :to="item.route"
-      class="menu__item"
-    >
-      <div
-        class="menu__icon icon icon-24 sprite_icon"
-        :style="{
-          'background-position':(-item.iconCoordinates[0])+'px' + ' ' + (-item.iconCoordinates[1])+'px'
-        }"
-        :active-class="item.activeClass"
-      ></div>
+    <router-link v-for="(item, index) in menuItems" :key="index" :to="item.route" class="menu__item"
+    v-slot="{ isActive }">
+      <div class="menu__icon icon icon-24 sprite_icon" :style="{
+        'background-position':(-item.iconCoordinates[0])+'px' + ' ' + (-item.iconCoordinates[1])+'px'
+      }" :class="[isActive && `${getActiveClass(item)}`]"></div>
       <div class="menu__text">{{ item.text }}</div>
     </router-link>
+
   </div>
 </template>
 <script>
@@ -28,6 +21,11 @@ export default {
   created() {
     this.menuItems = MENU_ITEMS;
   },
+  methods: {
+    getActiveClass(item) {
+      return item.activeClass;
+    }
+  }
 };
 </script>
 <style scoped>

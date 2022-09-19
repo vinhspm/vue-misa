@@ -55,6 +55,62 @@
 .sprite_icon {
     background: url(../../assets/img/Sprites.79cca840.svg) no-repeat;
 }
+
 .dashboard_icon__active {
-    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -33px -1587px!important;
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -29px -1585px!important;
+}
+
+.cash_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -73px -1586px!important;
+}
+
+.deposit_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -117px -1587px!important;
+}
+
+.buy_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -161px -1588px!important;
+}
+
+.sell_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -206px -1585px!important;
+}
+
+.bill_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -249px -1586px!important;
+}
+
+.warehouse_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -291px -1587px!important;
+}
+
+.tool_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -336px -1587px!important;
+}
+
+.static_asset_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -380px -1587px!important;
+}
+
+.salary_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -513px -1661px!important;
+}
+
+.tax_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -425px -1588px!important;
+}
+.price_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -470px -1587px!important;
+}
+.summary_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -514px -1586px!important;
+}
+.budget_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -426px -1659px!important;
+}
+.report_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -552px -1588px!important;
+}
+.analyze_icon__active {
+    background: url(../../assets/img/Sprites.79cca840.svg) no-repeat -251px -1663px!important;
 }

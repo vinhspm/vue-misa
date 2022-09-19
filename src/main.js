@@ -16,25 +16,25 @@ import { createRouter, createWebHistory } from "vue-router";
 
 //B2: Định nghĩa các router:
 const routers = [
-  { path: "/", redirect: 'nhan-vien' },
-  { path: "/tong-quan", component: {} },
-  { path: "/nhan-vien", component: EmployeeList },
-  { path: "/tien-gui", component: {} },
-  { path: "/mua-hang", component: {} },
-  { path: "/ban-hang", component: {} },
-  { path: "/quan-ly-hoa-don", component: {} },
-  { path: "/kho", component: {} },
-  { path: "/cong-cu-dung-cu", component: {} },
-  { path: "/tai-san-co-dinh", component: {} },
-  { path: "/tien-luong", component: {} },
-  { path: "/thue", component: {} },
-  { path: "/gia-thanh", component: {} },
-  { path: "/tong-hop", component: {} },
-  { path: "/ngan-sach", component: {} },
-  { path: "/bao-cao", component: {} },
-  { path: "/phan-tich-tai-chinh", component: {} },
-  { path: "/15", component: {} },
-  { path: "/16", component: {} },
+  { path: "/", redirect: "nhan-vien", name: "/" },
+  { path: "/tong-quan", component: {}, name: "/tong-quan" },
+  { path: "/nhan-vien", component: EmployeeList, name: "/nhan-vien" },
+  { path: "/tien-gui", component: {}, name: "/tien-gui" },
+  { path: "/mua-hang", component: {}, name: "/mua-hang" },
+  { path: "/ban-hang", component: {}, name: "/ban-hang" },
+  { path: "/quan-ly-hoa-don", component: {}, name: "/quan-ly-hoa-don" },
+  { path: "/kho", component: {}, name: "/kho" },
+  { path: "/cong-cu-dung-cu", component: {}, name: "/cong-cu-dung-cu" },
+  { path: "/tai-san-co-dinh", component: {}, name: "/tai-san-co-dinh" },
+  { path: "/tien-luong", component: {}, name: "/tien-luong" },
+  { path: "/thue", component: {}, name: "/thue" },
+  { path: "/gia-thanh", component: {}, name: "/gia-thanh" },
+  { path: "/tong-hop", component: {}, name: "/tong-hop" },
+  { path: "/ngan-sach", component: {}, name: "/ngan-sach" },
+  { path: "/bao-cao", component: {}, name: "/bao-cao" },
+  { path: "/phan-tich-tai-chinh", component: {}, name: "/phan-tich-tai-chinh" },
+  { path: "/15", component: {}, name: "/" },
+  { path: "/16", component: {}, name: "/" },
 ];
 // B3: Khởi tạo router:
 const router = createRouter({
@@ -47,12 +47,11 @@ const router = createRouter({
 const app = createApp(App);
 app.component("MCombobox", MCombobox);
 app.component("MButton", MButton);
-app.component('MPopup', MPopup);
-app.component('MInput', MInput);
-app.component('MWarning', MWarning);
-app.component('loading-layer', LoadingLayer);
-app.component('MTable', MTable);
-
+app.component("MPopup", MPopup);
+app.component("MInput", MInput);
+app.component("MWarning", MWarning);
+app.component("loading-layer", LoadingLayer);
+app.component("MTable", MTable);
 
 // B3: sử dụng router:
 app.use(router);
