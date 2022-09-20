@@ -29,7 +29,7 @@
     <m-table
       :headers="employeeHeader"
       :dataSource="employees"
-      @toggle-dialog="(emp) => toggleDialog(emp)"
+      @toggle-dialog="(index) => toggleDialog(index)"
       @warning-delete="(emp) => warningDelete(emp)"
     ></m-table>
     <div class="table__paging">
@@ -82,7 +82,7 @@ import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
 import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
-import { formatDateInput } from "../../js/base.js";
+// import { formatDateInput } from "../../js/base.js";
 
 // import MWarning from "@/components/base/MWarning.vue";
 export default {
@@ -131,18 +131,12 @@ export default {
 
   methods: {
     // bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
-    toggleDialog: function (emp) {
+    toggleDialog: function (index) {
       this.isShow = !this.isShow;
       if (this.isShow) {
-        if (emp.EmployeeId) {
-          this.selectedEmployee = emp;
-          this.selectedEmployee.DateOfBirth = formatDateInput(
-            this.selectedEmployee.DateOfBirth
-          );
-          this.selectedEmployee.IdentityDate = formatDateInput(
-            this.selectedEmployee.IdentityDate
-          );
-          console.log("selected", emp);
+        if (this.employees[index].EmployeeId) {
+          this.selectedEmployee = this.employees[index];
+          console.log("selected", this.selectedEmployee);
         }
       } else {
         this.selectedEmployee = {};

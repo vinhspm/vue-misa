@@ -31,9 +31,9 @@
       </thead>
       <tbody>
         <tr
-          v-for="emp in dataSource"
+          v-for="(emp,index) in dataSource"
           :key="emp.EmployeeId"
-          @dblclick="toggleDialog(emp)"
+          @dblclick="toggleDialog(index)"
         >
           <td v-if="showCheckbox" class="sticky_body_left text-align--center">
             <input type="checkbox" name="checkItem" />&nbsp;
@@ -46,7 +46,7 @@
             {{ emp[item.Field] ? emp[item.Field] : "-" }}
           </td>
           <td v-if="isShowFunctionDropdown">
-            <button id="editButton" @click="toggleDialog(emp)">Sửa</button>
+            <button id="editButton" @click="toggleDialog(index)">Sửa</button>
             <div class="dropdown" style="float: right">
               <button
                 class="dropbtn"
@@ -144,7 +144,7 @@ export default {
     };
   },
   created() {
-    // console.log(this.dataSource);
+    console.log(this.dataSource);
   },
   watch: {},
   methods: {

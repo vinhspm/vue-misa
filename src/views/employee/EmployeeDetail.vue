@@ -84,10 +84,10 @@
           <div class="row">
             <div class="col w-40">
               <label>Ngày sinh</label>
-              <input
+              <date-picker
+                inputFormat="dd/MM/yyyy"
                 v-model="employeeDetailData.DateOfBirth"
                 id="dtDateOfBirth"
-                type="date"
                 class="input__form"
               />
             </div>
@@ -340,7 +340,8 @@ export default {
       this.getNextEmpId();
     },
 
-    //gọi api thêm mới nhân viên
+    // gọi api thêm mới nhân viên
+    // author: VinhKt
     addNewEmployee: function () {
       this.isLoading = true;
       fetch("https://cukcuk.manhnv.net/api/v1/Employees", {
@@ -368,6 +369,7 @@ export default {
     },
 
     // gọi api update nhân viên
+    //author: VinhKT
     updateEmployee: function () {
       this.isLoading = true;
       fetch(
@@ -417,7 +419,8 @@ export default {
       this.closeDialog();
     },
 
-    //lấy mã nhân viên kế tiếp với form thêm mới
+    // lấy mã nhân viên kế tiếp với form thêm mới bằng api
+    // author: VinhKT
     getNextEmpId: async function () {
       const response = await fetch(
         "https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode"
@@ -442,8 +445,9 @@ export default {
       )
     ) {
       // console.log(this.selectedEmployee);
-      this.employeeDetailData = { ...this.selectedEmployee };
+      this.employeeDetailData = {...this.selectedEmployee};
       console.log("edit");
+      console.log(this.employeeDetailData.DateOfBirth);
       this.isEdit = true;
     } else {
       this.isEdit = false;

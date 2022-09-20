@@ -8,6 +8,7 @@ import MButton from "@/components/base/MButton.vue";
 import MInput from "@/components/base/MInput/MInput.vue";
 import LoadingLayer from "@/components/base/LoadingLayer.vue";
 import MTable from "@/components/base/MTable.vue";
+import Datepicker from 'vue3-datepicker'
 
 // import CustomerList from "./views/customer/CustomerList.vue";
 // import ReportList from "./views/report/ReportList.vue";
@@ -52,6 +53,8 @@ app.component("MInput", MInput);
 app.component("MWarning", MWarning);
 app.component("loading-layer", LoadingLayer);
 app.component("MTable", MTable);
+app.component('date-picker', Datepicker);
+
 
 // B3: sử dụng router:
 app.use(router);
