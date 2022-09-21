@@ -223,6 +223,10 @@ export const DIALOG_TYPE = {
 export const WARNING_TXT = {
   DELETE: "Bạn có thực sự muốn xoá ",
   DATA_CHANGED: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
+  REQUIRE: " không được để trống",
+  dataNotInList: (fieldName) => {
+    return "Dữ liệu <" + fieldName + ">không tồn tại trong danh mục"
+  } ,
 };
 
 export const EMPLOYEE_HEADER = [
@@ -326,3 +330,9 @@ export const GENDER_RADIO_DATA = [
     labelTxt: "Khác",
   },
 ];
+
+export const FIELD_NAME_VN = {
+  CODE: 'Mã nhân viên',
+  FULLNAME: 'Họ và tên',
+  DEPARTMENT: 'Đơn vị'
+}

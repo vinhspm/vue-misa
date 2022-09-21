@@ -1,9 +1,18 @@
 <template>
-  <input :type="type" :value="modelValue" @input="handleInput($event)" :class="{input__form: type!=='checkbox'}" :name="name"/>
+  <input
+    :type="type"
+    :value="modelValue"
+    @input="handleInput($event)"
+    :class="{ input__form: type !== 'checkbox', invalidInput: !isValidate }"
+    :name="name"
+    @focusout="checkInvalidInput($event)"
+    :title="title"
+
+  />
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
-import {formatDateInput} from "@/js/base.js"
+import { WARNING_TXT } from "@/constants";
 export default {
   extends: MBaseControl,
   name: "MInput",
@@ -11,24 +20,45 @@ export default {
     type: String,
     modelValue: String,
     name: String,
+    isRequire: {
+      Type: Boolean,
+      default: false,
+    },
+    fieldNameTxt: {
+      Type: String,
+      default: ''
+    }
   },
   data() {
     return {
       isDate: false,
+      title: '',
     };
   },
   created() {
-    if(this.type === 'date') {
+    if (this.type === "date") {
       this.isDate = true;
     }
-  },  
+  },
   methods: {
     handleInput(event) {
-      this.$emit('update:modelValue', event.target.value);
+      this.checkInvalidInput(event)
+      this.$emit("update:modelValue", event.target.value);
     },
-    formatDateInput(value, event) {
-      console.log(event);
-      return formatDateInput(value)
+    checkInvalidInput(event) {
+      if (this.isRequire) {
+        if (!event.target.value && event.type === 'focusout') {
+          console.log("invalid",event);
+          this.isValidate = false;
+          this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
+          this.$emit('field-invalid', this.title)
+        } else {
+          console.log("valid", event);
+          this.isValidate = true;
+          this.$emit('field-valid', this.title)
+          this.title = "";
+        }
+      }
     },
   },
 };

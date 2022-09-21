@@ -32,6 +32,10 @@
                 type="text"
                 :modelValue="employeeDetailData.EmployeeCode"
                 @update:modelValue="employeeDetailData.EmployeeCode = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.CODE"
+                @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)"
               />
             </div>
             <div class="col w-70">
@@ -40,6 +44,8 @@
                 type="text"
                 :modelValue="employeeDetailData.FullName"
                 @update:modelValue="employeeDetailData.FullName = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.FULLNAME"
               />
             </div>
           </div>
@@ -53,6 +59,8 @@
                 fieldName="DepartmentName"
                 :modelValue="employeeDetailData.DepartmentId"
                 @update:modelValue="employeeDetailData.DepartmentId = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.DEPARTMENT"
               >
               </m-department-combobox>
             </div>
@@ -84,19 +92,6 @@
             <div class="col w-60">
               <label>Giới tính</label>
               <div class="row align-center h-32">
-                <!-- <div>
-                  <input v-model="employeeDetailData.Gender" type="radio" id="genderMale" name="cbxGender" value="0" />
-                  <label for="genderMale">Nam</label>
-                </div>
-                <div class="ml-10">
-                  <input v-model="employeeDetailData.Gender" type="radio" id="genderFemale" name="cbxGender"
-                    value="1" />
-                  <label for="genderFemale">Nữ</label>
-                </div>
-                <div class="ml-10">
-                  <input v-model="employeeDetailData.Gender" type="radio" id="genderOther" name="cbxGender" value="2" />
-                  <label for="genderOther">Khác</label>
-                </div> -->
                 <m-radio
                   :data="genderData"
                   :selected="employeeDetailData.Gender"
@@ -228,6 +223,7 @@ import {
   DIALOG_TYPE,
   WARNING_TXT,
   GENDER_RADIO_DATA,
+  FIELD_NAME_VN,
 } from "../../constants.js";
 
 export default {
@@ -245,6 +241,8 @@ export default {
       isShowWarning: false,
       warningText: WARNING_TXT.DATA_CHANGED,
       genderData: GENDER_RADIO_DATA,
+      fieldNameVnTxt: FIELD_NAME_VN,
+      errorList: [],
     };
   },
   props: {
@@ -412,6 +410,35 @@ export default {
       } else {
         this.employeeDetailData.EmployeeCode = await response.text();
         // console.log();
+      }
+    },
+
+    /**
+     * hàm thêm một lỗi của trường nhập liệu vào danh sách nếu chưa có
+     * author: VinhKT
+     *
+     */
+    addError(title) {
+      if (this.errorList.includes(title)) {
+        return;
+      } else {
+        this.errorList.push(title);
+      }
+    },
+
+    /**
+     * hàm xoá một lỗi của trường nhập liệu khỏi danh sách
+     * author: VinhKT
+     *
+     */
+    removeError(title) {
+      if (this.errorList.includes(title)) {
+        const index = this.errorList.indexOf(title);
+        if (index > -1) {
+          this.errorList.splice(index, 1);
+        }
+      } else {
+        return;
       }
     },
   },

@@ -10,7 +10,7 @@
       },
       data(){
           return{
-              isValidate: false
+              isValidate: true
           }
       },
       methods: {
@@ -20,7 +20,9 @@
                   lstRule.forEach(rule => {
                       if(rule == "require"){
                           if(!this.value){
-                              this.isValidate = true;
+                              this.isValidate = false;
+                          } else {
+                            this.isValidate = true;
                           }
                       }
                       else if(rule == "email"){
