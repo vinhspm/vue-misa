@@ -5,19 +5,11 @@
       <div class="title">Thông tin nhân viên</div>
       <div class="employee__type__container">
         <div>
-          <input
-            type="checkbox"
-            name="employeeType"
-            id="customerTypeCheckbox"
-          />
+          <input type="checkbox" name="employeeType" id="customerTypeCheckbox" />
           <label for="customerTypeCheckbox">Là khách hàng</label>
         </div>
         <div>
-          <input
-            type="checkbox"
-            name="employeeType"
-            id="supplierTypeCheckbox"
-          />
+          <input type="checkbox" name="employeeType" id="supplierTypeCheckbox" />
           <label for="supplierTypeCheckbox">Là nhà cung cấp</label>
         </div>
       </div>
@@ -28,55 +20,30 @@
           <div class="row">
             <div class="col w-30">
               <label>Mã (<span class="input--required">*</span>)</label>
-              <m-input
-                type="text"
-                :modelValue="employeeDetailData.EmployeeCode"
-                @update:modelValue="employeeDetailData.EmployeeCode = $event"
-              />
+              <m-input type="text" :modelValue="employeeDetailData.EmployeeCode"
+                @update:modelValue="employeeDetailData.EmployeeCode = $event" />
             </div>
             <div class="col w-70">
               <label>Họ và tên (<span class="input--required">*</span>)</label>
-              <m-input
-                type="text"
-                :modelValue="employeeDetailData.FullName"
-                @update:modelValue="employeeDetailData.FullName = $event"
-              />
+              <m-input type="text" :modelValue="employeeDetailData.FullName"
+                @update:modelValue="employeeDetailData.FullName = $event" />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Đơn vị (<span class="input--required">*</span>)</label>
-              <select
-                v-model="employeeDetailData.DepartmentId"
-                name=""
-                id="cbxDepartment"
-              >
-                <option
-                  v-for="dpm in departments"
-                  :key="dpm.DepartmentId"
-                  :value="dpm.DepartmentId"
-                >
-                  {{ dpm.DepartmentName }}
-                </option>
-              </select>
+              <m-department-combobox :data="departments" fieldKey="DepartmentId" fieldCode="DepartmentCode" fieldName="DepartmentName" 
+                :modelValue="employeeDetailData.DepartmentId" @update:modelValue="employeeDetailData.DepartmentId = $event">
+              </m-department-combobox>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Vị trí</label>
-              <select
-                v-model="employeeDetailData.PositionId"
-                name=""
-                id="cbxPosition"
-              >
-                <option
-                  v-for="pst in positions"
-                  :key="pst.PositionId"
-                  :value="pst.PositionId"
-                >
-                  {{ pst.PositionName }}
-                </option>
-              </select>
+              <m-combobox :data="positions" fieldKey="PositionId" fieldName="PositionName"
+                :modelValue="employeeDetailData.PositionId" @update:modelValue="employeeDetailData.PositionId = $event">
+              </m-combobox>
+
             </div>
           </div>
         </div>
@@ -84,44 +51,24 @@
           <div class="row">
             <div class="col w-40">
               <label>Ngày sinh</label>
-              <date-picker
-                inputFormat="dd/MM/yyyy"
-                v-model="employeeDetailData.DateOfBirth"
-                id="dtDateOfBirth"
-                class="input__form"
-              />
+              <m-input type="date" :modelValue="employeeDetailData.DateOfBirth"
+                @update:modelValue="employeeDetailData.DateOfBirth = $event" />
+
             </div>
             <div class="col w-60">
               <label>Giới tính</label>
               <div class="row align-center h-32">
                 <div>
-                  <input
-                    v-model="employeeDetailData.Gender"
-                    type="radio"
-                    id="genderMale"
-                    name="cbxGender"
-                    value="0"
-                  />
+                  <input v-model="employeeDetailData.Gender" type="radio" id="genderMale" name="cbxGender" value="0" />
                   <label for="genderMale">Nam</label>
                 </div>
                 <div class="ml-10">
-                  <input
-                    v-model="employeeDetailData.Gender"
-                    type="radio"
-                    id="genderFemale"
-                    name="cbxGender"
-                    value="1"
-                  />
+                  <input v-model="employeeDetailData.Gender" type="radio" id="genderFemale" name="cbxGender"
+                    value="1" />
                   <label for="genderFemale">Nữ</label>
                 </div>
                 <div class="ml-10">
-                  <input
-                    v-model="employeeDetailData.Gender"
-                    type="radio"
-                    id="genderOther"
-                    name="cbxGender"
-                    value="2"
-                  />
+                  <input v-model="employeeDetailData.Gender" type="radio" id="genderOther" name="cbxGender" value="2" />
                   <label for="genderOther">Khác</label>
                 </div>
               </div>
@@ -130,35 +77,20 @@
           <div class="row">
             <div class="col w-60">
               <label>Số CMND</label>
-              <m-input
-                type="text"
-                :modelValue="employeeDetailData.IdentityNumber"
-                @update:modelValue="employeeDetailData.IdentityNumber = $event"
-              />
+              <m-input type="text" :modelValue="employeeDetailData.IdentityNumber"
+                @update:modelValue="employeeDetailData.IdentityNumber = $event" />
             </div>
             <div class="col w-40">
               <label>Ngày cấp</label>
-              <!-- <input
-                v-model="employeeDetailData.IdentityDate"
-                id="dtDateOfRegistration"
-                type="date"
-                class="input__form"
-              /> -->
-              <m-input
-                type="date"
-                :modelValue="employeeDetailData.IdentityDate"
-                @update:modelValue="employeeDetailData.IdentityDate = $event"
-              />
+              <m-input type="date" :modelValue="employeeDetailData.IdentityDate"
+                @update:modelValue="employeeDetailData.IdentityDate = $event" />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Nơi cấp</label>
-              <m-input
-                type="text"
-                :modelValue="employeeDetailData.IdentityPlace"
-                @update:modelValue="employeeDetailData.IdentityPlace = $event"
-              />
+              <m-input type="text" :modelValue="employeeDetailData.IdentityPlace"
+                @update:modelValue="employeeDetailData.IdentityPlace = $event" />
             </div>
           </div>
         </div>
@@ -167,63 +99,42 @@
       <div class="row">
         <div class="col">
           <label for="">Địa chỉ</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.Address"
-            @update:modelValue="employeeDetailData.Address = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.Address"
+            @update:modelValue="employeeDetailData.Address = $event" />
         </div>
       </div>
       <div class="row">
         <div class="col w-25">
           <label for="">ĐT di động</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.PhoneNumber"
-            @update:modelValue="employeeDetailData.PhoneNumber = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.PhoneNumber"
+            @update:modelValue="employeeDetailData.PhoneNumber = $event" />
         </div>
         <div class="col w-25">
           <label for="">ĐT cố định</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.HomePhoneNumber"
-            @update:modelValue="employeeDetailData.HomePhoneNumber = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.HomePhoneNumber"
+            @update:modelValue="employeeDetailData.HomePhoneNumber = $event" />
         </div>
         <div class="col w-25">
           <label for="">Email</label>
-          <m-input
-            type="email"
-            :modelValue="employeeDetailData.Email"
-            @update:modelValue="employeeDetailData.Email = $event"
-          />
+          <m-input type="email" :modelValue="employeeDetailData.Email"
+            @update:modelValue="employeeDetailData.Email = $event" />
         </div>
       </div>
       <div class="row" style="margin-bottom: 30px">
         <div class="col w-25">
           <label for="">Tài khoàn ngân hàng</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.BankAccount"
-            @update:modelValue="employeeDetailData.BankAccount = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.BankAccount"
+            @update:modelValue="employeeDetailData.BankAccount = $event" />
         </div>
         <div class="col w-25">
           <label for="">Tên ngân hàng</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.BankName"
-            @update:modelValue="employeeDetailData.BankName = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.BankName"
+            @update:modelValue="employeeDetailData.BankName = $event" />
         </div>
         <div class="col w-25">
           <label for="">Chi nhánh</label>
-          <m-input
-            type="text"
-            :modelValue="employeeDetailData.BankBranch"
-            @update:modelValue="employeeDetailData.BankBranch = $event"
-          />
+          <m-input type="text" :modelValue="employeeDetailData.BankBranch"
+            @update:modelValue="employeeDetailData.BankBranch = $event" />
         </div>
       </div>
     </template>
@@ -231,23 +142,14 @@
       <button class="button button--cancel" @click="closeDialog">Hủy</button>
       <div>
         <button @click="onSaveOnly" class="button button--saveonly">Cất</button>
-        <button
-          @click="saveAndContinue"
-          class="button button__icon icon icon--save"
-        >
+        <button @click="saveAndContinue" class="button button__icon icon icon--save">
           Cất và Thêm
         </button>
       </div>
     </template>
   </m-popup>
-  <m-warning
-    v-if="isShowWarning"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.ASK_CANCELABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarning"
-    @denied-warning="deniedWarning"
-  ></m-warning>
+  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.ASK_CANCELABLE"
+    @close-warning="closeWarning" @ok-warning="okWarning" @denied-warning="deniedWarning"></m-warning>
 </template>
 <script>
 import {
@@ -278,6 +180,13 @@ export default {
   },
   methods: {
     // kích hoạt sự kiện đóng form chi tiết
+    /**
+     * hàm làm gì
+     * người tạo
+     * ngày tạo
+     * param
+     * return
+     */
     closeDialog: function () {
       this.$emit("close-dialog");
     },
@@ -374,7 +283,7 @@ export default {
       this.isLoading = true;
       fetch(
         "https://cukcuk.manhnv.net/api/v1/Employees/" +
-          this.employeeDetailData.EmployeeId,
+        this.employeeDetailData.EmployeeId,
         {
           method: "PUT",
           headers: {
@@ -444,8 +353,7 @@ export default {
         "EmployeeCode"
       )
     ) {
-      // console.log(this.selectedEmployee);
-      this.employeeDetailData = {...this.selectedEmployee};
+      this.employeeDetailData = { ...this.selectedEmployee };
       console.log("edit");
       console.log(this.employeeDetailData.DateOfBirth);
       this.isEdit = true;

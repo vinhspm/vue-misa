@@ -1,17 +1,17 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import MCombobox from "ms-combobox";
 import EmployeeList from "./views/employee/EmployeeList.vue";
 import MPopup from "@/components/base/MPopup.vue";
 import MWarning from "@/components/base/MWarning.vue";
 import MButton from "@/components/base/MButton.vue";
 import MInput from "@/components/base/MInput/MInput.vue";
+import MCombobox from "@/components/base/MCombobox/MCombobox.vue";
+import MPaging from "@/components/base/MPaging/MPaging.vue";
+import MDepartmentCombobox from "@/components/base/MCombobox/MDepartmentCombobox.vue";
 import LoadingLayer from "@/components/base/LoadingLayer.vue";
 import MTable from "@/components/base/MTable.vue";
 import Datepicker from 'vue3-datepicker'
-
-// import CustomerList from "./views/customer/CustomerList.vue";
-// import ReportList from "./views/report/ReportList.vue";
+import VueClickAway from "vue3-click-away";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -47,6 +47,7 @@ const router = createRouter({
 //STORE
 const app = createApp(App);
 app.component("MCombobox", MCombobox);
+app.component("MDepartmentCombobox", MDepartmentCombobox);
 app.component("MButton", MButton);
 app.component("MPopup", MPopup);
 app.component("MInput", MInput);
@@ -54,8 +55,11 @@ app.component("MWarning", MWarning);
 app.component("loading-layer", LoadingLayer);
 app.component("MTable", MTable);
 app.component('date-picker', Datepicker);
+app.component('MPaging', MPaging);
+
 
 
 // B3: sử dụng router:
+app.use(VueClickAway);
 app.use(router);
 app.mount("#app");

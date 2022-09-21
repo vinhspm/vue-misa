@@ -141,7 +141,7 @@ export const EMPLOYEE_HEADER = [
     CellClass: 'sticky_body_left_1',
     Caption: 'Mã nhân viên',
     Field: 'EmployeeCode',
-    Width: '150'
+    Width: '130'
   },
   {
     Class: '',
@@ -155,7 +155,7 @@ export const EMPLOYEE_HEADER = [
     CellClass: '',
     Caption: 'Giới tính',
     Field: 'GenderName',
-    Width: '150'
+    Width: '100'
   },
   {
     Class: '',
@@ -207,4 +207,12 @@ export const EMPLOYEE_HEADER = [
     Width: '350'
   },
   
+]
+
+export const PAGING_OPTION = [
+  {Value: 10, Name: '10 bản ghi trên 1 trang'},
+  {Value: 20, Name: '20 bản ghi trên 1 trang'},
+  {Value: 30, Name: '30 bản ghi trên 1 trang'},
+  {Value: 50, Name: '50 bản ghi trên 1 trang'},
+  {Value: 100, Name: '100 bản ghi trên 1 trang'},
 ]

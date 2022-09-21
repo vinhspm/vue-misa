@@ -3,63 +3,34 @@
     <table id="tbEmployeeList" class="table">
       <thead class="table__header">
         <tr>
-          <th
-            v-if="showCheckbox"
-            class="text-align--center sticky_header_left"
-            title=""
-            style="min-width: 40px"
-          >
+          <th v-if="showCheckbox" class="text-align--center sticky_header_left" title="" style="min-width: 40px">
             <input type="checkbox" name="checkAll" />&nbsp;
           </th>
-          <th
-            class="text-align--left"
-            :class="item.Class"
-            v-for="(item, index) in headers"
-            :style="{ 'min-width': item.Width + 'px' }"
-            :key="index"
-          >
+          <th class="text-align--left" :class="item.Class" v-for="(item, index) in headers"
+            :style="{ 'min-width': item.Width + 'px' }" :key="index">
             {{ item.Caption }}
           </th>
-          <th
-            v-if="isShowFunctionDropdown"
-            class="text-align--left"
-            style="min-width: 100px"
-          >
+          <th v-if="isShowFunctionDropdown" class="text-align--left" style="min-width: 100px">
             chức năng
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(emp,index) in dataSource"
-          :key="emp.EmployeeId"
-          @dblclick="toggleDialog(index)"
-        >
+        <tr v-for="(emp,index) in dataSource" :key="emp.EmployeeId" @dblclick="toggleDialog(index)">
           <td v-if="showCheckbox" class="sticky_body_left text-align--center">
             <input type="checkbox" name="checkItem" />&nbsp;
           </td>
-          <td
-            v-for="(item, index) in headers"
-            :key="index"
-            :class="item.CellClass"
-          >
+          <td v-for="(item, index) in headers" :key="index" :class="item.CellClass">
             {{ emp[item.Field] ? emp[item.Field] : "-" }}
           </td>
+
           <td v-if="isShowFunctionDropdown">
             <button id="editButton" @click="toggleDialog(index)">Sửa</button>
             <div class="dropdown" style="float: right">
-              <button
-                class="dropbtn"
-                @click="showDropdownFuntion(emp)"
-              ></button>
+              <button class="dropbtn" @click="showDropdownFuntion(emp)"></button>
               <!-- @blur="closeFuntionDropdown()" -->
-              <div
-                class="dropdown-content"
-                v-show="clickedEmployee.EmployeeId == emp.EmployeeId"
-                @focusout="closeFuntionDropdown"
-                tabindex="0"
-                ref="dropdown"
-              >
+              <div class="dropdown-content" v-show="clickedEmployee.EmployeeId == emp.EmployeeId" tabindex="0"
+                ref="dropdown">
                 <a href="#">Nhân bản</a>
                 <a href="#" @click="warningDelete(emp)">Xoá</a>
                 <a href="#">Ngưng sử dụng</a>
@@ -80,7 +51,6 @@ export default {
   components: {
     // MPaging,
   },
-  name: "MDropdown",
   props: {
     showCheckbox: {
       Type: Boolean,

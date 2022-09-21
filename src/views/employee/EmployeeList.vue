@@ -1,79 +1,32 @@
 <template>
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button
-      id="btnAdd"
-      class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên"
-      @click="toggleDialog"
-    >
+    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên" @click="toggleDialog">
     </m-button>
   </div>
 
   <div class="page__table">
     <div class="page__toolbar">
       <div class="page__toolbar--left">
-        <input
-          type="text"
-          class="input input__icon input__icon--search"
-          v-model="searchInputValue"
-          placeholder="Tìm theo mã, tên nhân viên"
-          v-on:keyup.enter="onSearch"
-        />
+        <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
+          placeholder="Tìm theo mã, tên nhân viên" v-on:keyup.enter="onSearch" />
         <button @click="onSearch"></button>
       </div>
       <div class="page__toolbar--right">
         <button id="btnRefresh" @click="getData()"></button>
       </div>
     </div>
-    <m-table
-      :headers="employeeHeader"
-      :dataSource="employees"
-      @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)"
-    ></m-table>
-    <div class="table__paging">
-      <div class="table__paging--left">
-        Tổng số: <b>{{ employees.length }}</b> bản ghi
-      </div>
-
-      <div class="table__paging--right">
-        <select name="" class="combobox">
-          <option value="10">10 nhân viên/ trang</option>
-          <option value="20">20 nhân viên/ trang</option>
-          <option value="30">30 nhân viên/ trang</option>
-          <option value="40">40 nhân viên/ trang</option>
-        </select>
-        <div class="table__paging--center">
-          <button class="paging__button">Trước</button>
-          <div class="paging__button--group">
-            <button class="paging__number paging__number--selected">1</button>
-            <button class="paging__number">2</button>
-            <button class="paging__number">3</button>
-            <button class="paging__number">4</button>
-            <button class="paging__number">5</button>
-            <button class="paging__number">6</button>
-          </div>
-          <button class="paging__button">Sau</button>
-        </div>
-      </div>
-    </div>
+    <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
+      @warning-delete="(emp) => warningDelete(emp)"></m-table>
+      <m-paging :total="employees.length"></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail
-    v-if="isShow"
-    @close-dialog="toggleDialog"
-    :selectedEmployee="selectedEmployee"
-    @reload-data="getData"
-  ></EmployeeDetail>
+  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
+    @reload-data="getData"></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning
-    v-if="isShowWarning"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarning"
-  ></m-warning>
+  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
+    @ok-warning="okWarning"></m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
@@ -82,7 +35,7 @@ import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { formatDate } from "../../js/base.js";
 import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
-// import { formatDateInput } from "../../js/base.js";
+import { formatDateInput } from "../../js/base.js";
 
 // import MWarning from "@/components/base/MWarning.vue";
 export default {
@@ -134,9 +87,13 @@ export default {
     toggleDialog: function (index) {
       this.isShow = !this.isShow;
       if (this.isShow) {
-        if (this.employees[index].EmployeeId) {
-          this.selectedEmployee = this.employees[index];
-          console.log("selected", this.selectedEmployee);
+        if (typeof index == 'number') {
+          if (this.employees[index].EmployeeId) {
+            this.selectedEmployee = { ...this.employees[index] };
+            this.selectedEmployee.DateOfBirth = formatDateInput(this.selectedEmployee.DateOfBirth);
+            this.selectedEmployee.IdentityDate = formatDateInput(this.selectedEmployee.IdentityDate);
+            console.log("selected", this.selectedEmployee);
+          }
         }
       } else {
         this.selectedEmployee = {};
@@ -190,7 +147,7 @@ export default {
       this.isLoading = true;
       fetch(
         "https://cukcuk.manhnv.net/api/v1/Employees/" +
-          this.clickedEmployeeDelete.EmployeeId,
+        this.clickedEmployeeDelete.EmployeeId,
         {
           method: "DELETE",
         }
@@ -211,9 +168,9 @@ export default {
     onSearch: function () {
       fetch(
         "https://cukcuk.manhnv.net/api/v1/Employees/filter?" +
-          new URLSearchParams({
-            employeeFilter: this.searchInputValue,
-          }),
+        new URLSearchParams({
+          employeeFilter: this.searchInputValue,
+        }),
         {
           method: "GET",
         }
