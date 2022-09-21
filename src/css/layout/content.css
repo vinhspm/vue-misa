@@ -50,5 +50,8 @@
     margin: 20px 0;
 
 }
-
+.page__header--title {
+    font-weight: 700;
+    color: #111;
+}
 .page__footer {}

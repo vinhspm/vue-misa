@@ -17,21 +17,15 @@ table tbody tr:last-child {
     border-bottom: unset;
 }
 
-/* table thead {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-} */
-
 table tr.row--selected {
     background-color: #dedede;
 }
 
-
+tbody tr:hover td{
+    background: #e5f3ff!important;
+}
 .table__content {
-    /* background-color: blueviolet; */
     overflow-y: auto;
-    /* height: 200px; */
     max-width: 100%;
     flex: 1;
     flex-basis: 100px;

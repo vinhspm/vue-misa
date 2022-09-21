@@ -1,26 +1,35 @@
 <template>
-  <input :type="type" :value="modelValue" @input="handleInput($event)" class="input__form" />
+  <input :type="type" :value="modelValue" @input="handleInput($event)" :class="{input__form: type!=='checkbox'}" :name="name"/>
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
+import {formatDateInput} from "@/js/base.js"
 export default {
   extends: MBaseControl,
   name: "MInput",
   props: {
     type: String,
-    modelValue: String
+    modelValue: String,
+    name: String,
   },
-  // data() {
-  //   return {
-  //     valueX: this.value,
-  //   };
-  // },
+  data() {
+    return {
+      isDate: false,
+    };
+  },
   created() {
+    if(this.type === 'date') {
+      this.isDate = true;
+    }
   },  
   methods: {
     handleInput(event) {
       this.$emit('update:modelValue', event.target.value);
-    }
+    },
+    formatDateInput(value, event) {
+      console.log(event);
+      return formatDateInput(value)
+    },
   },
 };
 </script>

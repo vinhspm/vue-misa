@@ -106,7 +106,6 @@ select {
   top: 1px;
   right: 1px;
   cursor: pointer;
-  transform: rotate(180deg);
 
 }
 .input_action:hover {

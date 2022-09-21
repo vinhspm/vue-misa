@@ -58,30 +58,24 @@ table {
   border-left: none;
   border-right: none;
 }
-/* table tbody {
-    display: table;
-    width: 100%;
-} */
+
 .page__table {
-  /* position:relative; */
   width: 100%;
   overflow: auto;
   scroll-behavior: smooth;
 }
+
 .table__content {
   width: 100%;
 }
+
 #tbEmployeeList {
   width: 100%;
-
-  /* overflow: scroll; */
 }
 
 .table__header th {
   background-color: #eceef1;
   text-transform: uppercase;
-  /* position: inherit; */
-  /* bottom: 0; */
 }
 .table__paging {
   background-color: #fff;
@@ -104,11 +98,10 @@ table {
 }
 
 .sticky_body_left {
-  /* display: table-cell; */
   position: sticky;
   left: 0;
   background: #fff;
-  z-index: 2;
+  z-index: 5;
 }
 
 .sticky_body_left_1 {
@@ -118,22 +111,9 @@ table {
   z-index: 2;
 }
 
-/* .sticky_header_right {
-  position: sticky;
-  right: 0;
-  background-color: #eceef1;
-}
-.sticky_col_right {
-  position: sticky;
-  right: 0;
-  background: #fff;
-  z-index: 2;
-} */
-
 #editButton {
   border: none;
   background-color: inherit;
-  /* padding: 14px 28px; */
   font-size: 13px;
   color: #0075c0;
   font-weight: 600;
@@ -152,17 +132,12 @@ table {
   width: 24px;
   transform: translate(-60%, 10%);
   position: relative;
-  /* padding-left: 10px; */
 }
 .dropbtn:focus {
   outline:1px #0075c0 solid;
-  /* width: 32px;
-  height: 32px;
-  padding: 8px; */
 }
 .dropdown {
   position: relative;
-  /* display: inline-block; */
 }
 
 .dropdown-content {
@@ -186,10 +161,6 @@ table {
   background-color: #f1f1f1;
   color: #4caf50;
 }
-
-/* .dropdown:hover .dropdown-content {
-    display: block;
-  } */
 
 ::-webkit-scrollbar {
   width: 10px;

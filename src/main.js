@@ -10,6 +10,7 @@ import MPaging from "@/components/base/MPaging/MPaging.vue";
 import MDepartmentCombobox from "@/components/base/MCombobox/MDepartmentCombobox.vue";
 import LoadingLayer from "@/components/base/LoadingLayer.vue";
 import MTable from "@/components/base/MTable.vue";
+import MRadio from "@/components/base/MInput/MRadio.vue";
 import Datepicker from 'vue3-datepicker'
 import VueClickAway from "vue3-click-away";
 
@@ -56,6 +57,7 @@ app.component("loading-layer", LoadingLayer);
 app.component("MTable", MTable);
 app.component('date-picker', Datepicker);
 app.component('MPaging', MPaging);
+app.component("MRadio", MRadio);
 
 
 

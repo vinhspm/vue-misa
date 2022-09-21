@@ -3,7 +3,7 @@ import moment from "moment/moment";
 // hàm thay đổi format ngày giờ thành MM/DD/YYYY
 export function formatDate(datetime) {
   if(datetime) {
-    return moment(datetime).format('MM/DD/YYYY')
+    return moment(datetime).format('DD/MM/YYYY')
   } else {
     return undefined;
   }

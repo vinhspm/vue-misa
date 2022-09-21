@@ -4,7 +4,7 @@
   }' v-click-away="closeOption"
   >
     <div class="input_container">
-      <input :disabled="false" type="text" v-model="valueText" @input="searchItem($event)" class="input__form" />
+      <input :disabled="false" type="text" @focus="showOption" v-model="valueText" @input="searchItem($event)" class="input__form" />
       <div class="input_action" @click="showOption">
         <div class="icon icon-16 arrow_icon_dropdown" :class="{rotate_icon: isShow}"></div>
 
@@ -77,7 +77,10 @@ export default {
   methods: {
     searchItem(val) {
       let keySearch = val.target.value;
-      this.dataSearch = this.data.filter(x => x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()));
+      this.dataSearch = this.data.filter(x => {
+        return x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()) 
+        | x[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
+      });
       if (!keySearch || keySearch == "") {
         this.itemSelect = null;
         this.dataSearch = this.data;

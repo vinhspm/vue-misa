@@ -6,7 +6,7 @@
           <th v-if="showCheckbox" class="text-align--center sticky_header_left" title="" style="min-width: 40px">
             <input type="checkbox" name="checkAll" />&nbsp;
           </th>
-          <th class="text-align--left" :class="item.Class" v-for="(item, index) in headers"
+          <th :class="item.Class" v-for="(item, index) in headers"
             :style="{ 'min-width': item.Width + 'px' }" :key="index">
             {{ item.Caption }}
           </th>
@@ -21,7 +21,7 @@
             <input type="checkbox" name="checkItem" />&nbsp;
           </td>
           <td v-for="(item, index) in headers" :key="index" :class="item.CellClass">
-            {{ emp[item.Field] ? emp[item.Field] : "-" }}
+            {{ emp[item.Field] ? item.dataFormat ? item.dataFormat(emp[item.Field]) : emp[item.Field] : "" }}
           </td>
 
           <td v-if="isShowFunctionDropdown">

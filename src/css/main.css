@@ -8,7 +8,7 @@
 @import url(../../node_modules/pretty-checkbox/dist/pretty-checkbox.min.css);
 
 @font-face {
-    font-family: MISA Fonts;
+    font-family: MISA Font Bold;
     src: url(../assets/font/GoogleSans-Regular.otf);
 }
 
@@ -53,6 +53,10 @@ body {
     /* max-width: 200px; */
 }
 
+.mr-20 {
+    margin-right: 20px;
+}
+
 .row {
     display: flex;
     width: 100%;
@@ -85,7 +89,10 @@ body {
     display: flex;
     align-items: center;
 }
-
+.justify-space-between {
+    display: flex;
+    justify-content: space-between;
+}
 .h-32 {
     height: 32px;
 }

@@ -33,7 +33,6 @@
 import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
-import { formatDate } from "../../js/base.js";
 import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
 
@@ -111,18 +110,11 @@ export default {
     // lấy tắt cả dữ liệu từ bảng nhân viên
     getData: function () {
       this.isLoading = true;
+      this.searchInputValue = '';
       fetch("https://cukcuk.manhnv.net/api/v1/Employees", { method: "GET" })
         .then((res) => res.json())
         .then((data) => {
           this.employees = data;
-          // console.log(this.employees);
-          for (let index = 0; index < this.employees.length; index++) {
-            if (this.employees[index].DateOfBirth) {
-              this.employees[index].DateOfBirth = formatDate(
-                this.employees[index].DateOfBirth
-              );
-            }
-          }
           this.isLoading = false;
         })
         .catch((res) => {
@@ -180,13 +172,6 @@ export default {
           // console.log(data);
           this.employees = data.Data;
 
-          for (let index = 0; index < this.employees.length; index++) {
-            if (this.employees[index].DateOfBirth) {
-              this.employees[index].DateOfBirth = formatDate(
-                this.employees[index].DateOfBirth
-              );
-            }
-          }
         })
         .catch((res) => {
           console.log(res);
