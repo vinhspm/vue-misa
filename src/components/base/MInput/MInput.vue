@@ -48,12 +48,10 @@ export default {
     checkInvalidInput(event) {
       if (this.isRequire) {
         if (!event.target.value && event.type === 'focusout') {
-          console.log("invalid",event);
           this.isValidate = false;
           this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
           this.$emit('field-invalid', this.title)
         } else {
-          console.log("valid", event);
           this.isValidate = true;
           this.$emit('field-valid', this.title)
           this.title = "";

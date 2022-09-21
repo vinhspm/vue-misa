@@ -225,7 +225,7 @@ export const WARNING_TXT = {
   DATA_CHANGED: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
   REQUIRE: " không được để trống",
   dataNotInList: (fieldName) => {
-    return "Dữ liệu <" + fieldName + ">không tồn tại trong danh mục"
+    return "Dữ liệu <" + fieldName + "> không tồn tại trong danh mục"
   } ,
 };
 
@@ -334,5 +334,6 @@ export const GENDER_RADIO_DATA = [
 export const FIELD_NAME_VN = {
   CODE: 'Mã nhân viên',
   FULLNAME: 'Họ và tên',
-  DEPARTMENT: 'Đơn vị'
+  DEPARTMENT: 'Đơn vị',
+  POSITION: 'Vị trí'
 }

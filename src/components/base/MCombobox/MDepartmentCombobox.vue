@@ -104,15 +104,23 @@ export default {
     searchItem(val) {
       this.isShow = true;
       let keySearch = val.target.value;
-      this.dataSearch = this.data.filter((x) => {
+      this.dataSearch = this.data.filter((item) => {
         return (
-          x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()) |
-          x[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
+          item[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()) |
+          item[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
         );
       });
       if (!keySearch || keySearch == "") {
         this.itemSelect = null;
         this.dataSearch = this.data;
+      }
+      let dataMatch = this.data.filter((item) => {
+        return (
+          item[this.fieldName].toLowerCase() === (keySearch.toLowerCase())          
+        );
+      });
+      if(dataMatch.length === 0) {
+        this.$emit("update:modelValue", "")
       }
       this.checkInvalidInput(val);
     },
@@ -147,17 +155,15 @@ export default {
       this.checkInvalidInputValue();
     },
     checkInvalidInput(event) {
-      console.log('input types');
       if (this.isRequire) {
         if (!event.target.value && event.type !== "input") {
           this.isValidate = false;
           this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit('field-error', this.title)
+          this.$emit('field-invalid', this.title)
         } else if(!this.dataSearch.length && event.type ) {
-          console.log(event.type);
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit('field-error', this.title)
+          this.$emit('field-invalid', this.title)
         } else {
           this.isValidate = true;
           this.$emit('field-valid', this.title)
@@ -168,19 +174,15 @@ export default {
     },
     checkInvalidInputValue() {
       if (this.isRequire) {
-        console.log("hihi", this.valueText);
-        console.log('select');
         if (this.valueText === '') {
           this.isValidate = false;
           this.title =this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit('field-error', this.title)
+          this.$emit('field-invalid', this.title)
         } else if(this.dataSearch.length === 0) {
-          console.log(this.dataSearch.length);
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit('field-error', this.title)
+          this.$emit('field-invalid', this.title)
         } else {
-          // console.log("valid");
           this.isValidate = true;
           this.$emit('field-valid', this.title)
           this.title = "";
