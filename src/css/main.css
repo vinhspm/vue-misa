@@ -6,22 +6,11 @@
 @import url(./base/icon.css);
 @import url(./base/dialog.css);
 @import url(../../node_modules/pretty-checkbox/dist/pretty-checkbox.min.css);
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,500;1,700&display=swap');
 
-@font-face {
-    font-family: MISA Font Bold;
-    src: url(../assets/font/GoogleSans-Regular.otf);
+* {
+    font-family: 'Roboto', sans-serif;
 }
-
-@font-face {
-    font-family: MISA Font Bold;
-    src: url(../assets/font/GoogleSans-Bold.otf);
-}
-
-@font-face {
-    font-family: MISA Font Italic;
-    src: url(../assets/font/GoogleSans-Italic.otf);
-}
-
 @media screen and (max-width:1024px) {
     .menu {
         display: none
@@ -29,17 +18,14 @@
 }
 
 .heading {
-    font-family: MISA Font Bold;
     font-size: 24px;
 }
 
 .title {
-    font-family: MISA Font Bold;
     font-size: 20px;
 }
 
 body {
-    font-family: MISA Fonts;
     font-size: 13px;
     color: #454545;
     margin: 0;

@@ -41,7 +41,6 @@
       </tbody>
     </table>
   </div>
-  <!-- <m-paging></m-paging> -->
 </template>
 <script>
 // import MBaseControl from "../MBaseControl.vue";

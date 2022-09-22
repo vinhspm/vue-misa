@@ -158,7 +158,8 @@ import {
   GENDER_RADIO_DATA,
   FIELD_NAME_VN,
 } from "../../constants.js";
-
+import  {toCamel} from '@/js/base.js'
+import {getNextEmployee, postEmployee, putEmployee} from '@/axios/employeeController/employeeController.js';
 export default {
   name: "EmployeeDetail",
   data() {
@@ -225,25 +226,7 @@ export default {
         }
         this.isShowError = true;
       } else {
-        this.bodyRequest = {
-          address: this.employeeDetailData.Address,
-          bankAccount: this.employeeDetailData.BankAccount,
-          bankBranch: this.employeeDetailData.BankBranch,
-          bankName: this.employeeDetailData.BankName,
-          dateOfBirth: this.employeeDetailData.DateOfBirth,
-          departmentId: this.employeeDetailData.DepartmentId,
-          email: this.employeeDetailData.Email,
-          employeeCode: this.employeeDetailData.EmployeeCode,
-          employeeId: this.employeeDetailData.EmployeeId,
-          fullName: this.employeeDetailData.FullName,
-          gender: this.employeeDetailData.Gender,
-          identityDate: this.employeeDetailData.IdentityDate,
-          identityNumber: this.employeeDetailData.IdentityNumber,
-          identityPlace: this.employeeDetailData.IdentityPlace,
-          phoneNumber: this.employeeDetailData.PhoneNumber,
-          positionId: this.employeeDetailData.PositionId,
-          homePhoneNumber: this.employeeDetailData.HomePhoneNumber,
-        };
+        this.bodyRequest = toCamel(this.employeeDetailData)
         console.log(this.bodyRequest);
         if (this.isEdit) {
           this.updateEmployee();
@@ -272,18 +255,13 @@ export default {
 
     // gọi api thêm mới nhân viên
     // author: VinhKt
-    addNewEmployee: function () {
+    addNewEmployee: async function () {
       this.isLoading = true;
-      fetch("https://cukcuk.manhnv.net/api/v1/Employees", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.bodyRequest),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
+      const body = this.bodyRequest;
+      try {
+        const response = await postEmployee(body);
+        if (response) {
+          console.log(response);
           this.isLoading = false;
           if (this.isContinue) {
             this.clearForm();
@@ -291,32 +269,24 @@ export default {
             this.closeDialog();
           }
           this.$emit("reload-data");
-        })
-        .catch((res) => {
-          this.closeDialog();
-          this.isLoading = false;
-          console.log(res);
-        });
+        }
+      } catch (error) {
+        console.log(error);
+        this.closeDialog();
+        this.isLoading = false;
+      }
     },
 
     // gọi api update nhân viên
     //author: VinhKT
-    updateEmployee: function () {
-      this.isLoading = true;
-      fetch(
-        "https://cukcuk.manhnv.net/api/v1/Employees/" +
-        this.employeeDetailData.EmployeeId,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.bodyRequest),
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
+    updateEmployee: async function () {
+      this.isLoading = true;      
+      const body = this.bodyRequest;
+      const id = this.employeeDetailData.EmployeeId;
+      try {
+        const response = await putEmployee(id, body);
+        if (response) {
+          console.log(response);
           this.isLoading = false;
           if (this.isContinue) {
             this.clearForm();
@@ -324,12 +294,12 @@ export default {
             this.closeDialog();
           }
           this.$emit("reload-data");
-        })
-        .catch((res) => {
-          console.log();(res);
-          this.closeDialog();
-          this.isLoading = false;
-        });
+        }
+      } catch (error) {
+        console.log(error);
+        this.closeDialog();
+        this.isLoading = false;
+      }
     },
 
     //tắt popup cảnh báo
@@ -354,15 +324,15 @@ export default {
     // lấy mã nhân viên kế tiếp với form thêm mới bằng api
     // author: VinhKT
     getNextEmpId: async function () {
-      const response = await fetch(
-        "https://cukcuk.manhnv.net/api/v1/Employees/NewEmployeeCode"
-      );
-      if (!response.ok) {
-        console.log(response);
-        throw new Error(`Error! status: ${response.status}`);
-      } else {
-        this.employeeDetailData.EmployeeCode = await response.text();
-        // console.log();
+      try {
+        const response = await getNextEmployee();
+        if (response) {
+          this.employeeDetailData.EmployeeCode = response.data.toString();
+          this.isLoading = false;
+        }
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
       }
     },
 

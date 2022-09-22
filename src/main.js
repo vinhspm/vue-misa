@@ -13,12 +13,11 @@ import MTable from "@/components/base/MTable.vue";
 import MRadio from "@/components/base/MInput/MRadio.vue";
 import Datepicker from 'vue3-datepicker'
 import VueClickAway from "vue3-click-away";
-
 import { createRouter, createWebHistory } from "vue-router";
-
 //B2: Định nghĩa các router:
 const routers = [
   { path: "/", redirect: "nhan-vien", name: "/" },
+  { path: "", redirect: "nhan-vien", name: "" },
   { path: "/tong-quan", component: {}, name: "/tong-quan" },
   { path: "/nhan-vien", component: EmployeeList, name: "/nhan-vien" },
   { path: "/tien-gui", component: {}, name: "/tien-gui" },

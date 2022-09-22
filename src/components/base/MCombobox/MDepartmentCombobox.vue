@@ -154,6 +154,7 @@ export default {
       this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
       this.checkInvalidInputValue();
     },
+
     checkInvalidInput(event) {
       if (this.isRequire) {
         if (!event.target.value && event.type !== "input") {
@@ -172,6 +173,7 @@ export default {
         }
       }
     },
+    
     checkInvalidInputValue() {
       if (this.isRequire) {
         if (this.valueText === '') {

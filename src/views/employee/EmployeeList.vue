@@ -19,7 +19,7 @@
     </div>
     <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
       @warning-delete="(emp) => warningDelete(emp)"></m-table>
-      <m-paging :total="employees.length"></m-paging>
+    <m-paging :total="employees.length"></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
   <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
@@ -35,18 +35,17 @@ import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
-
+import { getEmployeesFilter, deleteEmployee } from '@/axios/employeeController/employeeController.js'
 // import MWarning from "@/components/base/MWarning.vue";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
+
   created() {
     // Gọi api lấy dữ liệu:
-    // setInterval(() => {
-    //   this.functionWaitTime.canGo = true;
-    // }, this.functionWaitTime.delay);
     this.getData();
   },
+
   data() {
     return {
       employees: [],
@@ -60,27 +59,19 @@ export default {
       clickedEmployee: {},
       clickedEmployeeDelete: {},
       employeeHeader: EMPLOYEE_HEADER,
+      params: {
+        pageSize: 100,
+        pageNumber: 1,
+        employeeFilter: ""
+      }
 
-      //chỉ cho hàm nào đó chạy sau mỗi một khoảng thời gian
-      functionWaitTime: {
-        canGo: true,
-        delay: 0, //ms
-      },
     };
   },
-
-  //TODO: search theo input nhập vào mà không cần nhấn enter
-  // watch: {
-  //   searchInputValue: {
-  //     handler() {
-  //         if (this.functionWaitTime.canGo) {
-  //           this.onSearch();
-  //           this.functionWaitTime.canGo = false;
-  //         }
-  //     },
-  //   },
-  // },
-
+  watch: {
+    searchInputValue() {
+      this.params.employeeFilter = this.searchInputValue;
+    }
+  },
   methods: {
     // bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
     toggleDialog: function (index) {
@@ -108,19 +99,21 @@ export default {
     },
 
     // lấy tắt cả dữ liệu từ bảng nhân viên
-    getData: function () {
+    getData: async function () {
       this.isLoading = true;
       this.searchInputValue = '';
-      fetch("https://cukcuk.manhnv.net/api/v1/Employees", { method: "GET" })
-        .then((res) => res.json())
-        .then((data) => {
-          this.employees = data;
+      this.params.employeeFilter = '';
+      try {
+        const response = await getEmployeesFilter(this.params);
+        if (response) {
+          this.employees = response.data.Data;
           this.isLoading = false;
-        })
-        .catch((res) => {
-          this.isLoading = false;
-          console.log(res);
-        });
+        }
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+
     },
 
     //tắt popup cảnh báo
@@ -135,48 +128,34 @@ export default {
     },
 
     // gọi api xoá nhân viên
-    deleteEmployee() {
+    async deleteEmployee() {
       this.isLoading = true;
-      fetch(
-        "https://cukcuk.manhnv.net/api/v1/Employees/" +
-        this.clickedEmployeeDelete.EmployeeId,
-        {
-          method: "DELETE",
+      const id = this.clickedEmployeeDelete.EmployeeId
+      try {
+        const response = await deleteEmployee(id);
+        if (response) {
+          this.isLoading = false;
+          this.getData();
         }
-      )
-        .then((res) => res.json())
-        .then(() => {
-          this.isLoading = false;
-          this.getData();
-        })
-        .catch((res) => {
-          console.log(res);
-          this.getData();
-          this.isLoading = false;
-        });
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+
     },
 
     // hàm tìm kiếm nhân viên theo mã và tên
-    onSearch: function () {
-      fetch(
-        "https://cukcuk.manhnv.net/api/v1/Employees/filter?" +
-        new URLSearchParams({
-          employeeFilter: this.searchInputValue,
-        }),
-        {
-          method: "GET",
+    onSearch: async function () {
+      try {
+        const response = await getEmployeesFilter(this.params);
+        if (response) {
+          this.employees = response.data.Data;
+          this.isLoading = false;
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-          this.employees = data.Data;
-
-        })
-        .catch((res) => {
-          console.log(res);
-          this.employees = [];
-        });
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
     },
   },
 };

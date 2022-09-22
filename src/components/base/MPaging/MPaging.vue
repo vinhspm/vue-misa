@@ -1,19 +1,20 @@
 <template>
   <div class="table__paging">
     <div class="table__paging--left">
-      Tổng số: <b>{{ total }}</b> bản ghi
+      Tổng số: <b>{{ totalRecord }}</b> bản ghi
     </div>
 
     <div class="table__paging--right">
       <div class="paging-container">
         <m-combobox width="200" :data="dataSource" fieldKey="Value" :modelValue="recordPerPage" :readOnly="true"
-          :top="true" @update:modelValue="recordPerPage = $event" >
+          :top="true" @update:modelValue="recordPerPage = $event">
         </m-combobox>
       </div>
 
       <div class="table__paging--center">
-        <button class="paging__button">Trước</button>
+        <button disabled class="paging__button">Trước</button>
         <div class="paging__button--group">
+          <!-- <button v-for="pageIndex in maxPage" ></button> -->
           <button class="paging__number paging__number--selected">1</button>
           <button class="paging__number">2</button>
           <button class="paging__number">3</button>
@@ -30,17 +31,24 @@
 import { PAGING_OPTION } from '@/constants.js'
 export default {
   props: {
-    total: {
+    totalRecord: {
       Type: Number,
       default: 100,
     },
+    totalPage: {
+      Type: Number,
+      default: 100,
+    },
+    currentPage: {
+      Type: Number,
+      default: 100,
+    },
+
 
   },
   data() {
     return {
       recordPerPage: 20,
-      page: 1,
-      totalPage: Number,
       dataSource: PAGING_OPTION
     }
   }

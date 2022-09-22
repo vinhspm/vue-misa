@@ -18,3 +18,35 @@ export function formatDateInput(datetime) {
   }
 
 }
+
+/**
+ * hàm chuyển object key sang camelCase để  gửi lên server
+ * author: VinhKT
+ * created on: 22/09/2022 1:54 utc
+ * (object)
+ * return new Object
+ */
+export function toCamel(object) {
+  let newObject, origKey, newKey, value;
+  if (object instanceof Array) {
+    return object.map(function(value) {
+        if (typeof value === "object") {
+          value = toCamel(value)
+        }
+        return value
+    })
+  } else {
+    newObject = {}
+    for (origKey in object) {
+      if (Object.prototype.hasOwnProperty.call(object, origKey)) {
+        newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
+        value = object[origKey]
+        if (value instanceof Array || (value !== null && value?.constructor === Object)) {
+          value = toCamel(value)
+        }
+        newObject[newKey] = value
+      }
+    }
+  }
+  return newObject
+}

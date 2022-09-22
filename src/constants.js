@@ -69,7 +69,7 @@ export const MENU_ITEMS = [
     route: "/thue",
   },
   {
-    text: "Giá thanh",
+    text: "Giá thành",
     iconCoordinates: [470, 1630],
     activeClass: "price_icon__active",
     route: "/gia-thanh",
@@ -262,8 +262,8 @@ export const EMPLOYEE_HEADER = [
     Width: "150",
   },
   {
-    Class: "text-align--right",
-    CellClass: "text-align--right",
+    Class: "text-align--left",
+    CellClass: "text-align--left",
     Caption: "số cmnd",
     Field: "IdentityNumber",
     Width: "150",
@@ -283,8 +283,8 @@ export const EMPLOYEE_HEADER = [
     Width: "250",
   },
   {
-    Class: "text-align--right",
-    CellClass: "text-align--right",
+    Class: "text-align--left",
+    CellClass: "text-align--left",
     Caption: "số tài khoản",
     Field: "BankAccount",
     Width: "200",

@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     handleInput: function (event) {
-      console.log(event.target.value);
       this.$emit("update:selectedItem", event.target.value);
     },
   },
