@@ -14,16 +14,20 @@
         <button @click="onSearch"></button>
       </div>
       <div class="page__toolbar--right">
-        <button id="btnRefresh" @click="getData()"></button>
+        <button id="btnRefresh" @click="reloadData"></button>
       </div>
     </div>
     <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
       @warning-delete="(emp) => warningDelete(emp)"></m-table>
-    <m-paging :total="employees.length"></m-paging>
+
+    <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
+      @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
+      :currentPageProp="params.pageNumber"></m-paging>
+
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
   <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
-    @reload-data="getData"></EmployeeDetail>
+    @reload-data="reloadData"></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
   <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
     @ok-warning="okWarning"></m-warning>
@@ -33,7 +37,7 @@
 import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
-import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER } from "../../constants.js";
+import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER, DEFAULT_PARAMS } from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
 import { getEmployeesFilter, deleteEmployee } from '@/axios/employeeController/employeeController.js'
 // import MWarning from "@/components/base/MWarning.vue";
@@ -49,6 +53,8 @@ export default {
   data() {
     return {
       employees: [],
+      totalPage: 0,
+      totalRecord: 0,
       selectedEmployee: {},
       isLoading: false,
       isShow: false,
@@ -59,17 +65,28 @@ export default {
       clickedEmployee: {},
       clickedEmployeeDelete: {},
       employeeHeader: EMPLOYEE_HEADER,
-      params: {
-        pageSize: 100,
-        pageNumber: 1,
-        employeeFilter: ""
-      }
+      params: {...DEFAULT_PARAMS}
 
     };
   },
   watch: {
-    searchInputValue() {
-      this.params.employeeFilter = this.searchInputValue;
+    searchInputValue: {
+      handler(val) {
+        this.params.employeeFilter = val;
+      }
+    },
+
+    'params.pageNumber': {
+      handler() {
+        this.getData();
+      },
+      deep: true,
+    },
+    'params.pageSize': {
+      handler() {
+        this.getData();
+      },
+      deep: true,
     }
   },
   methods: {
@@ -98,16 +115,26 @@ export default {
         WARNING_TXT.DELETE + "Nhân viên " + emp.EmployeeCode + " không ?";
     },
 
+    reloadData() {
+      this.searchInputValue = '';
+      this.params = DEFAULT_PARAMS;
+      this.getData()
+    },
+
     // lấy tắt cả dữ liệu từ bảng nhân viên
     getData: async function () {
       this.isLoading = true;
-      this.searchInputValue = '';
-      this.params.employeeFilter = '';
       try {
         const response = await getEmployeesFilter(this.params);
-        if (response) {
+        if (response.status === 200) {
           this.employees = response.data.Data;
+          this.totalPage = response.data.TotalPage;
+          this.totalRecord = response.data.TotalRecord;
           this.isLoading = false;
+        } else {
+          this.reloadData();
+          this.isLoading = false;
+          ('không tìm thấy nhân viên');
         }
       } catch (error) {
         console.log(error);
@@ -146,16 +173,8 @@ export default {
 
     // hàm tìm kiếm nhân viên theo mã và tên
     onSearch: async function () {
-      try {
-        const response = await getEmployeesFilter(this.params);
-        if (response) {
-          this.employees = response.data.Data;
-          this.isLoading = false;
-        }
-      } catch (error) {
-        console.log(error);
-        this.isLoading = false;
-      }
+      this.params.pageNumber = 1,
+      this.getData()
     },
   },
 };

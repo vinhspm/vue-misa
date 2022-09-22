@@ -225,8 +225,8 @@ export const WARNING_TXT = {
   DATA_CHANGED: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
   REQUIRE: " không được để trống",
   dataNotInList: (fieldName) => {
-    return "Dữ liệu <" + fieldName + "> không tồn tại trong danh mục"
-  } ,
+    return "Dữ liệu <" + fieldName + "> không tồn tại trong danh mục";
+  },
 };
 
 export const EMPLOYEE_HEADER = [
@@ -306,11 +306,11 @@ export const EMPLOYEE_HEADER = [
 ];
 
 export const PAGING_OPTION = [
-  { Value: 10, Name: "10 bản ghi trên 1 trang" },
-  { Value: 20, Name: "20 bản ghi trên 1 trang" },
-  { Value: 30, Name: "30 bản ghi trên 1 trang" },
-  { Value: 50, Name: "50 bản ghi trên 1 trang" },
-  { Value: 100, Name: "100 bản ghi trên 1 trang" },
+  { Value: "10", Name: "10 bản ghi trên 1 trang" },
+  { Value: "20", Name: "20 bản ghi trên 1 trang" },
+  { Value: "30", Name: "30 bản ghi trên 1 trang" },
+  { Value: "50", Name: "50 bản ghi trên 1 trang" },
+  { Value: "100", Name: "100 bản ghi trên 1 trang" },
 ];
 
 export const GENDER_RADIO_DATA = [
@@ -332,8 +332,14 @@ export const GENDER_RADIO_DATA = [
 ];
 
 export const FIELD_NAME_VN = {
-  CODE: 'Mã nhân viên',
-  FULLNAME: 'Họ và tên',
-  DEPARTMENT: 'Đơn vị',
-  POSITION: 'Vị trí'
-}
+  CODE: "Mã nhân viên",
+  FULLNAME: "Họ và tên",
+  DEPARTMENT: "Đơn vị",
+  POSITION: "Vị trí",
+};
+
+export const DEFAULT_PARAMS = {
+  pageSize: 20,
+  pageNumber: 1,
+  employeeFilter: "",
+};

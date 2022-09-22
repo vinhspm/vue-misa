@@ -2,8 +2,8 @@ import moment from "moment/moment";
 
 // hàm thay đổi format ngày giờ thành MM/DD/YYYY
 export function formatDate(datetime) {
-  if(datetime) {
-    return moment(datetime).format('DD/MM/YYYY')
+  if (datetime) {
+    return moment(datetime).format("DD/MM/YYYY");
   } else {
     return undefined;
   }
@@ -11,12 +11,11 @@ export function formatDate(datetime) {
 
 // hàm thay đổi format ngày giờ thành YYYY/MM/DD
 export function formatDateInput(datetime) {
-  if(datetime) {
-    return moment(datetime).format('YYYY-MM-DD')
+  if (datetime) {
+    return moment(datetime).format("YYYY-MM-DD");
   } else {
     return undefined;
   }
-
 }
 
 /**
@@ -29,24 +28,33 @@ export function formatDateInput(datetime) {
 export function toCamel(object) {
   let newObject, origKey, newKey, value;
   if (object instanceof Array) {
-    return object.map(function(value) {
-        if (typeof value === "object") {
-          value = toCamel(value)
-        }
-        return value
-    })
+    return object.map(function (value) {
+      if (typeof value === "object") {
+        value = toCamel(value);
+      }
+      return value;
+    });
   } else {
-    newObject = {}
+    newObject = {};
     for (origKey in object) {
       if (Object.prototype.hasOwnProperty.call(object, origKey)) {
-        newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
-        value = object[origKey]
-        if (value instanceof Array || (value !== null && value?.constructor === Object)) {
-          value = toCamel(value)
+        newKey = (
+          origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey
+        ).toString();
+        value = object[origKey];
+        if (
+          value instanceof Array ||
+          (value !== null && value?.constructor === Object)
+        ) {
+          value = toCamel(value);
         }
-        newObject[newKey] = value
+        newObject[newKey] = value;
       }
     }
   }
-  return newObject
+  return newObject;
+}
+
+export function numberFormat(number) {
+  return new Intl.NumberFormat("de-DE").format(number);
 }

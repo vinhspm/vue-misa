@@ -1,26 +1,12 @@
 <template>
-  <div
-    class="m-dropdown"
-    :style="{
-      width: width + 'px',
-    }"
-    v-click-away="closeOption"
-  >
+  <div class="m-dropdown" :style="{
+    width: width + 'px',
+  }" v-click-away="closeOption">
     <div class="input_container">
-      <input
-        type="text"
-        @focus="inputTouched"
-        v-model="valueText"
-        @input="searchItem($event)"
-        class="input__form"
-        :class="{ invalidInput: !isValidate }"
-        :title="title"
-      />
+      <input type="text" @focus="inputTouched" v-model="valueText" @input="searchItem($event)" class="input__form"
+        :class="{ invalidInput: !isValidate }" :title="title" />
       <div class="input_action" @click="showOption">
-        <div
-          class="icon icon-16 arrow_icon_dropdown"
-          :class="{ rotate_icon: isShow }"
-        ></div>
+        <div class="icon icon-16 arrow_icon_dropdown" :class="{ rotate_icon: isShow }"></div>
       </div>
     </div>
     <div class="m-dropdown-menu" v-show="isShow">
@@ -30,13 +16,9 @@
       </div>
 
       <div v-for="(item, index) in dataSearch" :key="index">
-        <div
-          class="menu-item"
-          :class="{
-            'item-active': itemSelect && itemSelect[fieldKey] == item[fieldKey],
-          }"
-          @click="selectItem(item)"
-        >
+        <div class="menu-item" :class="{
+          'item-active': itemSelect && itemSelect[fieldKey] == item[fieldKey],
+        }" @click="selectItem(item)">
           <div>{{ item[fieldCode] }}</div>
           <div>{{ item[fieldName] }}</div>
         </div>
@@ -116,10 +98,10 @@ export default {
       }
       let dataMatch = this.data.filter((item) => {
         return (
-          item[this.fieldName].toLowerCase() === (keySearch.toLowerCase())          
+          item[this.fieldName].toLowerCase() === (keySearch.toLowerCase())
         );
       });
-      if(dataMatch.length === 0) {
+      if (dataMatch.length === 0) {
         this.$emit("update:modelValue", "")
       }
       this.checkInvalidInput(val);
@@ -135,10 +117,10 @@ export default {
     },
     showOption() {
       this.isShow = !this.isShow;
-     
+
     },
     inputTouched() {
-      if(!this.valueText) {
+      if (!this.valueText) {
         this.valueText = '';
       }
     },
@@ -152,6 +134,7 @@ export default {
       this.valueText = item[this.fieldName];
       this.isShow = false;
       this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
+
       this.checkInvalidInputValue();
     },
 
@@ -161,9 +144,10 @@ export default {
           this.isValidate = false;
           this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
           this.$emit('field-invalid', this.title)
-        } else if(!this.dataSearch.length && event.type ) {
+        } else if (!this.dataSearch.length && event.type) {
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+          this.$emit('field-valid', this.fieldNameTxt + WARNING_TXT.REQUIRE)
           this.$emit('field-invalid', this.title)
         } else {
           this.isValidate = true;
@@ -173,16 +157,17 @@ export default {
         }
       }
     },
-    
+
     checkInvalidInputValue() {
       if (this.isRequire) {
         if (this.valueText === '') {
           this.isValidate = false;
-          this.title =this.fieldNameTxt + WARNING_TXT.REQUIRE;
+          this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
           this.$emit('field-invalid', this.title)
-        } else if(this.dataSearch.length === 0) {
+        } else if (this.dataSearch.length === 0) {
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+          this.$emit('field-valid', this.fieldNameTxt + WARNING_TXT.REQUIRE)
           this.$emit('field-invalid', this.title)
         } else {
           this.isValidate = true;

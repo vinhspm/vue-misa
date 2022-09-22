@@ -53,14 +53,13 @@ tbody tr:hover td{
 
 .paging__button {
     width: 40px;
-    height: 40px;
+    height: 24px;
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 4px;
     border: 1px solid transparent;
     box-sizing: border-box;
     cursor: pointer;
-    opacity: .7;
     background-color: #fff;
     margin: 0 4px;
 }
@@ -105,5 +104,5 @@ tbody tr:hover td{
 }
 
 .paging__number--selected {
-    border: 1px solid #dedede;
+    outline: 1px solid #dedede;
 }
