@@ -1,45 +1,96 @@
 <template>
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên" @click="toggleDialog">
+    <m-button
+      id="btnAdd"
+      class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên"
+      @click="toggleDialog"
+    >
     </m-button>
   </div>
 
   <div class="page__table">
     <div class="page__toolbar">
       <div class="page__toolbar--left">
-        <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
-          placeholder="Tìm theo mã, tên nhân viên" v-on:keyup.enter="onSearch" />
-        <button @click="onSearch"></button>
+        <div>Thực hiện hàng loạt</div>
+        <div class="dropdown" v-click-away="closeDropdownFunction">
+          <button class="dropdown-btn" @click="showDropdownFunction"></button>
+          <div
+            class="multiple_item__dropdown_content" 
+            v-if="isShowDropdown"
+          >
+            <a href="#">Nhân bản</a>
+            <a href="#" @click="warningDeleteAll()">Xoá</a>
+            <a href="#">Ngưng sử dụng</a>
+          </div>
+        </div>
       </div>
       <div class="page__toolbar--right">
-        <button id="btnRefresh" @click="reloadData"></button>
+        <div class="page__toolbar--search">
+          <input
+            type="text"
+            class="input input__icon input__icon--search"
+            v-model="searchInputValue"
+            placeholder="Tìm theo mã, tên nhân viên"
+            v-on:keyup.enter="onSearch"
+          />
+          <button @click="onSearch"></button>
+        </div>
+        <div class="page__toolbar--reload">
+          <button id="btnRefresh" @click="reloadData"></button>
+        </div>
       </div>
     </div>
-    <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)" @update:selectedItemCheckbox="handleSelectedItemCheckbox($event)" ></m-table>
+    <m-table
+      :headers="employeeHeader"
+      :dataSource="employees"
+      @toggle-dialog="(index) => toggleDialog(index)"
+      @warning-delete="(emp) => warningDelete(emp)"
+      @update:selectedItemCheckbox="handleSelectedItemCheckbox($event)"
+    ></m-table>
 
-    <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
-      @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
-      :currentPageProp="params.pageNumber"></m-paging>
-
+    <m-paging
+      :recordPerPageProps="params.pageSize"
+      :totalRecord="totalRecord"
+      :totalPage="totalPage"
+      @update:recordPerPage="params.pageSize = $event"
+      @update:currentPage="params.pageNumber = $event"
+      :currentPageProp="params.pageNumber"
+    ></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
-    @reload-data="reloadData"></EmployeeDetail>
+  <EmployeeDetail
+    v-if="isShow"
+    @close-dialog="toggleDialog"
+    :selectedEmployee="selectedEmployee"
+    @reload-data="reloadData"
+  ></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
-    @ok-warning="okWarning"></m-warning>
+  <m-warning
+    v-if="isShowWarning"
+    :text="warningText"
+    :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning"
+    @ok-warning="okWarning"
+  ></m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
 import MButton from "../../components/base/MButton.vue";
 import LoadingLayer from "../../components/base/LoadingLayer.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
-import { DIALOG_TYPE, WARNING_TXT, EMPLOYEE_HEADER, DEFAULT_PARAMS } from "../../constants.js";
+import {
+  DIALOG_TYPE,
+  WARNING_TXT,
+  EMPLOYEE_HEADER,
+  DEFAULT_PARAMS,
+} from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
-import { getEmployeesFilter, deleteEmployee } from '@/axios/employeeController/employeeController.js'
+import {
+  getEmployeesFilter,
+  deleteEmployee,
+} from "@/axios/employeeController/employeeController.js";
 // import MWarning from "@/components/base/MWarning.vue";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
@@ -47,7 +98,7 @@ export default {
 
   created() {
     // Gọi api lấy dữ liệu:
-    this.params = {...DEFAULT_PARAMS};
+    this.params = { ...DEFAULT_PARAMS };
     this.getData();
   },
 
@@ -67,40 +118,44 @@ export default {
       clickedEmployeeDelete: {},
       employeeHeader: EMPLOYEE_HEADER,
       params: [],
-      selectedCheckboxItems: []
-
+      selectedCheckboxItems: [],
+      isShowDropdown: false
     };
   },
   watch: {
     searchInputValue: {
       handler(val) {
         this.params.employeeFilter = val;
-      }
+      },
     },
 
-    'params.pageNumber': {
+    "params.pageNumber": {
       handler() {
         this.getData();
       },
       deep: true,
     },
-    'params.pageSize': {
+    "params.pageSize": {
       handler() {
         this.getData();
       },
       deep: true,
-    }
+    },
   },
   methods: {
     // bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
     toggleDialog: function (index) {
       this.isShow = !this.isShow;
       if (this.isShow) {
-        if (typeof index == 'number') {
+        if (typeof index == "number") {
           if (this.employees[index].EmployeeId) {
             this.selectedEmployee = { ...this.employees[index] };
-            this.selectedEmployee.DateOfBirth = formatDateInput(this.selectedEmployee.DateOfBirth);
-            this.selectedEmployee.IdentityDate = formatDateInput(this.selectedEmployee.IdentityDate);
+            this.selectedEmployee.DateOfBirth = formatDateInput(
+              this.selectedEmployee.DateOfBirth
+            );
+            this.selectedEmployee.IdentityDate = formatDateInput(
+              this.selectedEmployee.IdentityDate
+            );
             console.log("selected", this.selectedEmployee);
           }
         }
@@ -115,13 +170,15 @@ export default {
       this.isShowWarning = true;
       this.warningText =
         WARNING_TXT.DELETE + "Nhân viên " + emp.EmployeeCode + " không ?";
+      
+      
     },
 
     reloadData() {
-      this.searchInputValue = '';
-      this.params = {...DEFAULT_PARAMS};
+      this.searchInputValue = "";
+      this.params = { ...DEFAULT_PARAMS };
       console.log(DEFAULT_PARAMS);
-      this.getData()
+      this.getData();
     },
 
     // lấy tắt cả dữ liệu từ bảng nhân viên
@@ -137,13 +194,12 @@ export default {
         } else {
           this.reloadData();
           this.isLoading = false;
-          ('không tìm thấy nhân viên');
+          ("không tìm thấy nhân viên");
         }
       } catch (error) {
         console.log(error);
         this.isLoading = false;
       }
-
     },
 
     //tắt popup cảnh báo
@@ -160,7 +216,7 @@ export default {
     // gọi api xoá nhân viên
     async deleteEmployee() {
       this.isLoading = true;
-      const id = this.clickedEmployeeDelete.EmployeeId
+      const id = this.clickedEmployeeDelete.EmployeeId;
       try {
         const response = await deleteEmployee(id);
         if (response) {
@@ -171,24 +227,35 @@ export default {
         console.log(error);
         this.isLoading = false;
       }
-
     },
 
     // hàm tìm kiếm nhân viên theo mã và tên
     onSearch: async function () {
-      this.params.pageNumber = 1,
-      this.getData()
+      (this.params.pageNumber = 1), this.getData();
     },
 
     handleSelectedItemCheckbox(event) {
-      if(event.checked) {
-        this.selectedCheckboxItems.push(event.value)
+      if (event.checked) {
+        //thêm item vào mảng nếu chưa check
+        if (this.selectedCheckboxItems.indexOf(event.value) === -1) {
+          this.selectedCheckboxItems.push(event.value);
+        }
       } else {
         //xoá item ra khỏi mảng nếu bỏ check
-        this.selectedCheckboxItems = this.selectedCheckboxItems.filter(e => e !== event.value)
+        this.selectedCheckboxItems = this.selectedCheckboxItems.filter(
+          (e) => e !== event.value
+        );
       }
 
       console.log(this.selectedCheckboxItems);
+    },
+
+    showDropdownFunction() {
+      this.isShowDropdown = !this.isShowDropdown;
+    },
+
+    closeDropdownFunction() {
+      this.isShowDropdown = false;
     }
   },
 };

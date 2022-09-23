@@ -78,7 +78,7 @@ export default {
       if (lastPage <= this.maxPage) {
         this.pageArray = Array.from({ length: lastPage }, (_, i) => i + 1);
       } else {
-        if (this.currentPageProp === 1 || this.currentPageProp === 2) {
+        if (this.currentPageProp === firstPage || this.currentPageProp === firstPage + 1) {
           this.pageArray = ([firstPage, firstPage + 1, firstPage + 2, '...', lastPage - 1, lastPage]);
         } else if (this.currentPageProp === lastPage || this.currentPageProp === lastPage - 1) {
           this.pageArray = ([firstPage, firstPage + 1, '...', lastPage - 2, lastPage - 1, lastPage]);
