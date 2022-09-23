@@ -38,8 +38,6 @@ export default {
   },
   created() {
     this.selectedItem = this.selected;
-    console.log(this.data);
-    console.log(this.selected);
   },
   data() {
     return {

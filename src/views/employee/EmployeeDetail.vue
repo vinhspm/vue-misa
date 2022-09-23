@@ -203,10 +203,8 @@ export default {
         JSON.stringify(this.employeeDetailData) ===
         JSON.stringify(this.selectedEmployee)
       ) {
-        console.log("same");
         this.closeDialog();
       } else {
-        console.log("diff");
         this.isShowWarning = true;
       }
     },
@@ -235,7 +233,6 @@ export default {
         }
       }
 
-      // console.log(this.bodyRequest);
     },
 
     //hàm đẩy thông tin lên server nhưng không đóng form mà clear form để thêm mới

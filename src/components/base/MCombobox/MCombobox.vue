@@ -61,7 +61,7 @@ export default {
   },
   created() {
     this.dataSearch = { ...this.data };
-    this.valueText = this.findNameByKey(this.modelValue);
+    // this.valueText = this.findNameByKey(this.modelValue);
   },
   data() {
     return {
@@ -71,6 +71,14 @@ export default {
       valueText: null,
       title: "",
     };
+  },
+  watch: {
+    modelValue: {
+      handler(val) {
+        this.valueText = this.findNameByKey(val);
+      }, 
+      immediate: true
+    }
   },
 
   methods: {

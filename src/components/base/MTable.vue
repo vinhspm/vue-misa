@@ -4,7 +4,7 @@
       <thead class="table__header">
         <tr>
           <th v-if="showCheckbox" class="text-align--center sticky_header_left" title="" style="min-width: 40px">
-            <input type="checkbox" name="checkAll" />&nbsp;
+            <m-checkbox name="checkAll" value="checkAll" @update:selectedItem="checkBoxItemSelected($event)"/>&nbsp;
           </th>
           <th :class="item.Class" v-for="(item, index) in headers"
             :style="{ 'min-width': item.Width + 'px' }" :key="index">
@@ -18,7 +18,7 @@
       <tbody>
         <tr v-for="(emp,index) in dataSource" :key="emp.EmployeeId" @dblclick="toggleDialog(index)">
           <td v-if="showCheckbox" class="sticky_body_left text-align--center">
-            <input type="checkbox" name="checkItem" />&nbsp;
+            <m-checkbox name="checkItem" :value="emp.EmployeeId" @update:selectedItem="checkBoxItemSelected($event)" />&nbsp;
           </td>
           <td v-for="(item, index) in headers" :key="index" :class="item.CellClass">
             {{ emp[item.Field] ? item.dataFormat ? item.dataFormat(emp[item.Field]) : emp[item.Field] : "" }}
@@ -65,46 +65,7 @@ export default {
     },
     dataSource: {
       Type: Array,
-      default: () => [
-        {
-          Address: null,
-          CreatedBy: null,
-          CreatedDate: "2022-09-19T15:04:08",
-          DateOfBirth: "2022-09-19T00:00:00",
-          DepartmentCode: null,
-          DepartmentId: null,
-          DepartmentName: null,
-          EducationalBackground: null,
-          EducationalBackgroundName: null,
-          Email: "muny@gmail.com",
-          EmployeeCode: "NV202212121",
-          EmployeeId: "a3831c51-37f1-11ed-96f1-00163e06abee",
-          FirstName: null,
-          FullName: "muny",
-          Gender: 1,
-          GenderName: "Nữ",
-          IdentityDate: "2022-09-19T00:00:00",
-          IdentityNumber: "444555",
-          IdentityPlace: "ha noi",
-          JoinDate: null,
-          LastName: null,
-          MartialStatus: null,
-          MartialStatusName: null,
-          ModifiedBy: null,
-          ModifiedDate: "2022-09-19T15:10:35",
-          NationalityId: null,
-          NationalityName: null,
-          PersonalTaxCode: "",
-          PhoneNumber: "087ttt",
-          PositionCode: null,
-          PositionId: null,
-          PositionName: null,
-          QualificationId: null,
-          QualificationName: null,
-          Salary: null,
-          WorkStatus: 1,
-        },
-      ],
+      default: [],
     },
   },
   data() {
@@ -138,6 +99,10 @@ export default {
     warningDelete(emp) {
       this.clickedEmployee = {};
       this.$emit('warning-delete', emp);
+    },
+
+    checkBoxItemSelected(event) {
+      this.$emit("update:selectedItemCheckbox", event);
     }
   },
 };

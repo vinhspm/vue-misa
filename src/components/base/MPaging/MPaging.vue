@@ -117,6 +117,11 @@ export default {
 
       },
     },
+    recordPerPageProps: {
+      handler(val) {
+        this.recordPerPage = val.toString();
+      }
+    }
 
   }
 }

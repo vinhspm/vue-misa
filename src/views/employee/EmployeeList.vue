@@ -18,7 +18,7 @@
       </div>
     </div>
     <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)"></m-table>
+      @warning-delete="(emp) => warningDelete(emp)" @update:selectedItemCheckbox="handleSelectedItemCheckbox($event)" ></m-table>
 
     <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
       @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
@@ -47,6 +47,7 @@ export default {
 
   created() {
     // Gọi api lấy dữ liệu:
+    this.params = {...DEFAULT_PARAMS};
     this.getData();
   },
 
@@ -65,7 +66,8 @@ export default {
       clickedEmployee: {},
       clickedEmployeeDelete: {},
       employeeHeader: EMPLOYEE_HEADER,
-      params: {...DEFAULT_PARAMS}
+      params: [],
+      selectedCheckboxItems: []
 
     };
   },
@@ -117,7 +119,8 @@ export default {
 
     reloadData() {
       this.searchInputValue = '';
-      this.params = DEFAULT_PARAMS;
+      this.params = {...DEFAULT_PARAMS};
+      console.log(DEFAULT_PARAMS);
       this.getData()
     },
 
@@ -176,6 +179,17 @@ export default {
       this.params.pageNumber = 1,
       this.getData()
     },
+
+    handleSelectedItemCheckbox(event) {
+      if(event.checked) {
+        this.selectedCheckboxItems.push(event.value)
+      } else {
+        //xoá item ra khỏi mảng nếu bỏ check
+        this.selectedCheckboxItems = this.selectedCheckboxItems.filter(e => e !== event.value)
+      }
+
+      console.log(this.selectedCheckboxItems);
+    }
   },
 };
 </script>
