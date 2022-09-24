@@ -58,15 +58,18 @@ table {
   border-left: none;
   border-right: none;
 }
-.table__container {}
+.table__container {
+}
 .page__table {
   width: 100%;
-  overflow: auto;
+  height: 100%;
+  overflow: hidden;
   scroll-behavior: smooth;
 }
 
 .table__content {
-  width: 100%;
+  width: calc(100% - 48px);
+  height: calc(100% - 125px);
 }
 
 #tbEmployeeList {
@@ -134,7 +137,7 @@ table {
   position: relative;
 }
 .dropbtn:focus {
-  outline:1px #0075c0 solid;
+  outline: 1px #0075c0 solid;
 }
 .dropdown {
   position: relative;

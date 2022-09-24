@@ -1,15 +1,27 @@
 <template>
   <loading-layer v-if="isLoading"></loading-layer>
-  <m-popup :componentWidth="900" @close-dialog="buttonCloseDialogClicked">
+  <m-popup
+    :componentWidth="900"
+    @close-dialog="buttonCloseDialogClicked"
+    @focus="isFormTouched = true"
+  >
     <template #header>
       <div class="title">Thông tin nhân viên</div>
       <div class="employee__type__container">
         <div>
-          <m-input type="checkbox" name="employeeType" id="customerTypeCheckbox" />
+          <m-input
+            type="checkbox"
+            name="employeeType"
+            id="customerTypeCheckbox"
+          />
           <label for="customerTypeCheckbox">Là khách hàng</label>
         </div>
         <div>
-          <m-input type="checkbox" name="employeeType" id="supplierTypeCheckbox" />
+          <m-input
+            type="checkbox"
+            name="employeeType"
+            id="supplierTypeCheckbox"
+          />
           <label for="supplierTypeCheckbox">Là nhà cung cấp</label>
         </div>
       </div>
@@ -20,37 +32,63 @@
           <div class="row">
             <div class="col w-30">
               <label>Mã (<span class="input--required">*</span>)</label>
-              <m-input type="text" :modelValue="employeeDetailData.EmployeeCode"
-                @update:modelValue="employeeDetailData.EmployeeCode = $event" :isRequire="true"
-                :fieldNameTxt="fieldNameVnTxt.CODE" @field-invalid="(title) => addError(title)"
-                @field-valid="(title) => removeError(title)" />
+              <m-input
+                type="text"
+                :modelValue="employeeDetailData.EmployeeCode"
+                @update:modelValue="employeeDetailData.EmployeeCode = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.CODE"
+                @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)"
+                :isValidProp="fieldValid.EmployeeCode"
+              />
             </div>
             <div class="col w-70">
               <label>Họ và tên (<span class="input--required">*</span>)</label>
-              <m-input type="text" :modelValue="employeeDetailData.FullName"
-                @update:modelValue="employeeDetailData.FullName = $event" :isRequire="true"
-                :fieldNameTxt="fieldNameVnTxt.FULLNAME" @field-invalid="(title) => addError(title)"
-                @field-valid="(title) => removeError(title)" />
+              <m-input
+                type="text"
+                :modelValue="employeeDetailData.FullName"
+                @update:modelValue="employeeDetailData.FullName = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.FULLNAME"
+                @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)"
+                :isValidProp="fieldValid.FullName"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Đơn vị (<span class="input--required">*</span>)</label>
-              <m-department-combobox :data="departments" fieldKey="DepartmentId" fieldCode="DepartmentCode"
-                fieldName="DepartmentName" :modelValue="employeeDetailData.DepartmentId"
-                @update:modelValue="employeeDetailData.DepartmentId = $event" :isRequire="true"
-                :fieldNameTxt="fieldNameVnTxt.DEPARTMENT" @field-invalid="(title) => addError(title)"
-                @field-valid="(title) => removeError(title)">
+              <m-department-combobox
+                :data="departments"
+                fieldKey="DepartmentId"
+                fieldCode="DepartmentCode"
+                fieldName="DepartmentName"
+                :modelValue="employeeDetailData.DepartmentId"
+                @update:modelValue="employeeDetailData.DepartmentId = $event"
+                :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.DEPARTMENT"
+                @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)"
+                :isValidProp="fieldValid.DepartmentId"
+              >
               </m-department-combobox>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Vị trí</label>
-              <m-combobox :data="positions" fieldKey="PositionId" fieldName="PositionName"
-                :modelValue="employeeDetailData.PositionId" @update:modelValue="employeeDetailData.PositionId = $event"
-                :fieldNameTxt="fieldNameVnTxt.POSITION" @field-invalid="(title) => addError(title)"
-                @field-valid="(title) => removeError(title)">
+              <m-combobox
+                :data="positions"
+                fieldKey="PositionId"
+                fieldName="PositionName"
+                :modelValue="employeeDetailData.PositionId"
+                @update:modelValue="employeeDetailData.PositionId = $event"
+                :fieldNameTxt="fieldNameVnTxt.POSITION"
+                @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)"
+              >
               </m-combobox>
             </div>
           </div>
@@ -59,34 +97,49 @@
           <div class="row">
             <div class="col w-40">
               <label>Ngày sinh</label>
-              <m-input type="date" :modelValue="employeeDetailData.DateOfBirth"
-                @update:modelValue="employeeDetailData.DateOfBirth = $event" />
+              <m-input
+                type="date"
+                :modelValue="employeeDetailData.DateOfBirth"
+                @update:modelValue="employeeDetailData.DateOfBirth = $event"
+              />
             </div>
             <div class="col w-60">
               <label>Giới tính</label>
               <div class="row align-center h-32">
-                <m-radio :data="genderData" :selected="employeeDetailData.Gender"
-                  @update:selectedItem="employeeDetailData.Gender = $event"></m-radio>
+                <m-radio
+                  :data="genderData"
+                  :selected="employeeDetailData.Gender"
+                  @update:selectedItem="employeeDetailData.Gender = $event"
+                ></m-radio>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col w-60">
               <label>Số CMND</label>
-              <m-input type="text" :modelValue="employeeDetailData.IdentityNumber"
-                @update:modelValue="employeeDetailData.IdentityNumber = $event" />
+              <m-input
+                type="text"
+                :modelValue="employeeDetailData.IdentityNumber"
+                @update:modelValue="employeeDetailData.IdentityNumber = $event"
+              />
             </div>
             <div class="col w-40">
               <label>Ngày cấp</label>
-              <m-input type="date" :modelValue="employeeDetailData.IdentityDate"
-                @update:modelValue="employeeDetailData.IdentityDate = $event" />
+              <m-input
+                type="date"
+                :modelValue="employeeDetailData.IdentityDate"
+                @update:modelValue="employeeDetailData.IdentityDate = $event"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col">
               <label>Nơi cấp</label>
-              <m-input type="text" :modelValue="employeeDetailData.IdentityPlace"
-                @update:modelValue="employeeDetailData.IdentityPlace = $event" />
+              <m-input
+                type="text"
+                :modelValue="employeeDetailData.IdentityPlace"
+                @update:modelValue="employeeDetailData.IdentityPlace = $event"
+              />
             </div>
           </div>
         </div>
@@ -95,42 +148,63 @@
       <div class="row">
         <div class="col">
           <label for="">Địa chỉ</label>
-          <m-input type="text" :modelValue="employeeDetailData.Address"
-            @update:modelValue="employeeDetailData.Address = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.Address"
+            @update:modelValue="employeeDetailData.Address = $event"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col w-25">
           <label for="">ĐT di động</label>
-          <m-input type="text" :modelValue="employeeDetailData.PhoneNumber"
-            @update:modelValue="employeeDetailData.PhoneNumber = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.PhoneNumber"
+            @update:modelValue="employeeDetailData.PhoneNumber = $event"
+          />
         </div>
         <div class="col w-25">
           <label for="">ĐT cố định</label>
-          <m-input type="text" :modelValue="employeeDetailData.HomePhoneNumber"
-            @update:modelValue="employeeDetailData.HomePhoneNumber = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.HomePhoneNumber"
+            @update:modelValue="employeeDetailData.HomePhoneNumber = $event"
+          />
         </div>
         <div class="col w-25">
           <label for="">Email</label>
-          <m-input type="email" :modelValue="employeeDetailData.Email"
-            @update:modelValue="employeeDetailData.Email = $event" />
+          <m-input
+            type="email"
+            :modelValue="employeeDetailData.Email"
+            @update:modelValue="employeeDetailData.Email = $event"
+          />
         </div>
       </div>
       <div class="row" style="margin-bottom: 30px">
         <div class="col w-25">
           <label for="">Tài khoàn ngân hàng</label>
-          <m-input type="text" :modelValue="employeeDetailData.BankAccount"
-            @update:modelValue="employeeDetailData.BankAccount = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.BankAccount"
+            @update:modelValue="employeeDetailData.BankAccount = $event"
+          />
         </div>
         <div class="col w-25">
           <label for="">Tên ngân hàng</label>
-          <m-input type="text" :modelValue="employeeDetailData.BankName"
-            @update:modelValue="employeeDetailData.BankName = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.BankName"
+            @update:modelValue="employeeDetailData.BankName = $event"
+          />
         </div>
         <div class="col w-25">
           <label for="">Chi nhánh</label>
-          <m-input type="text" :modelValue="employeeDetailData.BankBranch"
-            @update:modelValue="employeeDetailData.BankBranch = $event" />
+          <m-input
+            type="text"
+            :modelValue="employeeDetailData.BankBranch"
+            @update:modelValue="employeeDetailData.BankBranch = $event"
+          />
         </div>
       </div>
     </template>
@@ -138,15 +212,29 @@
       <button class="button button--cancel" @click="closeDialog">Hủy</button>
       <div>
         <button @click="onSaveOnly" class="button button--saveonly">Cất</button>
-        <button @click="saveAndContinue" class="button button__icon icon icon--save">
+        <button
+          @click="saveAndContinue"
+          class="button button__icon icon icon--save"
+        >
           Cất và Thêm
         </button>
       </div>
     </template>
   </m-popup>
-  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.ASK_CANCELABLE"
-    @close-warning="closeWarning" @ok-warning="okWarning" @denied-warning="deniedWarning"></m-warning>
-  <m-warning v-if="isShowError" :text="errorText" :dialogType="DIALOG_TYPE.ALERT" @close-warning="closeWarning">
+  <m-warning
+    v-if="isShowWarning"
+    :text="warningText"
+    :dialogType="DIALOG_TYPE.ASK_CANCELABLE"
+    @close-warning="closeWarning"
+    @ok-warning="okWarning"
+    @denied-warning="deniedWarning"
+  ></m-warning>
+  <m-warning
+    v-if="isShowError"
+    :text="errorText"
+    :dialogType="DIALOG_TYPE.ALERT"
+    @close-warning="closeWarning"
+  >
   </m-warning>
 </template>
 <script>
@@ -157,10 +245,18 @@ import {
   WARNING_TXT,
   GENDER_RADIO_DATA,
   FIELD_NAME_VN,
+  EMPLOYEE_FIELD_RULES,
 } from "../../constants.js";
-import  {toCamel} from '@/js/base.js'
-import {getNextEmployee, postEmployee, putEmployee} from '@/axios/employeeController/employeeController.js';
+import { toCamel } from "@/js/base.js";
+import {
+  getNextEmployee,
+  postEmployee,
+  putEmployee,
+} from "@/axios/employeeController/employeeController.js";
+import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
+
 export default {
+  mixins: [BaseValidateMixins],
   name: "EmployeeDetail",
   data() {
     return {
@@ -178,15 +274,41 @@ export default {
       genderData: GENDER_RADIO_DATA,
       fieldNameVnTxt: FIELD_NAME_VN,
       errorList: [],
-      errorText: ''
-
+      errorText: "",
+      isFormTouched: false,
+      fieldValid: {
+        EmployeeCode: {
+          value: true,
+          msg: "",
+        },
+        FullName: {
+          value: true,
+          msg: "",
+        },
+        DepartmentId: {
+          value: true,
+          msg: "",
+        },
+      },
     };
   },
   props: {
     selectedEmployee: Object,
   },
-  methods: {
 
+  watch: {
+    employeeDetailData: {
+      handler() {
+        if (this.isFormTouched) {
+          this.updateValidateData();
+          this.updateListError();
+        }
+      },
+      deep: true,
+    },
+  },
+
+  methods: {
     /**
      * kích hoạt sự kiện đóng form chi tiết
      * author: vinhkt
@@ -213,25 +335,67 @@ export default {
     },
 
     /**
+     * hàm update data mixins dành cho việc validate
+     * author: vinhkt
+     * created: 24/09/2022
+     */
+    updateValidateData() {
+      const fieldRules = EMPLOYEE_FIELD_RULES;
+      for (const key of Object.keys(fieldRules)) {
+        const obj = {
+          rules: fieldRules[key],
+          value: this.employeeDetailData[key],
+        };
+        this.needValidateData[key] = obj;
+      }
+      for (const key of Object.keys(this.employeeDetailData)) {
+        const obj = {
+          rules: fieldRules[key],
+          value: this.employeeDetailData[key],
+        };
+        this.needValidateData[key] = obj;
+      }
+    },
+
+    /**
+     * hàm update listError để truyền vào component con
+     * author: vinhkt
+     * created: 21/09/2022
+     */
+    updateListError() {
+      const listError = this.validateData();
+      console.log(listError);
+      for (let key of Object.keys(this.fieldValid)) {
+        if (listError[key]) {
+          this.fieldValid[key].value = false;
+          this.fieldValid[key].msg = listError[key];
+        } else {
+          this.fieldValid[key].value = true;
+          this.fieldValid[key].msg = "";
+        }
+      }
+    },
+
+    /**
      * hàm tương ứng với nút cất, sẽ đẩy thông tin lên server rồi đóng form
      * author: vinhkt
      * created: 21/09/2022
      */
     onSaveOnly: function () {
+      this.updateValidateData();
+      this.updateListError();
+      for (let key of Object.keys(this.fieldValid)) {
+        if (!this.fieldValid[key].value) {
+          this.errorText = this.fieldValid[key].msg;
+          this.isShowError = true;
+          return;
+        }
+      }
       if (this.errorList.length) {
         this.errorText = this.errorList[0];
         this.isShowError = true;
-      } else if (!this.employeeDetailData.EmployeeCode || !this.employeeDetailData.FullName || !this.employeeDetailData.DepartmentId) {
-        if (!this.employeeDetailData.EmployeeCode) {
-          this.errorText = FIELD_NAME_VN.CODE + WARNING_TXT.REQUIRE;
-        } else if (!this.employeeDetailData.FullName) {
-          this.errorText = FIELD_NAME_VN.FULLNAME + WARNING_TXT.REQUIRE;
-        } else {
-          this.errorText = FIELD_NAME_VN.DEPARTMENT + WARNING_TXT.REQUIRE;
-        }
-        this.isShowError = true;
       } else {
-        this.bodyRequest = toCamel(this.employeeDetailData)
+        this.bodyRequest = toCamel(this.employeeDetailData);
         console.log(this.bodyRequest);
         if (this.isEdit) {
           this.updateEmployee();
@@ -239,7 +403,6 @@ export default {
           this.addNewEmployee();
         }
       }
-
     },
 
     /**
@@ -298,7 +461,7 @@ export default {
      * created: 21/09/2022
      */
     updateEmployee: async function () {
-      this.isLoading = true;      
+      this.isLoading = true;
       const body = this.bodyRequest;
       const id = this.employeeDetailData.EmployeeId;
       try {
@@ -331,7 +494,7 @@ export default {
     },
 
     /**
-     * xác nhận người dùng đồng ý với popup cảnh báo 
+     * xác nhận người dùng đồng ý với popup cảnh báo
      * author: vinhkt
      * created: 21/09/2022
      */
@@ -341,7 +504,7 @@ export default {
     },
 
     /**
-     * xác nhận người dùng đồng ý với popup cảnh báo 
+     * xác nhận người dùng đồng ý với popup cảnh báo
      * author: vinhkt
      * created: 16/09/2022
      */
@@ -393,7 +556,6 @@ export default {
         if (index > -1) {
           this.errorList.splice(index, 1);
           console.log(this.errorList);
-
         }
       } else {
         return;

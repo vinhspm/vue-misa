@@ -1,12 +1,26 @@
 <template>
-  <div class="m-dropdown" :style="{
-    width: width + 'px',
-  }" v-click-away="closeOption">
+  <div
+    class="m-dropdown"
+    :style="{
+      width: width + 'px',
+    }"
+    v-click-away="closeOption"
+  >
     <div class="input_container">
-      <input type="text" @focus="inputTouched" v-model="valueText" @input="searchItem($event)" class="input__form"
-        :class="{ invalidInput: !isValidate }" :title="title" />
+      <input
+        type="text"
+        @focus="inputTouched"
+        v-model="valueText"
+        @input="searchItem($event)"
+        class="input__form"
+        :class="{ invalidInput: !isValidate | !isValidProp.value }"
+        :title="title || isValidProp.msg"
+      />
       <div class="input_action" @click="showOption">
-        <div class="icon icon-16 arrow_icon_dropdown" :class="{ rotate_icon: isShow }"></div>
+        <div
+          class="icon icon-16 arrow_icon_dropdown"
+          :class="{ rotate_icon: isShow }"
+        ></div>
       </div>
     </div>
     <div class="m-dropdown-menu" v-show="isShow">
@@ -16,9 +30,13 @@
       </div>
 
       <div v-for="(item, index) in dataSearch" :key="index">
-        <div class="menu-item" :class="{
-          'item-active': itemSelect && itemSelect[fieldKey] == item[fieldKey],
-        }" @click="selectItem(item)">
+        <div
+          class="menu-item"
+          :class="{
+            'item-active': itemSelect && itemSelect[fieldKey] == item[fieldKey],
+          }"
+          @click="selectItem(item)"
+        >
           <div>{{ item[fieldCode] }}</div>
           <div>{{ item[fieldName] }}</div>
         </div>
@@ -65,8 +83,15 @@ export default {
     },
     fieldNameTxt: {
       Type: String,
-      default: ''
-    }
+      default: "",
+    },
+    isValidProp: {
+      Type: Boolean,
+      default: {
+        value: true,
+        msg: "",
+      },
+    },
   },
   created() {
     this.dataSearch = { ...this.data };
@@ -83,13 +108,12 @@ export default {
   },
 
   methods: {
-
     /**
      * tìm kiếm đơn vị theo mã và theo tên, khi kết thúc nhập nếu giá trị của ô input không
      * trùng với một trong các giá trị được chọn thì gọi sự kiện đơn vị đang để trống
      * author: vinhkt
      * created: 21/09/2022
-     * @param {val: input text} val 
+     * @param {val: input text} val
      */
     searchItem(val) {
       this.isShow = true;
@@ -105,12 +129,10 @@ export default {
         this.dataSearch = this.data;
       }
       let dataMatch = this.data.filter((item) => {
-        return (
-          item[this.fieldName].toLowerCase() === (keySearch.toLowerCase())
-        );
+        return item[this.fieldName].toLowerCase() === keySearch.toLowerCase();
       });
       if (dataMatch.length === 0) {
-        this.$emit("update:modelValue", "")
+        this.$emit("update:modelValue", "");
       }
       this.checkInvalidInput(val);
     },
@@ -119,7 +141,7 @@ export default {
      * gán giá trị cho input và item đã được chọn dựa trên key - id được truyền từ component cha
      * author: vinhkt
      * created: 21/09/2022
-     * @param {key} key 
+     * @param {key} key
      */
     findNameByKey(key) {
       for (let i = 0; i < this.data.length; i++) {
@@ -138,7 +160,6 @@ export default {
      */
     showOption() {
       this.isShow = !this.isShow;
-
     },
 
     /**
@@ -148,7 +169,7 @@ export default {
      */
     inputTouched() {
       if (!this.valueText) {
-        this.valueText = '';
+        this.valueText = "";
       }
     },
 
@@ -159,14 +180,14 @@ export default {
      */
     closeOption() {
       this.isShow = false;
-      this.checkInvalidInputValue()
+      this.checkInvalidInputValue();
     },
 
     /**
      * chọn một item từ selectbox và validate item đó
      * author: vinhkt
      * created: 21/09/2022
-     * @param {item} item 
+     * @param {item} item
      */
     selectItem(item) {
       this.itemSelect = item;
@@ -182,24 +203,23 @@ export default {
      * validate giá trị input có nằm trong các giá trị được chọn hay không dựa trên event
      * author: vinhkt
      * created: 21/09/2022
-     * @param {event: $event} event 
+     * @param {event: $event} event
      */
     checkInvalidInput(event) {
       if (this.isRequire) {
         if (!event.target.value && event.type !== "input") {
           this.isValidate = false;
           this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit('field-invalid', this.title)
+          this.$emit("field-invalid", this.title);
         } else if (!this.dataSearch.length && event.type) {
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit('field-valid', this.fieldNameTxt + WARNING_TXT.REQUIRE)
-          this.$emit('field-invalid', this.title)
+          this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
+          this.$emit("field-invalid", this.title);
         } else {
           this.isValidate = true;
-          this.$emit('field-valid', this.title)
+          this.$emit("field-valid", this.title);
           this.title = "";
-
         }
       }
     },
@@ -211,18 +231,18 @@ export default {
      */
     checkInvalidInputValue() {
       if (this.isRequire) {
-        if (this.valueText === '') {
+        if (this.valueText === "") {
           this.isValidate = false;
           this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit('field-invalid', this.title)
+          this.$emit("field-invalid", this.title);
         } else if (this.dataSearch.length === 0) {
           this.isValidate = false;
           this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit('field-valid', this.fieldNameTxt + WARNING_TXT.REQUIRE)
-          this.$emit('field-invalid', this.title)
+          this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
+          this.$emit("field-invalid", this.title);
         } else {
           this.isValidate = true;
-          this.$emit('field-valid', this.title)
+          this.$emit("field-valid", this.title);
           this.title = "";
         }
       }

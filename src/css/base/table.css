@@ -25,10 +25,13 @@ tbody tr:hover td{
     background: #e5f3ff!important;
 }
 .table__content {
-    overflow-y: auto;
-    max-width: 100%;
-    flex: 1;
-    flex-basis: 100px;
+    padding: 0px 24px;
+}
+
+.table__content_body {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 }
 
 .table__paging {

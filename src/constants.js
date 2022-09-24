@@ -343,8 +343,11 @@ export const GENDER_RADIO_DATA = [
 //text tiếng việt của các trường
 export const FIELD_NAME_VN = {
   CODE: "Mã nhân viên",
+  EmployeeCode: "Mã nhân viên",
   FULLNAME: "Họ và tên",
+  FullName: "Họ và tên",
   DEPARTMENT: "Đơn vị",
+  DepartmentId: "Đơn vị",
   POSITION: "Vị trí",
   EMPLOYEE: 'Nhân viên'
 };
@@ -355,3 +358,16 @@ export const DEFAULT_PARAMS = {
   pageNumber: 1,
   employeeFilter: "",
 };
+
+// rules validate của các trường
+export const EMPLOYEE_FIELD_RULES = {
+  EmployeeCode: ['require'],
+  FullName: ['require'],
+  DepartmentId: ['require'],
+  
+}
+
+// code các rules validate
+export const RULE_CODES = {
+  REQUIRE: 'require',
+}

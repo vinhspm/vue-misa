@@ -1,14 +1,22 @@
 <template>
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên" @click="toggleDialog">
+    <m-button
+      id="btnAdd"
+      class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên"
+      @click="toggleDialog"
+    >
     </m-button>
   </div>
 
   <div class="page__table">
     <div class="page__toolbar">
-      <div class="page__toolbar--left" @click="showDropdownFunction" v-click-away="closeDropdownFunction">
+      <div
+        class="page__toolbar--left"
+        @click="showDropdownFunction"
+        v-click-away="closeDropdownFunction"
+      >
         <div>Thực hiện hàng loạt</div>
         <div class="dropdown">
           <button class="dropdown-btn"></button>
@@ -21,8 +29,13 @@
       </div>
       <div class="page__toolbar--right">
         <div class="page__toolbar--search">
-          <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
-            placeholder="Tìm theo mã, tên nhân viên" v-on:keyup.enter="onSearch" />
+          <input
+            type="text"
+            class="input input__icon input__icon--search"
+            v-model="searchInputValue"
+            placeholder="Tìm theo mã, tên nhân viên"
+            @input="onSearch"
+          />
           <button @click="onSearch"></button>
         </div>
         <div class="page__toolbar--reload">
@@ -30,24 +43,52 @@
         </div>
       </div>
     </div>
-    <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)" @update:selectEmployees="selectEmployees = ($event)">
+    <m-table
+      :headers="employeeHeader"
+      :dataSource="employees"
+      @toggle-dialog="(index) => toggleDialog(index)"
+      @warning-delete="(emp) => warningDelete(emp)"
+      @update:selectEmployees="selectEmployees = $event"
+    >
     </m-table>
 
-    <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
-      @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
-      :currentPageProp="params.pageNumber"></m-paging>
+    <m-paging
+      :recordPerPageProps="params.pageSize"
+      :totalRecord="totalRecord"
+      :totalPage="totalPage"
+      @update:recordPerPage="params.pageSize = $event"
+      @update:currentPage="params.pageNumber = $event"
+      :currentPageProp="params.pageNumber"
+    ></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
-    @reload-data="reloadData"></EmployeeDetail>
+  <EmployeeDetail
+    v-if="isShow"
+    @close-dialog="toggleDialog"
+    :selectedEmployee="selectedEmployee"
+    @reload-data="reloadData"
+  ></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
-    @ok-warning="okWarning"></m-warning>
-  <m-warning v-if="isShowWarningMultipleDelete" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning" @ok-warning="okWarningMultipleDelete"></m-warning>
-    <m-warning v-if="isShowResult" :text="resultText" :dialogType="DIALOG_TYPE.WARNING"
-    @close-warning="closeWarning"></m-warning>
+  <m-warning
+    v-if="isShowWarning"
+    :text="warningText"
+    :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning"
+    @ok-warning="okWarning"
+  ></m-warning>
+  <m-warning
+    v-if="isShowWarningMultipleDelete"
+    :text="warningText"
+    :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning"
+    @ok-warning="okWarningMultipleDelete"
+  ></m-warning>
+  <m-warning
+    v-if="isShowResult"
+    :text="resultText"
+    :dialogType="DIALOG_TYPE.WARNING"
+    @close-warning="closeWarning"
+  ></m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
@@ -60,7 +101,7 @@ import {
   EMPLOYEE_HEADER,
   DEFAULT_PARAMS,
   INFO_TXT,
-FIELD_NAME_VN
+  FIELD_NAME_VN,
 } from "../../constants.js";
 import { formatDateInput } from "../../js/base.js";
 import {
@@ -68,6 +109,7 @@ import {
   deleteEmployee,
 } from "@/axios/employeeController/employeeController.js";
 // import MWarning from "@/components/base/MWarning.vue";
+import _ from "lodash";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
@@ -99,7 +141,7 @@ export default {
       isShowDropdown: false,
       isShowWarningMultipleDelete: false,
       isShowResult: false,
-      resultText: ''
+      resultText: "",
     };
   },
   watch: {
@@ -123,13 +165,11 @@ export default {
     },
   },
   methods: {
-
-    
     /**
      * bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
      * author: vinhkt
      * created: 18/09/2022
-     * @param {index employee} index 
+     * @param {index employee} index
      */
     toggleDialog: function (index) {
       this.isShow = !this.isShow;
@@ -155,7 +195,7 @@ export default {
      * cảnh báo xoá 1 nhân viên
      * author: vinhkt
      * created: 18/09/2022
-     * @param {emp} emp 
+     * @param {emp} emp
      */
     warningDelete: function (emp) {
       this.clickedEmployeeDelete = emp;
@@ -171,8 +211,7 @@ export default {
      */
     warningMultipleDelete: function () {
       this.isShowWarningMultipleDelete = true;
-      this.warningText =
-        WARNING_TXT.DELETE + "Những nhân viên đã chọn không ?";
+      this.warningText = WARNING_TXT.DELETE + "Những nhân viên đã chọn không ?";
     },
 
     /**
@@ -185,6 +224,7 @@ export default {
       this.params = { ...DEFAULT_PARAMS };
       console.log(DEFAULT_PARAMS);
       this.getData();
+      console.log();
     },
 
     /**
@@ -202,9 +242,9 @@ export default {
           this.totalRecord = response.data.TotalRecord;
           this.isLoading = false;
         } else {
-          this.reloadData();
+          // this.reloadData();
           this.isLoading = false;
-          ("không tìm thấy nhân viên");
+          this.employees = []
         }
       } catch (error) {
         console.log(error);
@@ -212,7 +252,6 @@ export default {
       }
     },
 
-    
     /**
      * tắt popup cảnh báo
      * author: vinhkt
@@ -276,21 +315,30 @@ export default {
         for (let i = 0; i < this.selectEmployees.length; i++) {
           const id = this.selectEmployees[i];
           const response = await deleteEmployee(id);
-        if (response) {
+          if (response) {
             responseArray.push(response);
           }
         }
-        const countSuccessRequests = responseArray.filter(item => {
+        const countSuccessRequests = responseArray.filter((item) => {
           return item.status === 200;
-        }).length
+        }).length;
         const countFailRequests = responseArray.length - countSuccessRequests;
         console.log(countSuccessRequests, countFailRequests);
         this.getData();
         this.isShowResult = true;
-        this.resultText = (INFO_TXT.DELETE_SUCCESS + ' ' + countSuccessRequests + ' ' + FIELD_NAME_VN.EMPLOYEE + ' | ' 
-                          + INFO_TXT.DELETE_FAIL + ' ' + countFailRequests + ' ' + FIELD_NAME_VN.EMPLOYEE)
+        this.resultText =
+          INFO_TXT.DELETE_SUCCESS +
+          " " +
+          countSuccessRequests +
+          " " +
+          FIELD_NAME_VN.EMPLOYEE +
+          " | " +
+          INFO_TXT.DELETE_FAIL +
+          " " +
+          countFailRequests +
+          " " +
+          FIELD_NAME_VN.EMPLOYEE;
         this.isLoading = false;
-
       } catch (error) {
         console.log(error);
         this.isLoading = false;
@@ -302,11 +350,10 @@ export default {
      * author: vinhkt
      * created: 18/09/2022
      */
-    onSearch: async function () {
-      (this.params.pageNumber = 1),
+    onSearch: _.debounce(function () {
+      this.params.pageNumber = 1;
       this.getData();
-    },
-
+    }, 500),
     /**
      * ẩn hiện dropdown chức năng
      * author: vinhkt
@@ -323,7 +370,7 @@ export default {
      */
     closeDropdownFunction() {
       this.isShowDropdown = false;
-    }
+    },
   },
 };
 </script>

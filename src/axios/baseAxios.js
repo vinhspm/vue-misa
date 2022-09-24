@@ -1,5 +1,5 @@
 import axios from "axios";
-
+axios.defaults.timeout = 5000;
 const HTTP = axios.create({
   baseURL: process.env.VUE_APP_BASE_API_URL,
 });

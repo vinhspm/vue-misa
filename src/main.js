@@ -15,6 +15,7 @@ import MCheckbox from "@/components/base/MInput/MCheckbox.vue";
 import Datepicker from 'vue3-datepicker'
 import VueClickAway from "vue3-click-away";
 import { createRouter, createWebHistory } from "vue-router";
+
 //B2: Định nghĩa các router:
 const routers = [
   { path: "/", redirect: "nhan-vien", name: "/" },

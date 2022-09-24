@@ -8,17 +8,19 @@
 
 <script>
 // import MButton from './components/base/MButton.vue'
-import TheHeader from './components/layout/TheHeader.vue'
-import TheMenu from './components/layout/TheMenu.vue'
-import TheContent from './components/layout/TheContent.vue'
+import TheHeader from "./components/layout/TheHeader.vue";
+import TheMenu from "./components/layout/TheMenu.vue";
+import TheContent from "./components/layout/TheContent.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    TheMenu,TheHeader,TheContent
-  }
-}
+    TheMenu,
+    TheHeader,
+    TheContent,
+  },
+};
 </script>
 
 <style>
-  @import url(./css/main.css);
+@import url(./css/main.css);
 </style>
