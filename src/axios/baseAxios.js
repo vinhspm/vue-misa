@@ -1,5 +1,7 @@
+import {TIME_OUT_VALUE} from '@/constants.js'
 import axios from "axios";
-axios.defaults.timeout = 5000;
+
+axios.defaults.timeout = TIME_OUT_VALUE;
 const HTTP = axios.create({
   baseURL: process.env.VUE_APP_BASE_API_URL,
 });

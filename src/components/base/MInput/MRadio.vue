@@ -31,7 +31,8 @@ export default {
     selected: String,
   },
   created() {
-    this.selectedItem = this.selected;
+    this.selectedItem = this.selected | this.data[0];
+    this.$emit("update:selectedItem", this.selectedItem.value);
   },
   data() {
     return {

@@ -219,7 +219,7 @@ export const DIALOG_TYPE = {
   ASK_CANCELABLE: "ask",
 };
 
-// text cảnh báo 
+// text cảnh báo
 export const WARNING_TXT = {
   DELETE: "Bạn có thực sự muốn xoá ",
   DATA_CHANGED: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
@@ -349,7 +349,7 @@ export const FIELD_NAME_VN = {
   DEPARTMENT: "Đơn vị",
   DepartmentId: "Đơn vị",
   POSITION: "Vị trí",
-  EMPLOYEE: 'Nhân viên'
+  EMPLOYEE: "Nhân viên",
 };
 
 // giá trị mặc định của phân trang
@@ -361,13 +361,15 @@ export const DEFAULT_PARAMS = {
 
 // rules validate của các trường
 export const EMPLOYEE_FIELD_RULES = {
-  EmployeeCode: ['require'],
-  FullName: ['require'],
-  DepartmentId: ['require'],
-  
-}
+  EmployeeCode: ["require"],
+  FullName: ["require"],
+  DepartmentId: ["require"],
+};
 
 // code các rules validate
 export const RULE_CODES = {
-  REQUIRE: 'require',
-}
+  REQUIRE: "require",
+};
+
+// code các rules validate
+export const TIME_OUT_VALUE = 10000;

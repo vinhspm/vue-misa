@@ -34,6 +34,10 @@ tbody tr:hover td{
     overflow: auto;
 }
 
+.rowFunctionContainer {
+    padding: 0 27px;
+}
+
 .table__paging {
     display: flex;
     justify-content: space-between;

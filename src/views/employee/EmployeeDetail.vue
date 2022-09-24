@@ -3,7 +3,6 @@
   <m-popup
     :componentWidth="900"
     @close-dialog="buttonCloseDialogClicked"
-    @focus="isFormTouched = true"
   >
     <template #header>
       <div class="title">Thông tin nhân viên</div>
@@ -382,6 +381,7 @@ export default {
      * created: 21/09/2022
      */
     onSaveOnly: function () {
+      this.isFormTouched = true;
       this.updateValidateData();
       this.updateListError();
       for (let key of Object.keys(this.fieldValid)) {

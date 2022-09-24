@@ -244,7 +244,9 @@ export default {
         } else {
           // this.reloadData();
           this.isLoading = false;
-          this.employees = []
+          this.employees = [];
+          this.totalPage = 0;
+          this.totalRecord = 0
         }
       } catch (error) {
         console.log(error);
