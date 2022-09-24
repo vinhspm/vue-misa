@@ -3,17 +3,18 @@
 </template>
 <script>
 export default {
-   name:"MButton",
-   props:["text"]
+    name: "MButton",
+    props: ["text"]
 }
 </script>
 <style scoped>
-.btn{
+.btn {
     border-radius: 4px;
     color: #fff;
     background-color: #2ca01c;
 }
-.btn-test{
+
+.btn-test {
     border: none;
 }
 </style>

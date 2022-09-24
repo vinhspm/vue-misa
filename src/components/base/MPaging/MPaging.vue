@@ -58,18 +58,42 @@ export default {
     }
   },
   methods: {
+
+    /**
+     * kích hoạt sự kiện thay đổi trang 
+     * author: vinhkt
+     * created: 22/09/2022
+     * @param {index of page} index 
+     */
     changePage(index) {
       this.$emit('update:currentPage', index);
     },
 
+    /**
+     * kích hoạt sự kiện thay đổi về trang trước
+     * author: vinhkt
+     * created: 22/09/2022
+     * @param {index of page} index 
+     */
     toPrevPage() {
       this.$emit('update:currentPage', this.currentPageProp - 1);
     },
 
+    /**
+     * kích hoạt sự kiện thay đổi tới trang sau
+     * author: vinhkt
+     * created: 22/09/2022
+     * @param {index of page} index 
+     */
     toNextPage() {
       this.$emit('update:currentPage', this.currentPageProp + 1);
     },
 
+    /**
+     * thay đổi mảng chứa các trang được hiển thị tới người dùng
+     * author: vinhkt
+     * created: 22/09/2022
+     */
     changePageArray() {
       const firstPage = 1;
       const lastPage = this.totalPage;
@@ -95,12 +119,24 @@ export default {
   },
 
   watch: {
+
+    /**
+     * theo dõi tổng số trang thay đổi để thay đổi mảng pageArray
+     * author: vinhkt
+     * created: 22/09/2022
+     */
     totalPage: {
       handler() {
         this.changePageArray()
       },
       immediate: true
     },
+
+    /**
+     * theo dõi prop trang hiện tại để cập nhật trên component
+     * author: vinhkt
+     * created: 22/09/2022
+     */
     currentPageProp: {
       handler(val) {
         this.currentPage = val;
@@ -108,6 +144,12 @@ export default {
       },
       immediate: true
     },
+
+    /**
+     * theo dõi số bản ghi một trang để cập nhật trên component cha và gán trang hiện tại về 1 - trang đầu tiên
+     * author: vinhkt
+     * created: 22/09/2022
+     */
     recordPerPage: {
       handler(val) {
         this.$emit('update:recordPerPage', parseInt(val))
@@ -117,6 +159,12 @@ export default {
 
       },
     },
+
+    /**
+     * theo dõi prop số bản ghi một trang để cập nhật trên component 
+     * author: vinhkt
+     * created: 22/09/2022
+     */
     recordPerPageProps: {
       handler(val) {
         this.recordPerPage = val.toString();

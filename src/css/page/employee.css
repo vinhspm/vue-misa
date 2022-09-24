@@ -58,7 +58,7 @@ table {
   border-left: none;
   border-right: none;
 }
-
+.table__container {}
 .page__table {
   width: 100%;
   overflow: auto;

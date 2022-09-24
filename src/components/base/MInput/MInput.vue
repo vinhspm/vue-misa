@@ -1,14 +1,7 @@
 <template>
-  <input
-    :type="type"
-    :value="modelValue"
-    @input="handleInput($event)"
-    :class="{ input__form: type !== 'checkbox', invalidInput: !isValidate }"
-    :name="name"
-    @focusout="checkInvalidInput($event)"
-    :title="title"
-
-  />
+  <input :type="type" :value="modelValue" @input="handleInput($event)"
+    :class="{ input__form: type !== 'checkbox', invalidInput: !isValidate }" :name="name"
+    @focusout="checkInvalidInput($event)" :title="title" />
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
@@ -41,10 +34,24 @@ export default {
     }
   },
   methods: {
+
+    /**
+     * truyền dữ liệu từ trường input lên component cha để xử lý
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event} event 
+     */
     handleInput(event) {
       this.checkInvalidInput(event)
       this.$emit("update:modelValue", event.target.value);
     },
+
+    /**
+     * validate giá trị input có rỗng hay không dựa trên event
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event: $event} event 
+     */
     checkInvalidInput(event) {
       if (this.isRequire) {
         if (!event.target.value && event.type === 'focusout') {

@@ -1,13 +1,7 @@
 <template>
   <div v-for="(item, index) in data" :key="index" class="mr-20">
-    <input
-      :id="item.name + item.value"
-      type="radio"
-      :name="item.name"
-      :value="item.value"
-      @input="handleInput($event)"
-      v-model="selectedItem"
-    />
+    <input :id="item.name + item.value" type="radio" :name="item.name" :value="item.value" @input="handleInput($event)"
+      v-model="selectedItem" />
     <label :for="item.name + item.value">{{ item.labelTxt }}</label>
   </div>
 </template>
@@ -45,6 +39,13 @@ export default {
     };
   },
   methods: {
+
+    /**
+     * truyền dữ liệu từ trường input lên component cha để xử lý
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event} event 
+     */
     handleInput: function (event) {
       this.$emit("update:selectedItem", event.target.value);
     },

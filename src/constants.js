@@ -219,7 +219,7 @@ export const DIALOG_TYPE = {
   ASK_CANCELABLE: "ask",
 };
 
-//
+// text cảnh báo 
 export const WARNING_TXT = {
   DELETE: "Bạn có thực sự muốn xoá ",
   DATA_CHANGED: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
@@ -229,6 +229,13 @@ export const WARNING_TXT = {
   },
 };
 
+//text thông tin
+export const INFO_TXT = {
+  DELETE_SUCCESS: "Xoá thành công",
+  DELETE_FAIL: "Xoá thất bại",
+};
+
+// dữ liệu các header của bảng nhân viên
 export const EMPLOYEE_HEADER = [
   {
     Class: "text-align--left sticky_header_left_1",
@@ -305,6 +312,7 @@ export const EMPLOYEE_HEADER = [
   },
 ];
 
+//lựa chọn số bản ghi trên 1 trang
 export const PAGING_OPTION = [
   { Value: "10", Name: "10 bản ghi trên 1 trang" },
   { Value: "20", Name: "20 bản ghi trên 1 trang" },
@@ -313,6 +321,7 @@ export const PAGING_OPTION = [
   { Value: "100", Name: "100 bản ghi trên 1 trang" },
 ];
 
+//dữ liệu radio input giới tính
 export const GENDER_RADIO_DATA = [
   {
     value: 0,
@@ -331,13 +340,16 @@ export const GENDER_RADIO_DATA = [
   },
 ];
 
+//text tiếng việt của các trường
 export const FIELD_NAME_VN = {
   CODE: "Mã nhân viên",
   FULLNAME: "Họ và tên",
   DEPARTMENT: "Đơn vị",
   POSITION: "Vị trí",
+  EMPLOYEE: 'Nhân viên'
 };
 
+// giá trị mặc định của phân trang
 export const DEFAULT_PARAMS = {
   pageSize: 20,
   pageNumber: 1,

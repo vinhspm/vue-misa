@@ -22,6 +22,13 @@ export default {
     };
   },
   methods: {
+
+    /**
+     * truyền dữ liệu từ trường checkbox lên component cha để xử lý
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event} event 
+     */
     handleInput: function (event) {
       const value = {
         value: event.target.value,

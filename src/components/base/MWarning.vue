@@ -2,15 +2,9 @@
   <m-popup @close-dialog="onClose" componentWidth="444">
     <template #content>
       <div class="popup__content">
-        <div
-          class="icon icon-48 icon--alert"
-          v-if="showDialogOnType.alert"
-        ></div>
+        <div class="icon icon-48 icon--alert" v-if="showDialogOnType.alert"></div>
         <div class="icon icon-48 icon--ask" v-if="showDialogOnType.ask"></div>
-        <div
-          class="icon icon-48 icon--warning"
-          v-if="showDialogOnType.warning | showDialogOnType.selectable"
-        ></div>
+        <div class="icon icon-48 icon--warning" v-if="showDialogOnType.warning | showDialogOnType.selectable"></div>
         <div style="margin-left: 20px">
           {{ text }}
         </div>
@@ -55,7 +49,12 @@ export default {
       },
     };
   },
-  // kiểm tra loại warning nào được sử dụng
+
+  /**
+   * kiểm tra loại popup nào được sử dụng
+   * author: vinhkt
+   * created: 23/09/2022
+   */
   created() {
     if (this.dialogType === DIALOG_TYPE.ALERT) {
       this.showDialogOnType.alert = true;
@@ -69,16 +68,30 @@ export default {
   },
 
   methods: {
-    //kích hoạt sự kiện đóng popup
+    
+    /**
+     * kích hoạt sự kiện đóng popup
+     * author: vinhkt
+     * created: 19/09/2022
+     */
     onClose() {
       this.$emit("close-warning");
     },
 
-    //kích hoạt sự kiện người dùng đồng ý
+    /**
+     * kích hoạt sự kiện người dùng đồng ý
+     * author: vinhkt
+     * created: 19/09/2022
+     */
     onOK() {
       this.$emit("ok-warning");
     },
 
+    /**
+     * kích hoạt sự kiện người dùng không đồng ý
+     * author: vinhkt
+     * created: 19/09/2022
+     */
     onDenied() {
       this.$emit('denied-warning')
     }
@@ -89,7 +102,6 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/base/icon.css);
-
 #alert {
   width: 100%;
   display: flex;
@@ -98,6 +110,7 @@ export default {
   height: 32px;
   /* margin: 15px 0; */
 }
+
 #warning {
   width: 100%;
   display: flex;
@@ -106,6 +119,7 @@ export default {
   height: 32px;
   /* margin: 15px 0; */
 }
+
 #selectable {
   width: 100%;
   display: flex;
@@ -114,6 +128,7 @@ export default {
   height: 32px;
   /* margin: 15px 0; */
 }
+
 #cancelable_selectable {
   width: 100%;
   display: flex;
@@ -122,14 +137,18 @@ export default {
   height: 32px;
   /* margin: 15px 0; */
 }
+
 #cancelable_selectable div {
   display: flex;
   justify-content: space-between;
 
 }
+
 .dialog__body {
-  padding: 0 !important;;
+  padding: 0 !important;
+  ;
 }
+
 .popup__content {
   display: flex;
   width: 100%;
@@ -138,6 +157,7 @@ export default {
   padding: 0;
   align-items: center;
 }
+
 button {
   height: 32px;
   min-width: 70px;

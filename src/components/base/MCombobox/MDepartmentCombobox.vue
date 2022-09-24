@@ -83,6 +83,14 @@ export default {
   },
 
   methods: {
+
+    /**
+     * tìm kiếm đơn vị theo mã và theo tên, khi kết thúc nhập nếu giá trị của ô input không
+     * trùng với một trong các giá trị được chọn thì gọi sự kiện đơn vị đang để trống
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {val: input text} val 
+     */
     searchItem(val) {
       this.isShow = true;
       let keySearch = val.target.value;
@@ -106,6 +114,13 @@ export default {
       }
       this.checkInvalidInput(val);
     },
+
+    /**
+     * gán giá trị cho input và item đã được chọn dựa trên key - id được truyền từ component cha
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {key} key 
+     */
     findNameByKey(key) {
       for (let i = 0; i < this.data.length; i++) {
         if (key === this.data[i][this.fieldKey]) {
@@ -115,19 +130,44 @@ export default {
         }
       }
     },
+
+    /**
+     * hiển thị / tắt select box on click
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     showOption() {
       this.isShow = !this.isShow;
 
     },
+
+    /**
+     * đánh dấu ô input là đã được focus - phục vụ việc validate
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     inputTouched() {
       if (!this.valueText) {
         this.valueText = '';
       }
     },
+
+    /**
+     * đóng select box và validate box
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     closeOption() {
       this.isShow = false;
       this.checkInvalidInputValue()
     },
+
+    /**
+     * chọn một item từ selectbox và validate item đó
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {item} item 
+     */
     selectItem(item) {
       this.itemSelect = item;
       this.dataSearch = { ...this.data };
@@ -138,6 +178,12 @@ export default {
       this.checkInvalidInputValue();
     },
 
+    /**
+     * validate giá trị input có nằm trong các giá trị được chọn hay không dựa trên event
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event: $event} event 
+     */
     checkInvalidInput(event) {
       if (this.isRequire) {
         if (!event.target.value && event.type !== "input") {
@@ -158,6 +204,11 @@ export default {
       }
     },
 
+    /**
+     * validate giá trị input có nằm trong các giá trị được chọn hay không dựa trên value
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     checkInvalidInputValue() {
       if (this.isRequire) {
         if (this.valueText === '') {

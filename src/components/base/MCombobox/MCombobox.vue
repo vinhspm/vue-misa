@@ -48,6 +48,8 @@ export default {
       Type: Boolean,
       default: false,
     },
+
+    // cài đặt vị trí xuất hiện của dropdown menu
     top: {
       Type: Boolean,
       default: false,
@@ -67,6 +69,8 @@ export default {
     return {
       itemSelect: null,
       isShow: false,
+
+      // khi thực hiện search trong input mảng data sẽ được filter vào dataSearch
       dataSearch: this.data,
       valueText: null,
       title: "",
@@ -76,14 +80,20 @@ export default {
     modelValue: {
       handler(val) {
         this.valueText = this.findNameByKey(val);
-      }, 
+      },
       immediate: true
     }
   },
 
   methods: {
-    searchItem(val) {
 
+    /**
+     * hàm lọc combobox item theo input nhập vào và gán vào dataSearch
+     * author: vinhkt
+     * created: 21/09/2021
+     * @param {val: input value} val 
+     */
+    searchItem(val) {
       let keySearch = val.target.value;
       this.dataSearch = this.data.filter((x) =>
         x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase())
@@ -94,6 +104,13 @@ export default {
       }
       this.checkInvalidInput(val);
     },
+
+    /**
+     * gán giá trị cho input và item đã được chọn dựa trên key - id được truyền từ component cha
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {key} key 
+     */
     findNameByKey(key) {
       for (let i = 0; i < this.data.length; i++) {
         if (key === this.data[i][this.fieldKey]) {
@@ -103,13 +120,32 @@ export default {
         }
       }
     },
+
+    /**
+     * hiển thị / tắt select box on click
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     showOption() {
       this.isShow = !this.isShow;
     },
+
+    /**
+     * đóng select box và validate box
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     closeOption() {
       this.isShow = false;
       this.checkInvalidInputValue()
     },
+
+    /**
+     * chọn một item từ selectbox và validate item đó
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {item} item 
+     */
     selectItem(item) {
       this.itemSelect = item;
       this.valueText = item[this.fieldName];
@@ -117,6 +153,13 @@ export default {
       this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
       this.checkInvalidInputValue();
     },
+
+    /**
+     * validate giá trị input có nằm trong các giá trị được chọn hay không dựa trên event
+     * author: vinhkt
+     * created: 21/09/2022
+     * @param {event: $event from input} event 
+     */
     checkInvalidInput(event) {
 
       if (!this.dataSearch.length && event.type) {
@@ -129,6 +172,12 @@ export default {
         this.title = "";
       }
     },
+
+    /**
+     * validate giá trị input có nằm trong các giá trị được chọn hay không dựa trên value
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     checkInvalidInputValue() {
       if (this.dataSearch.length === 0) {
         this.isValidate = false;

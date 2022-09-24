@@ -186,18 +186,21 @@ export default {
     selectedEmployee: Object,
   },
   methods: {
-    // kích hoạt sự kiện đóng form chi tiết
+
     /**
-     * hàm làm gì
-     * người tạo
-     * ngày tạo
-     * param
-     * return
+     * kích hoạt sự kiện đóng form chi tiết
+     * author: vinhkt
+     * created: 19/09/2022
      */
     closeDialog: function () {
       this.$emit("close-dialog");
     },
 
+    /**
+     * khi đóng form kiểm tra dữ liệu có bị thay đổi không và hiện warning
+     * author: vinhkt
+     * created: 19/09/2022
+     */
     buttonCloseDialogClicked() {
       if (
         JSON.stringify(this.employeeDetailData) ===
@@ -209,7 +212,11 @@ export default {
       }
     },
 
-    //hàm tương ứng với nút cất, sẽ đẩy thông tin lên server rồi đóng form
+    /**
+     * hàm tương ứng với nút cất, sẽ đẩy thông tin lên server rồi đóng form
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     onSaveOnly: function () {
       if (this.errorList.length) {
         this.errorText = this.errorList[0];
@@ -235,13 +242,21 @@ export default {
 
     },
 
-    //hàm đẩy thông tin lên server nhưng không đóng form mà clear form để thêm mới
+    /**
+     * hàm tương ứng với nút cất và thêm, sẽ đẩy thông tin lên server rồi clear form để thêm mới
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     saveAndContinue() {
       this.isContinue = true;
       this.onSaveOnly();
     },
 
-    //làm mới form chi tiết để thêm mới
+    /**
+     * làm mới form chi tiết để thêm mới
+     * author: vinhkt
+     * created: 16/09/2022
+     */
     clearForm() {
       this.employeeDetailData = {};
       this.isEdit = false;
@@ -250,8 +265,11 @@ export default {
       this.getNextEmpId();
     },
 
-    // gọi api thêm mới nhân viên
-    // author: VinhKt
+    /**
+     * api thêm mới nhân viên
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     addNewEmployee: async function () {
       this.isLoading = true;
       const body = this.bodyRequest;
@@ -274,8 +292,11 @@ export default {
       }
     },
 
-    // gọi api update nhân viên
-    //author: VinhKT
+    /**
+     * api update nhân viên
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     updateEmployee: async function () {
       this.isLoading = true;      
       const body = this.bodyRequest;
@@ -299,27 +320,41 @@ export default {
       }
     },
 
-    //tắt popup cảnh báo
+    /**
+     * tắt popup cảnh báo
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     closeWarning() {
       this.isShowWarning = false;
       this.isShowError = false;
     },
 
-    // xác nhận người dùng đồng ý với popup cảnh báo
+    /**
+     * xác nhận người dùng đồng ý với popup cảnh báo 
+     * author: vinhkt
+     * created: 21/09/2022
+     */
     okWarning() {
       this.onSaveOnly();
       this.closeWarning();
     },
 
-    //
+    /**
+     * xác nhận người dùng đồng ý với popup cảnh báo 
+     * author: vinhkt
+     * created: 16/09/2022
+     */
     deniedWarning() {
       this.closeWarning();
-      // this.clearForm();
       this.closeDialog();
     },
 
-    // lấy mã nhân viên kế tiếp với form thêm mới bằng api
-    // author: VinhKT
+    /**
+     * lấy mã nhân viên kế tiếp với form thêm mới bằng api
+     * author: vinhkt
+     * created: 16/09/2022
+     */
     getNextEmpId: async function () {
       try {
         const response = await getNextEmployee();
@@ -336,7 +371,7 @@ export default {
     /**
      * hàm thêm một lỗi của trường nhập liệu vào danh sách nếu chưa có
      * author: VinhKT
-     *
+     * created: 21/09/2022
      */
     addError(title) {
       if (this.errorList.includes(title)) {
@@ -350,7 +385,7 @@ export default {
     /**
      * hàm xoá một lỗi của trường nhập liệu khỏi danh sách
      * author: VinhKT
-     *
+     * created: 21/09/2022
      */
     removeError(title) {
       if (this.errorList.includes(title)) {
@@ -366,8 +401,12 @@ export default {
     },
   },
 
-  //kiểm tra xem người dùng đang update hay thêm mới nhân viên
-  //gán thông tin nhân viên được chọn để update vào data của component để có thể binding hai chiều
+  /**
+   * kiểm tra xem người dùng đang update hay thêm mới nhân viên
+   * gán thông tin nhân viên được chọn để update vào data của component để có thể binding hai chiều
+   * author: vinhkt
+   * created: 18/09/2022
+   */
   created() {
     if (
       Object.prototype.hasOwnProperty.call(

@@ -6,6 +6,15 @@ const HTTP = axios.create({
 const headers = {
   "Content-Type": "application/json",
 };
+
+/**
+ * hàm base axios xử lý http get request
+ * author: vinhkt
+ * created: 23/09/2022
+ * @param endpoint 
+ * @param query 
+ * @returns 
+ */
 export const getAxios = async (endpoint, query) => {
   return await HTTP.get(endpoint, {
     params: {
@@ -14,6 +23,14 @@ export const getAxios = async (endpoint, query) => {
   });
 };
 
+/**
+ * hàm base axios xử lý http post request
+ * author: vinhkt
+ * created: 23/09/2022
+ * @param endpoint 
+ * @param body 
+ * @returns 
+ */
 export const postAxios = async (endpoint, body) => {
   
   return await HTTP.post(
@@ -25,6 +42,14 @@ export const postAxios = async (endpoint, body) => {
   );
 };
 
+/**
+ * hàm base axios xử lý http put request
+ * author: vinhkt
+ * created: 23/09/2022
+ * @param endpoint 
+ * @param body 
+ * @returns 
+ */
 export const putAxios = async (endpoint, body) => {
   return await HTTP.put(
     endpoint,
@@ -35,6 +60,13 @@ export const putAxios = async (endpoint, body) => {
   );
 };
 
+/**
+ * hàm base axios xử lý http delete request
+ * author: vinhkt
+ * created: 23/09/2022
+ * @param endpoint 
+ * @returns 
+ */
 export const deleteAxios = async (endpoint) => {
   return await HTTP.delete(endpoint);
 };
