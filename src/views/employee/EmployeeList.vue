@@ -201,7 +201,7 @@ export default {
       this.clickedEmployeeDelete = emp;
       this.isShowWarning = true;
       this.warningText =
-        WARNING_TXT.DELETE + "Nhân viên " + emp.EmployeeCode + " không ?";
+        WARNING_TXT.DELETE + "Nhân viên <" + emp.EmployeeCode + "> không ?";
     },
 
     /**
@@ -281,7 +281,7 @@ export default {
      * created: 23/09/2022
      * */
     okWarningMultipleDelete() {
-      this.deleteMultipleEmployee();
+      this.deleteMultipleEmployees();
       this.closeWarning();
     },
 
@@ -310,7 +310,7 @@ export default {
      * author: vinhkt
      * created: 23/09/2022
      * */
-    async deleteMultipleEmployee() {
+    async deleteMultipleEmployees() {
       this.isLoading = true;
       try {
         let responseArray = [];

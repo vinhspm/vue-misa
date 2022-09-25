@@ -29,7 +29,7 @@
             </th>
           </tr>
         </thead>
-        <tbody v-click-away="closeFunctionDropdown">
+        <tbody>
           <tr
             v-for="(emp, index) in dataSource"
             :key="emp.EmployeeId"
@@ -61,12 +61,13 @@
               }}
             </td>
 
-            <td
-              v-if="isShowFunctionDropdown"
-              class="rowFunctionContainer"
-            >
+            <td v-if="isShowFunctionDropdown" class="rowFunctionContainer">
               <button id="editButton" @click="toggleDialog(index)">Sửa</button>
-              <div class="dropdown" style="float: right">
+              <div
+                class="dropdown"
+                style="float: right"
+                v-click-away="clickedEmployee.EmployeeId == emp.EmployeeId? closeFunctionDropdown: ''"
+              >
                 <button
                   class="dropbtn"
                   @click="showDropdownFunction(emp)"
@@ -78,9 +79,9 @@
                   tabindex="0"
                   ref="dropdown"
                 >
-                  <a href="#">Nhân bản</a>
+                  <a href="#" @click="closeFunctionDropdown">Nhân bản</a>
                   <a href="#" @click="warningDelete(emp)">Xoá</a>
-                  <a href="#">Ngưng sử dụng</a>
+                  <a href="#" @click="closeFunctionDropdown">Ngưng sử dụng</a>
                 </div>
               </div>
             </td>
@@ -114,7 +115,6 @@ export default {
     return {
       clickedEmployee: {},
       selected: [],
-      isShowDropdown: false,
     };
   },
   created() {
@@ -184,10 +184,8 @@ export default {
     showDropdownFunction: function (emp) {
       if (this.clickedEmployee.EmployeeId === emp.EmployeeId) {
         this.clickedEmployee = {};
-        this.isShowDropdown = true;
       } else {
         this.clickedEmployee = emp;
-        this.isShowDropdown = true;
       }
     },
 
