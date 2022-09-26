@@ -41,11 +41,6 @@
                 v-model="selected"
                 :value="emp.EmployeeId"
               />
-              <!-- <m-checkbox
-                name="checkItem"
-                :value="emp.EmployeeId"
-                @update:selectedItem="checkBoxItemSelected($event)"
-              />&nbsp; -->
             </td>
             <td
               v-for="(item, index) in headers"
@@ -111,18 +106,18 @@ export default {
       default: [],
     },
   },
+
   data() {
     return {
       clickedEmployee: {},
       selected: [],
     };
   },
-  created() {
-    console.log(this.dataSource);
-  },
+
   computed: {
+
     /**
-     * hàm thiết lập giá trị cho selectAll khi checkbox selectall được check / bỏ check
+     * thiết lập giá trị cho selectAll khi checkbox selectall được check / bỏ check
      * và check / bỏ check cho checkbox selectall khi mảng selected thay đổi
      * author: vinhkt
      * created: 23/09/2022
@@ -172,6 +167,12 @@ export default {
     },
   },
   methods: {
+
+    /**
+     * ẩn hiện dialog
+     * author: vinhkt
+     * created: 23/09/2022
+     */
     toggleDialog(emp) {
       this.$emit("toggle-dialog", emp);
     },
@@ -189,6 +190,11 @@ export default {
       }
     },
 
+    /**
+     * ẩn dropdown chức năng xoá
+     * author: vinhkt
+     * created: 23/09/2022
+     */
     closeFunctionDropdown: function () {
       this.clickedEmployee = {};
     },

@@ -32,10 +32,15 @@ export default {
     }
   },
   methods: {
+
+    /**
+     * hàm kích hoạt sự kiện đóng dialog
+     */
     closeDialog() {
       this.$emit('close-dialog');
     }
   },
+
   data() {
     return {
 

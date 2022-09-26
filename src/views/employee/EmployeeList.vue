@@ -144,6 +144,7 @@ export default {
       resultText: "",
     };
   },
+
   watch: {
     searchInputValue: {
       handler(val) {
@@ -157,6 +158,7 @@ export default {
       },
       deep: true,
     },
+
     "params.pageSize": {
       handler() {
         this.getData();
@@ -164,7 +166,9 @@ export default {
       deep: true,
     },
   },
+
   methods: {
+
     /**
      * bật / tắt form chi tiết nhân viên, đổi format datetime phù hợp
      * author: vinhkt
@@ -356,6 +360,7 @@ export default {
       this.params.pageNumber = 1;
       this.getData();
     }, 500),
+    
     /**
      * ẩn hiện dropdown chức năng
      * author: vinhkt

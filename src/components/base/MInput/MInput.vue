@@ -50,6 +50,7 @@ export default {
     }
   },
   methods: {
+    
     /**
      * truyền dữ liệu từ trường input lên component cha để xử lý
      * author: vinhkt

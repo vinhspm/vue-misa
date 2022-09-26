@@ -6,6 +6,15 @@ export const BaseValidateMixins = {
     };
   },
   methods: {
+    
+    /**
+     * hàm validate của form detail nhân viên khi click nút cất
+     * author: vinhkt
+     * created: 24/09/2022
+     * @returns listError: {
+     *    fieldKey: errorMsg
+     * }
+     */
     validateData() {
       const listError = {};
       for (const key of Object.keys(this.needValidateData)) {
