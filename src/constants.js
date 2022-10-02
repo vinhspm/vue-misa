@@ -235,6 +235,13 @@ export const INFO_TXT = {
   DELETE_FAIL: "Xoá thất bại",
 };
 
+//dữ liệu giới tính
+export const GENDER_DATA = {
+  0: "Nam",
+  1: "Nữ",
+  2: "Khác"
+};
+
 // dữ liệu các header của bảng nhân viên
 export const EMPLOYEE_HEADER = [
   {
@@ -255,7 +262,10 @@ export const EMPLOYEE_HEADER = [
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "Giới tính",
-    Field: "GenderName",
+    Field: "Gender",
+    dataFormat: (genderEnum) => {
+      return GENDER_DATA[genderEnum]
+    },
     Width: "100",
   },
   {

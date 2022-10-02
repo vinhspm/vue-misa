@@ -62,7 +62,7 @@ export default {
     modelValue: String,
   },
   created() {
-    this.dataSearch = { ...this.data };
+    
     // this.valueText = this.findNameByKey(this.modelValue);
   },
   data() {
@@ -71,15 +71,22 @@ export default {
       isShow: false,
 
       // khi thực hiện search trong input mảng data sẽ được filter vào dataSearch
-      dataSearch: this.data,
+      dataSearch: [],
       valueText: null,
       title: "",
     };
   },
   watch: {
     modelValue: {
-      handler(val) {
-        this.valueText = this.findNameByKey(val);
+      handler() {
+        this.valueText = this.findNameByKey(this.modelValue);
+      },
+    },
+
+    data: {
+      handler() {
+        this.dataSearch = {...this.data};
+        this.valueText = this.findNameByKey(this.modelValue);
       },
       immediate: true
     }

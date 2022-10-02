@@ -32,14 +32,21 @@ export default {
   },
 
   created() {
-    this.selectedItem = this.selected | this.data[0];
-    this.$emit("update:selectedItem", this.selectedItem.value);
+    this.selectedItem = this.selected;
   },
   
   data() {
     return {
       selectedItem: String,
     };
+  },
+
+  watch: {
+    selectedItem: {
+      handler() {
+      },
+      // immediate: true
+    }
   },
   methods: {
 
@@ -50,7 +57,7 @@ export default {
      * @param {event} event 
      */
     handleInput: function (event) {
-      this.$emit("update:selectedItem", event.target.value);
+      this.$emit("update:selectedItem", parseInt(event.target.value));
     },
   },
 };

@@ -108,7 +108,7 @@
                 <m-radio
                   :data="genderData"
                   :selected="employeeDetailData.Gender"
-                  @update:selectedItem="employeeDetailData.Gender = $event"
+                  @update:selectedItem="employeeDetailData.Gender = $event? $event: employeeDetailData.Gender"
                 ></m-radio>
               </div>
             </div>
@@ -238,8 +238,6 @@
 </template>
 <script>
 import {
-  DEPARTMENT_DATA,
-  POSITION_DATA,
   DIALOG_TYPE,
   WARNING_TXT,
   GENDER_RADIO_DATA,
@@ -252,6 +250,9 @@ import {
   postEmployee,
   putEmployee,
 } from "@/axios/employeeController/employeeController.js";
+import {getDepartments} from "@/axios/departmentController/departmentController.js";
+import {getPositions} from "@/axios/positionController/departmentController.js";
+
 import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
 
 export default {
@@ -330,6 +331,9 @@ export default {
         this.closeDialog();
       } else {
         this.isShowWarning = true;
+        console.log(JSON.stringify(this.employeeDetailData));
+        console.log(JSON.stringify(this.selectedEmployee));
+
       }
     },
 
@@ -561,6 +565,20 @@ export default {
         return;
       }
     },
+
+    /**
+     * lấy dữ liệu đầu vào cho combobox vị trí và đơn vị
+     */
+    async getDepartmentAndPositionData() {
+      const departmentResponse = await getDepartments();
+      const positionResponse = await getPositions();
+      if(departmentResponse) {
+        this.departments = departmentResponse.data;
+      }
+      if(positionResponse) {
+        this.positions = positionResponse.data;
+      }
+     }
   },
 
   /**
@@ -570,6 +588,7 @@ export default {
    * created: 18/09/2022
    */
   created() {
+    this.getDepartmentAndPositionData();
     if (
       Object.prototype.hasOwnProperty.call(
         this.selectedEmployee,
@@ -583,10 +602,11 @@ export default {
     } else {
       this.isEdit = false;
       this.getNextEmpId();
+      
       console.log("add new");
     }
-    this.departments = DEPARTMENT_DATA;
-    this.positions = POSITION_DATA;
+    
+
   },
 };
 </script>

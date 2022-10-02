@@ -20,7 +20,7 @@
         <div>Thực hiện hàng loạt</div>
         <div class="dropdown">
           <button class="dropdown-btn"></button>
-          <div class="multiple_item__dropdown_content" v-if="isShowDropdown">
+          <div class="multiple_item__dropdown_content" v-if="isShowDropdown && selectEmployees.length">
             <a href="#">Nhân bản</a>
             <a href="#" @click="warningMultipleDelete()">Xoá</a>
             <a href="#">Ngưng sử dụng</a>
@@ -226,7 +226,6 @@ export default {
     reloadData() {
       this.searchInputValue = "";
       this.params = { ...DEFAULT_PARAMS };
-      console.log(DEFAULT_PARAMS);
       this.getData();
       console.log();
     },
@@ -330,7 +329,7 @@ export default {
         }).length;
         const countFailRequests = responseArray.length - countSuccessRequests;
         console.log(countSuccessRequests, countFailRequests);
-        this.getData();
+        this.reloadData();
         this.isShowResult = true;
         this.resultText =
           INFO_TXT.DELETE_SUCCESS +

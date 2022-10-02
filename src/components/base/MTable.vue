@@ -48,11 +48,10 @@
               :class="item.CellClass"
             >
               {{
-                emp[item.Field]
-                  ? item.dataFormat
+                 item.dataFormat
                     ? item.dataFormat(emp[item.Field])
                     : emp[item.Field]
-                  : ""
+                 
               }}
             </td>
 

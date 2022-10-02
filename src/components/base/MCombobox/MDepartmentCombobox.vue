@@ -94,17 +94,27 @@ export default {
     },
   },
   created() {
-    this.dataSearch = { ...this.data };
-    this.valueText = this.findNameByKey(this.modelValue);
+    
+    
   },
   data() {
     return {
       itemSelect: null,
       isShow: false,
-      dataSearch: this.data,
+      dataSearch: [],
       valueText: null,
       title: "",
     };
+  },
+
+  watch: {
+    data: {
+      handler() {
+        this.dataSearch = {...this.data};
+        this.valueText = this.findNameByKey(this.modelValue);
+      },
+      immediate: true
+    }
   },
 
   methods: {
