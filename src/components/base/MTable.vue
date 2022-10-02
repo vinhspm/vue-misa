@@ -48,10 +48,7 @@
               :class="item.CellClass"
             >
               {{
-                 item.dataFormat
-                    ? item.dataFormat(emp[item.Field])
-                    : emp[item.Field]
-                 
+                getValueTxt(item, emp)    
               }}
             </td>
 
@@ -86,6 +83,9 @@
   </div>
 </template>
 <script>
+import {FIELD_NAME_EN} from '@/constants.js';
+import {getDepartments} from "@/axios/departmentController/departmentController.js";
+import {getPositions} from "@/axios/positionController/positionController.js";
 export default {
   props: {
     showCheckbox: {
@@ -110,7 +110,14 @@ export default {
     return {
       clickedEmployee: {},
       selected: [],
+      fieldName: FIELD_NAME_EN,
+      departments: [],
+      positions: [],
     };
+  },
+
+  created() {
+    this.getDepartmentAndPositionData();
   },
 
   computed: {
@@ -166,6 +173,20 @@ export default {
     },
   },
   methods: {
+    
+    /**
+     * lấy dữ liệu department và position
+     */
+    async getDepartmentAndPositionData() {
+      const departmentResponse = await getDepartments();
+      const positionResponse = await getPositions();
+      if(departmentResponse) {
+        this.departments = departmentResponse.data;
+      }
+      if(positionResponse) {
+        this.positions = positionResponse.data;
+      }
+     },
 
     /**
      * ẩn hiện dialog
@@ -174,6 +195,33 @@ export default {
      */
     toggleDialog(emp) {
       this.$emit("toggle-dialog", emp);
+    },
+
+    /**
+     * hàm lấy text hiển thị trên bảng
+     * @param {header_data} item 
+     * @param {employeeData} emp 
+     */
+    getValueTxt(item, emp) {
+      if(item.Field === this.fieldName.DepartmentId) {
+        const index = (this.departments.findIndex(ele => {
+          return ele.DepartmentId === emp[item.Field];
+        }));
+        if(index >= 0) {
+          return this.departments[index].DepartmentName;
+        } else return "";
+      }
+      if(item.Field === this.fieldName.PositionId) {
+        const index = (this.positions.findIndex(ele => {
+          return ele.PositionId === emp[item.Field];
+        }));
+        if(index >= 0) {
+          return this.positions[index].PositionName;
+        } else return "";
+      }
+      return item.dataFormat
+              ? item.dataFormat(emp[item.Field])
+              : emp[item.Field]
     },
 
     /**

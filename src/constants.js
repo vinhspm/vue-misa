@@ -289,14 +289,14 @@ export const EMPLOYEE_HEADER = [
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "chức danh",
-    Field: "PositionName",
+    Field: "PositionId",
     Width: "200",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "tên đơn vị",
-    Field: "DepartmentName",
+    Field: "DepartmentId",
     Width: "250",
   },
   {
@@ -360,6 +360,12 @@ export const FIELD_NAME_VN = {
   DepartmentId: "Đơn vị",
   POSITION: "Vị trí",
   EMPLOYEE: "Nhân viên",
+};
+
+// field name tiếng anh
+export const FIELD_NAME_EN = {
+  DepartmentId: "DepartmentId",
+  PositionId: "PositionId",
 };
 
 // giá trị mặc định của phân trang

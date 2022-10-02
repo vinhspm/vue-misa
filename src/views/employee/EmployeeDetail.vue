@@ -251,7 +251,7 @@ import {
   putEmployee,
 } from "@/axios/employeeController/employeeController.js";
 import {getDepartments} from "@/axios/departmentController/departmentController.js";
-import {getPositions} from "@/axios/positionController/departmentController.js";
+import {getPositions} from "@/axios/positionController/positionController.js";
 
 import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
 

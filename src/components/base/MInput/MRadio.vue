@@ -45,7 +45,6 @@ export default {
     selectedItem: {
       handler() {
       },
-      // immediate: true
     }
   },
   methods: {
