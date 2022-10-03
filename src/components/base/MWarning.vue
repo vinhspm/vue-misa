@@ -5,7 +5,7 @@
         <div class="icon icon-48 icon--alert" v-if="showDialogOnType.alert"></div>
         <div class="icon icon-48 icon--ask" v-if="showDialogOnType.ask"></div>
         <div class="icon icon-48 icon--warning" v-if="showDialogOnType.warning | showDialogOnType.selectable"></div>
-        <div style="margin-left: 20px">
+        <div style="margin-left: 20px; word-wrap: break-word; max-width: 300px">
           {{ text }}
         </div>
       </div>
@@ -108,7 +108,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 32px;
-  /* margin: 15px 0; */
 }
 
 #warning {
@@ -117,7 +116,6 @@ export default {
   justify-content: end;
   align-items: center;
   height: 32px;
-  /* margin: 15px 0; */
 }
 
 #selectable {
@@ -126,7 +124,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 32px;
-  /* margin: 15px 0; */
 }
 
 #cancelable_selectable {
@@ -135,7 +132,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 32px;
-  /* margin: 15px 0; */
 }
 
 #cancelable_selectable div {
@@ -146,7 +142,7 @@ export default {
 
 .dialog__body {
   padding: 0 !important;
-  ;
+  
 }
 
 .popup__content {
