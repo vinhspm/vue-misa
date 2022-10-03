@@ -93,7 +93,6 @@ select {
 .showOnTop {
   bottom: 32px!important;
   top: unset;
-  cursor: pointer;
 }
 .input_action {
   width: 32px;

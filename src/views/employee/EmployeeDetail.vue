@@ -231,7 +231,7 @@
   <m-warning
     v-if="isShowError"
     :text="errorText"
-    :dialogType="DIALOG_TYPE.ALERT"
+    :dialogType="warningType"
     @close-warning="closeWarning"
   >
   </m-warning>
@@ -243,6 +243,7 @@ import {
   GENDER_RADIO_DATA,
   FIELD_NAME_VN,
   EMPLOYEE_FIELD_RULES,
+ERROR_CODE,
 } from "../../constants.js";
 import { toCamel } from "@/js/base.js";
 import {
@@ -254,6 +255,7 @@ import {getDepartments} from "@/axios/departmentController/departmentController.
 import {getPositions} from "@/axios/positionController/positionController.js";
 
 import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
+import { AxiosError } from "axios";
 
 export default {
   mixins: [BaseValidateMixins],
@@ -290,6 +292,7 @@ export default {
           msg: "",
         },
       },
+      warningType: DIALOG_TYPE.ALERT,
     };
   },
   props: {
@@ -482,7 +485,14 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        this.closeDialog();
+        if(error.code === AxiosError.ERR_BAD_REQUEST) {
+          const errorData = error.response.data;
+          if(errorData.Code === ERROR_CODE.DUPLICATE_INPUT) {
+            this.isShowError = true,
+            this.errorText = FIELD_NAME_VN[errorData.MoreInfo]+' <' + this.employeeDetailData[errorData.MoreInfo] +'> '+ WARNING_TXT.EXISTED_IN_SYSTEM
+            this.warningType = DIALOG_TYPE.WARNING;
+          }
+        }
         this.isLoading = false;
       }
     },
