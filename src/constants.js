@@ -227,7 +227,6 @@ export const WARNING_TXT = {
   dataNotInList: (fieldName) => {
     return "Dữ liệu <" + fieldName + "> không tồn tại trong danh mục";
   },
-  EXISTED_IN_SYSTEM: "đã tồn tại trong hệ thống, vui lòng kiểm tra lại."
 };
 
 //text thông tin
@@ -240,7 +239,7 @@ export const INFO_TXT = {
 export const GENDER_DATA = {
   0: "Nam",
   1: "Nữ",
-  2: "Khác",
+  2: "Khác"
 };
 
 // dữ liệu các header của bảng nhân viên
@@ -265,7 +264,7 @@ export const EMPLOYEE_HEADER = [
     Caption: "Giới tính",
     Field: "Gender",
     dataFormat: (genderEnum) => {
-      return GENDER_DATA[genderEnum];
+      return GENDER_DATA[genderEnum]
     },
     Width: "100",
   },
@@ -390,11 +389,3 @@ export const RULE_CODES = {
 
 // code các rules validate
 export const TIME_OUT_VALUE = 10000;
-
-// enum error code
-export const ERROR_CODE = {
-  EXCEPTION: 1,
-  INVALID_INPUT: 2,
-  NOTNULL_INPUT: 3,
-  DUPLICATE_INPUT: 4,
-};
