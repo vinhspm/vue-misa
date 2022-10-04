@@ -63,6 +63,24 @@ export const putAxios = async (endpoint, body) => {
 };
 
 /**
+ * hàm base axios xử lý http put request với nhiều bản ghi
+ * author: vinhkt
+ * created: 30/09/2022
+ * @param endpoint 
+ * @param body 
+ * @returns 
+ */
+ export const multiplePutAxios = async (endpoint, body) => {
+  return await HTTP.put(
+    endpoint,
+    [
+      ...body,
+    ],
+    { headers: headers }
+  );
+};
+
+/**
  * hàm base axios xử lý http delete request
  * author: vinhkt
  * created: 23/09/2022

@@ -1,4 +1,4 @@
-import axios from "../baseAxios.js";
+import axios, { multiplePutAxios } from "../baseAxios.js";
 import {ENDPOINTS} from '../endpoints.js'
 
 /**
@@ -66,4 +66,9 @@ export async function postEmployee(body) {
 export async function putEmployee(id, body) {
   const endpoint = ENDPOINTS.EMPLOYEES + '/' + id;
   return await axios.putAxios(endpoint, body);
+}
+
+export async function deleteMultipleEmployee(ids) {
+  const endpoint = ENDPOINTS.MULTIPLE_DELETE_EMPLOYEE;
+  return await multiplePutAxios(endpoint, ids);
 }

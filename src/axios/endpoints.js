@@ -3,5 +3,6 @@ export const ENDPOINTS = {
   EMPLOYEES_FILTER: '/Employees/filter',
   DEPARTMENTS: '/Departments',
   POSITIONS: '/Positions',
-  NEW_EMPLOYEE_CODE: '/Employees/NewEmployeeCode'
+  NEW_EMPLOYEE_CODE: '/Employees/NewEmployeeCode',
+  MULTIPLE_DELETE_EMPLOYEE: '/Employees/multiple-delete'
 }

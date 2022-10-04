@@ -107,6 +107,7 @@ import { formatDateInput } from "../../js/base.js";
 import {
   getEmployeesFilter,
   deleteEmployee,
+  deleteMultipleEmployee
 } from "@/axios/employeeController/employeeController.js";
 // import MWarning from "@/components/base/MWarning.vue";
 import _ from "lodash";
@@ -316,19 +317,17 @@ export default {
     async deleteMultipleEmployees() {
       this.isLoading = true;
       try {
-        let responseArray = [];
-        for (let i = 0; i < this.selectEmployees.length; i++) {
-          const id = this.selectEmployees[i];
-          const response = await deleteEmployee(id);
-          if (response) {
-            responseArray.push(response);
-          }
-        }
-        const countSuccessRequests = responseArray.filter((item) => {
-          return item.status === 200;
-        }).length;
-        const countFailRequests = responseArray.length - countSuccessRequests;
-        console.log(countSuccessRequests, countFailRequests);
+        // let responseArray = [];
+        // for (let i = 0; i < this.selectEmployees.length; i++) {
+        //   const id = this.selectEmployees[i];
+        //   const response = await deleteEmployee(id);
+        //   if (response) {
+        //     responseArray.push(response);
+        //   }
+        // }
+        const response = await deleteMultipleEmployee(Object.values(this.selectEmployees));
+        const countSuccessRequests = response.data.SuccessQueries;
+        const countFailRequests = response.data.FailedQueries;
         this.reloadData();
         this.isShowResult = true;
         this.resultText =

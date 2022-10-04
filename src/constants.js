@@ -361,6 +361,7 @@ export const FIELD_NAME_VN = {
   DepartmentId: "Đơn vị",
   POSITION: "Vị trí",
   EMPLOYEE: "Nhân viên",
+  Email: "email",
 };
 
 // field name tiếng anh
