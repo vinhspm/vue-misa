@@ -40,12 +40,6 @@ export default {
       this.$emit('close-dialog');
     }
   },
-
-  data() {
-    return {
-
-    }
-  }
 }
 </script>
 <style>

@@ -5,11 +5,12 @@
     @input="handleInput($event)"
     :class="{
       input__form: type !== 'checkbox',
-      invalidInput: !isValidate | !isValidProp.value,
+      invalidInput: !isValidate | !isValidData.value,
     }"
     :name="name"
     @focusout="checkInvalidInput($event)"
-    :title="title || isValidProp.msg"
+    :title="title || isValidData.msg"
+    :ref="fieldNameTxt"
   />
 </template>
 <script>
@@ -37,16 +38,36 @@ export default {
         msg: "",
       },
     },
+    needMountedFocus: {
+      Type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       isDate: false,
       title: "",
+      isValidData: this.isValidProp
     };
   },
+
+  mounted() {
+    if(this.needMountedFocus) {
+      this.$nextTick(() => this.$refs[this.fieldNameTxt].focus())
+    }
+  },
+
   created() {
     if (this.type === "date") {
       this.isDate = true;
+    }
+  },
+  watch: {
+    isValidProp: {
+      handler() {
+        this.isValidData = this.isValidProp;
+      },
+      immediate: true
     }
   },
   methods: {

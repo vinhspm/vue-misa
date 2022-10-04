@@ -398,3 +398,19 @@ export const ERROR_CODE = {
   NOTNULL_INPUT: 3,
   DUPLICATE_INPUT: 4,
 };
+
+// GIÁ TRỊ VALID BAN ĐẦU CỦA CÁC TRƯỜNG CẦN VALIDATE BẢNG NHÂN VIÊN
+export const DEFAULT_FIELD_VALID = {
+  EmployeeCode: {
+    value: true,
+    msg: "",
+  },
+  FullName: {
+    value: true,
+    msg: "",
+  },
+  DepartmentId: {
+    value: true,
+    msg: "",
+  },
+}

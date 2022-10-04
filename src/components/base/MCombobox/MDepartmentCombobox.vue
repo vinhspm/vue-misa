@@ -108,12 +108,18 @@ export default {
   },
 
   watch: {
+    // gán dataSearch = data truyền vào từ prop mỗi khi có thay đổi data prop
     data: {
       handler() {
         this.dataSearch = {...this.data};
         this.valueText = this.findNameByKey(this.modelValue);
       },
       immediate: true
+    },
+    modelValue: {
+      handler() {
+        this.valueText = this.findNameByKey(this.modelValue);
+      }
     }
   },
 
@@ -134,16 +140,21 @@ export default {
           item[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
         );
       });
+
+      // nếu xoá ô input thì reset lại select
       if (!keySearch || keySearch == "") {
         this.itemSelect = null;
         this.dataSearch = this.data;
       }
+
+      // nếu giá trị ô input không trùng khớp với dữ liệu đã cho thì gán selected = rỗng
       let dataMatch = this.data.filter((item) => {
         return item[this.fieldName].toLowerCase() === keySearch.toLowerCase();
       });
       if (dataMatch.length === 0) {
         this.$emit("update:modelValue", "");
       }
+      
       this.checkInvalidInput(val);
     },
 

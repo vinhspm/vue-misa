@@ -1,9 +1,6 @@
 <template>
   <loading-layer v-if="isLoading"></loading-layer>
-  <m-popup
-    :componentWidth="900"
-    @close-dialog="buttonCloseDialogClicked"
-  >
+  <m-popup :componentWidth="900" @close-dialog="buttonCloseDialogClicked">
     <template #header>
       <div class="title">Thông tin nhân viên</div>
       <div class="employee__type__container">
@@ -40,6 +37,7 @@
                 @field-invalid="(title) => addError(title)"
                 @field-valid="(title) => removeError(title)"
                 :isValidProp="fieldValid.EmployeeCode"
+                :needMountedFocus="true"
               />
             </div>
             <div class="col w-70">
@@ -108,7 +106,11 @@
                 <m-radio
                   :data="genderData"
                   :selected="employeeDetailData.Gender"
-                  @update:selectedItem="employeeDetailData.Gender = $event? $event: employeeDetailData.Gender"
+                  @update:selectedItem="
+                    employeeDetailData.Gender = $event
+                      ? $event
+                      : employeeDetailData.Gender
+                  "
                 ></m-radio>
               </div>
             </div>
@@ -223,7 +225,7 @@
   <m-warning
     v-if="isShowWarning"
     :text="warningText"
-    :dialogType="DIALOG_TYPE.ASK_CANCELABLE"
+    :dialogType="dialogType.ASK_CANCELABLE"
     @close-warning="closeWarning"
     @ok-warning="okWarning"
     @denied-warning="deniedWarning"
@@ -243,7 +245,8 @@ import {
   GENDER_RADIO_DATA,
   FIELD_NAME_VN,
   EMPLOYEE_FIELD_RULES,
-ERROR_CODE,
+  ERROR_CODE,
+  DEFAULT_FIELD_VALID,
 } from "../../constants.js";
 import { toCamel } from "@/js/base.js";
 import {
@@ -251,8 +254,8 @@ import {
   postEmployee,
   putEmployee,
 } from "@/axios/employeeController/employeeController.js";
-import {getDepartments} from "@/axios/departmentController/departmentController.js";
-import {getPositions} from "@/axios/positionController/positionController.js";
+import { getDepartments } from "@/axios/departmentController/departmentController.js";
+import { getPositions } from "@/axios/positionController/positionController.js";
 
 import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
 import { AxiosError } from "axios";
@@ -269,7 +272,7 @@ export default {
       bodyRequest: {},
       isLoading: false,
       isContinue: false,
-      DIALOG_TYPE: DIALOG_TYPE,
+      dialogType: DIALOG_TYPE,
       isShowWarning: false,
       isShowError: false,
       warningText: WARNING_TXT.DATA_CHANGED,
@@ -279,18 +282,7 @@ export default {
       errorText: "",
       isFormTouched: false,
       fieldValid: {
-        EmployeeCode: {
-          value: true,
-          msg: "",
-        },
-        FullName: {
-          value: true,
-          msg: "",
-        },
-        DepartmentId: {
-          value: true,
-          msg: "",
-        },
+        ...DEFAULT_FIELD_VALID,
       },
       warningType: DIALOG_TYPE.ALERT,
     };
@@ -318,6 +310,7 @@ export default {
      * created: 19/09/2022
      */
     closeDialog: function () {
+      this.clearForm();
       this.$emit("close-dialog");
     },
 
@@ -336,7 +329,6 @@ export default {
         this.isShowWarning = true;
         console.log(JSON.stringify(this.employeeDetailData));
         console.log(JSON.stringify(this.selectedEmployee));
-
       }
     },
 
@@ -429,6 +421,22 @@ export default {
      */
     clearForm() {
       this.employeeDetailData = {};
+      this.errorList = [];
+      this.isFormTouched = false;
+      this.fieldValid = {
+        EmployeeCode: {
+          value: true,
+          msg: "",
+        },
+        FullName: {
+          value: true,
+          msg: "",
+        },
+        DepartmentId: {
+          value: true,
+          msg: "",
+        },
+      };
       this.isEdit = false;
       this.bodyRequest = {};
       this.isContinue = false;
@@ -456,8 +464,7 @@ export default {
           this.$emit("reload-data");
         }
       } catch (error) {
-        console.log(error);
-        this.closeDialog();
+        this.handleError(error);
         this.isLoading = false;
       }
     },
@@ -485,15 +492,31 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        if(error.code === AxiosError.ERR_BAD_REQUEST) {
-          const errorData = error.response.data;
-          if(errorData.Code === ERROR_CODE.DUPLICATE_INPUT) {
-            this.isShowError = true,
-            this.errorText = FIELD_NAME_VN[errorData.MoreInfo]+' <' + this.employeeDetailData[errorData.MoreInfo] +'> '+ WARNING_TXT.EXISTED_IN_SYSTEM
-            this.warningType = DIALOG_TYPE.WARNING;
-          }
-        }
+        this.handleError(error);
+
         this.isLoading = false;
+      }
+    },
+
+    /**
+     * hàm xử lý lỗi trả về từ axios
+     * author: vinhkt
+     * created: 03/10/2022
+     * @param {lỗi axios trả về} error
+     */
+    handleError(error) {
+      if (error.code === AxiosError.ERR_BAD_REQUEST) {
+        const errorData = error.response.data;
+        if (errorData.Code === ERROR_CODE.DUPLICATE_INPUT) {
+          (this.isShowError = true),
+            (this.errorText =
+              FIELD_NAME_VN[errorData.MoreInfo] +
+              " <" +
+              this.employeeDetailData[errorData.MoreInfo] +
+              "> " +
+              WARNING_TXT.EXISTED_IN_SYSTEM);
+          this.warningType = DIALOG_TYPE.WARNING;
+        }
       }
     },
 
@@ -582,13 +605,13 @@ export default {
     async getDepartmentAndPositionData() {
       const departmentResponse = await getDepartments();
       const positionResponse = await getPositions();
-      if(departmentResponse) {
+      if (departmentResponse) {
         this.departments = departmentResponse.data;
       }
-      if(positionResponse) {
+      if (positionResponse) {
         this.positions = positionResponse.data;
       }
-     }
+    },
   },
 
   /**
@@ -606,18 +629,13 @@ export default {
       )
     ) {
       this.employeeDetailData = { ...this.selectedEmployee };
-      console.log("edit");
-      console.log(this.employeeDetailData.DateOfBirth);
       this.isEdit = true;
     } else {
       this.isEdit = false;
       this.getNextEmpId();
-      
-      console.log("add new");
     }
-    
-
   },
+
 };
 </script>
 <style scoped>
