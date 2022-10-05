@@ -20,17 +20,11 @@
           <div class="row">
             <div class="col w-30">
               <label>Mã (<span class="input--required">*</span>)</label>
-              <m-input
-                type="text"
-                :modelValue="employeeDetailData.EmployeeCode"
-                @update:modelValue="employeeDetailData.EmployeeCode = $event"
-                :isRequire="true"
-                :fieldNameTxt="fieldNameVnTxt.CODE"
-                @field-invalid="(title) => addError(title)"
-                @field-valid="(title) => removeError(title)"
-                :isValidProp="fieldValid.EmployeeCode"
-                :needMountedFocus="true"
-              />
+              <m-input type="text" :modelValue="employeeDetailData.EmployeeCode"
+                @update:modelValue="employeeDetailData.EmployeeCode = $event" :isRequire="true"
+                :fieldNameTxt="fieldNameVnTxt.CODE" @field-invalid="(title) => addError(title)"
+                @field-valid="(title) => removeError(title)" :isValidProp="fieldValid.EmployeeCode"
+                :needMountedFocus="true" />
             </div>
             <div class="col w-70">
               <label>Họ và tên (<span class="input--required">*</span>)</label>
@@ -72,15 +66,11 @@
             <div class="col w-60">
               <label>Giới tính</label>
               <div class="row align-center h-32">
-                <m-radio
-                  :data="genderData"
-                  :selected="employeeDetailData.Gender"
-                  @update:selectedItem="
-                    employeeDetailData.Gender = $event
-                      ? $event
-                      : employeeDetailData.Gender
-                  "
-                ></m-radio>
+                <m-radio :data="genderData" :selected="employeeDetailData.Gender" @update:selectedItem="
+                  employeeDetailData.Gender = $event
+                    ? $event
+                    : employeeDetailData.Gender
+                "></m-radio>
               </div>
             </div>
           </div>
@@ -158,20 +148,9 @@
       </div>
     </template>
   </m-popup>
-  <m-warning
-    v-if="isShowWarning"
-    :text="warningText"
-    :dialogType="dialogType.ASK_CANCELABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarning"
-    @denied-warning="deniedWarning"
-  ></m-warning>
-  <m-warning
-    v-if="isShowError"
-    :text="errorText"
-    :dialogType="warningType"
-    @close-warning="closeWarning"
-  >
+  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="dialogType.ASK_CANCELABLE"
+    @close-warning="closeWarning" @ok-warning="okWarning" @denied-warning="deniedWarning"></m-warning>
+  <m-warning v-if="isShowError" :text="errorText" :dialogType="warningType" @close-warning="closeWarning">
   </m-warning>
 </template>
 <script>
@@ -217,10 +196,9 @@ export default {
       errorList: [],
       errorText: "",
       isFormTouched: false,
-      fieldValid: {
-        ...DEFAULT_FIELD_VALID,
-      },
+      fieldValid: {},
       warningType: DIALOG_TYPE.ALERT,
+      isCloseDialogAfterWarning: false
     };
   },
   props: {
@@ -356,7 +334,10 @@ export default {
      * created: 16/09/2022
      */
     clearForm() {
+      this.isEdit = false;
       this.employeeDetailData = {};
+      this.bodyRequest = {};
+      this.isContinue = false;
       this.errorList = [];
       this.isFormTouched = false;
       this.fieldValid = {
@@ -373,9 +354,6 @@ export default {
           msg: "",
         },
       };
-      this.isEdit = false;
-      this.bodyRequest = {};
-      this.isContinue = false;
       this.getNextEmpId();
     },
 
@@ -441,8 +419,8 @@ export default {
      * @param {lỗi axios trả về} error
      */
     handleError(error) {
+      const errorData = error.response.data;
       if (error.code === AxiosError.ERR_BAD_REQUEST) {
-        const errorData = error.response.data;
         if (errorData.Code === ERROR_CODE.DUPLICATE_INPUT) {
           (this.isShowError = true),
             (this.errorText =
@@ -452,7 +430,16 @@ export default {
               "> " +
               WARNING_TXT.EXISTED_IN_SYSTEM);
           this.warningType = DIALOG_TYPE.WARNING;
+        } else if (errorData.Code === ERROR_CODE.INVALID_INPUT) {
+          this.isShowError = true;
+          this.errorText = WARNING_TXT.INVALID_INPUT + FIELD_NAME_VN[errorData.MoreInfo];
+          this.warningType = DIALOG_TYPE.WARNING;
         }
+      } else {
+        this.isShowError = true;
+        this.isCloseDialogAfterWarning = true;
+        this.errorText = errorData.UserMsg | WARNING_TXT.DEFAULT_ERROR_MSG;
+        this.warningType = DIALOG_TYPE.WARNING;
       }
     },
 
@@ -464,6 +451,9 @@ export default {
     closeWarning() {
       this.isShowWarning = false;
       this.isShowError = false;
+      if(this.isCloseDialogAfterWarning) {
+        this.closeDialog();
+      }
     },
 
     /**
@@ -557,6 +547,9 @@ export default {
    * created: 18/09/2022
    */
   created() {
+    this.fieldValid = {
+        ...DEFAULT_FIELD_VALID,
+      };
     this.getDepartmentAndPositionData();
     if (
       Object.prototype.hasOwnProperty.call(

@@ -5,7 +5,7 @@
     @input="handleInput($event)"
     :class="{
       input__form: type !== 'checkbox',
-      invalidInput: !isValidate | !isValidData.value,
+      invalidInput: !isValidate || !isValidData.value,
     }"
     :name="name"
     @focusout="checkInvalidInput($event)"
@@ -47,7 +47,11 @@ export default {
     return {
       isDate: false,
       title: "",
-      isValidData: this.isValidProp
+      isValidate: true,
+      isValidData: {
+        value: true,
+        msg: "",
+      },
     };
   },
 
@@ -62,14 +66,17 @@ export default {
       this.isDate = true;
     }
   },
+
   watch: {
     isValidProp: {
       handler() {
-        this.isValidData = this.isValidProp;
+          this.isValidData = {...this.isValidProp};
       },
-      immediate: true
+      immediate: true,
+      deep: true
     }
   },
+
   methods: {
     
     /**
