@@ -68,7 +68,23 @@ export async function putEmployee(id, body) {
   return await axios.putAxios(endpoint, body);
 }
 
+/**
+ * xoá hàng loạt nhân viên
+ * @param {mảng id cần xoá} ids 
+ * @returns 
+ */
 export async function deleteMultipleEmployee(ids) {
   const endpoint = ENDPOINTS.MULTIPLE_DELETE_EMPLOYEE;
   return await multiplePutAxios(endpoint, ids);
+}
+
+
+/**
+ * xuất file excel các nhân viên theo filter
+ * @param {filter} employeeFilter
+ * @returns 
+ */
+ export async function exportAllEmployeesFilter(employeeFilter) {
+  const endpoint = ENDPOINTS.EXPORT_EMPLOYEE_FILTER;
+  return await axios.getAxios(endpoint, employeeFilter);
 }

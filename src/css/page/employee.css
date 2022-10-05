@@ -7,6 +7,15 @@
   border: none;
 }
 
+#btnExport {
+  height: 24px;
+  width: 24px;
+  background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat;
+  background-position: -705px -200px;
+  cursor: pointer;
+  border: none;
+}
+
 #btnDelete {
   border-radius: 4px;
   height: 40px;

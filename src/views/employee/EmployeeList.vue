@@ -41,6 +41,9 @@
         <div class="page__toolbar--reload">
           <button id="btnRefresh" @click="reloadData"></button>
         </div>
+        <div class="page__toolbar--reload">
+          <button id="btnExport" @click="exportData"></button>
+        </div>
       </div>
     </div>
     <m-table
@@ -107,7 +110,8 @@ import { formatDateInput } from "../../js/base.js";
 import {
   getEmployeesFilter,
   deleteEmployee,
-  deleteMultipleEmployee
+  deleteMultipleEmployee,
+exportAllEmployeesFilter
 } from "@/axios/employeeController/employeeController.js";
 // import MWarning from "@/components/base/MWarning.vue";
 import _ from "lodash";
@@ -376,6 +380,20 @@ export default {
     closeDropdownFunction() {
       this.isShowDropdown = false;
     },
+
+    /**
+     * xuất ra file excel toàn bộ nhân viên theo filter
+     * created vinhkt(05-10-2022)
+     */
+    async exportData() {
+      this.isLoading = true;
+      try {
+        await exportAllEmployeesFilter({employeeFilter: this.searchInputValue})
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+    }
   },
 };
 </script>
