@@ -1,4 +1,4 @@
-import axios, { multiplePutAxios } from "../baseAxios.js";
+import axios, { multiplePutAxios, getAxiosBlob } from "../baseAxios.js";
 import {ENDPOINTS} from '../endpoints.js'
 
 /**
@@ -86,5 +86,5 @@ export async function deleteMultipleEmployee(ids) {
  */
  export async function exportAllEmployeesFilter(employeeFilter) {
   const endpoint = ENDPOINTS.EXPORT_EMPLOYEE_FILTER;
-  return await axios.getAxios(endpoint, employeeFilter);
+  return await getAxiosBlob(endpoint, employeeFilter);
 }

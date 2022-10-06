@@ -11,6 +11,7 @@
     @focusout="checkInvalidInput($event)"
     :title="title || isValidData.msg"
     :ref="fieldNameTxt"
+    :placeholder="placeHolder"
   />
 </template>
 <script>
@@ -41,6 +42,10 @@ export default {
     needMountedFocus: {
       Type: Boolean,
       default: false
+    },
+    placeHolder: {
+      Type: String,
+      default: ""
     }
   },
   data() {

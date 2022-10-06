@@ -44,13 +44,15 @@ button + button {
   margin-left: 10px;
 }
 
-table,
-th {
-  border: 1px solid #bbbbbb;
+table th {
+  border-right: 1px solid #bbbbbb;
+  border-bottom: 1px solid #bbbbbb;
+  border-top: none;
 }
 
 td {
-  border: 1px dotted #bbbbbb;
+  border-right: 1px dotted #bbbbbb;
+  border-bottom: 1px solid #bbbbbb;
 }
 
 th:first-child,
@@ -104,7 +106,7 @@ table {
 
 .sticky_header_left_1 {
   position: sticky;
-  left: 60px;
+  left: 61px;
   background-color: #eceef1;
   z-index: 2;
 }
@@ -118,7 +120,7 @@ table {
 
 .sticky_body_left_1 {
   position: sticky;
-  left: 60px;
+  left: 61px;
   background: #fff;
   z-index: 2;
 }

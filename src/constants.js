@@ -181,14 +181,14 @@ export const EMPLOYEE_HEADER = [
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "chức danh",
-    Field: "PositionId",
+    Field: "PositionName",
     Width: "200",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "tên đơn vị",
-    Field: "DepartmentId",
+    Field: "DepartmentName",
     Width: "250",
   },
   {

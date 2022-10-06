@@ -26,6 +26,23 @@ export const getAxios = async (endpoint, query) => {
 };
 
 /**
+ * hàm base axios xử lý http get request blob
+ * author: vinhkt
+ * created: 23/09/2022
+ * @param endpoint 
+ * @param query 
+ * @returns 
+ */
+ export const getAxiosBlob = async (endpoint, query) => {
+  return await HTTP.get(endpoint, {
+    params: {
+      ...query,
+    },
+    responseType: 'blob'
+  });
+};
+
+/**
  * hàm base axios xử lý http post request
  * author: vinhkt
  * created: 23/09/2022

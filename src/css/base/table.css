@@ -43,7 +43,6 @@ tbody tr:hover td{
     justify-content: space-between;
     align-items: center;
     height: 56px;
-    border-top: 1px solid #ccc
 }
 .table__paging--left {
     margin-left: 20px;

@@ -1,41 +1,26 @@
 <template>
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button
-      id="btnAdd"
-      class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên"
-      @click="toggleDialog"
-    >
+    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên" @click="toggleDialog">
     </m-button>
   </div>
 
   <div class="page__table">
     <div class="page__toolbar">
-      <div
-        class="page__toolbar--left"
-        @click="showDropdownFunction"
-        v-click-away="closeDropdownFunction"
-      >
+      <div class="page__toolbar--left" @click="showDropdownFunction" v-click-away="closeDropdownFunction">
         <div>Thực hiện hàng loạt</div>
         <div class="dropdown">
           <button class="dropdown-btn"></button>
           <div class="multiple_item__dropdown_content" v-if="isShowDropdown && selectEmployees.length">
-            <a href="#">Nhân bản</a>
             <a href="#" @click="warningMultipleDelete()">Xoá</a>
-            <a href="#">Ngưng sử dụng</a>
           </div>
         </div>
       </div>
       <div class="page__toolbar--right">
         <div class="page__toolbar--search">
-          <input
-            type="text"
-            class="input input__icon input__icon--search"
-            v-model="searchInputValue"
-            placeholder="Tìm theo mã, tên nhân viên"
-            @input="onSearch"
-          />
+          <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
+            placeholder="Tìm theo mã, tên nhân viên" @input="onSearch" />
           <button @click="onSearch"></button>
         </div>
         <div class="page__toolbar--reload">
@@ -46,52 +31,24 @@
         </div>
       </div>
     </div>
-    <m-table
-      :headers="employeeHeader"
-      :dataSource="employees"
-      @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)"
-      @update:selectEmployees="selectEmployees = $event"
-    >
+    <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
+      @warning-delete="(emp) => warningDelete(emp)" @update:selectEmployees="selectEmployees = $event">
     </m-table>
 
-    <m-paging
-      :recordPerPageProps="params.pageSize"
-      :totalRecord="totalRecord"
-      :totalPage="totalPage"
-      @update:recordPerPage="params.pageSize = $event"
-      @update:currentPage="params.pageNumber = $event"
-      :currentPageProp="params.pageNumber"
-    ></m-paging>
+    <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
+      @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
+      :currentPageProp="params.pageNumber"></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail
-    v-if="isShow"
-    @close-dialog="toggleDialog"
-    :selectedEmployee="selectedEmployee"
-    @reload-data="reloadData"
-  ></EmployeeDetail>
+  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
+    @reload-data="reloadData"></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning
-    v-if="isShowWarning"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarning"
-  ></m-warning>
-  <m-warning
-    v-if="isShowWarningMultipleDelete"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarningMultipleDelete"
-  ></m-warning>
-  <m-warning
-    v-if="isShowResult"
-    :text="resultText"
-    :dialogType="DIALOG_TYPE.WARNING"
-    @close-warning="closeWarning"
-  ></m-warning>
+  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
+    @ok-warning="okWarning"></m-warning>
+  <m-warning v-if="isShowWarningMultipleDelete" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning" @ok-warning="okWarningMultipleDelete"></m-warning>
+  <m-warning v-if="isShowResult" :text="resultText" :dialogType="DIALOG_TYPE.WARNING" @close-warning="closeWarning">
+  </m-warning>
   <loading-layer v-if="isLoading"></loading-layer>
 </template>
 <script>
@@ -111,9 +68,11 @@ import {
   getEmployeesFilter,
   deleteEmployee,
   deleteMultipleEmployee,
-exportAllEmployeesFilter
+  exportAllEmployeesFilter
 } from "@/axios/employeeController/employeeController.js";
 // import MWarning from "@/components/base/MWarning.vue";
+import {getDepartments} from "@/axios/departmentController/departmentController.js";
+import {getPositions} from "@/axios/positionController/positionController.js";
 import _ from "lodash";
 export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
@@ -147,6 +106,8 @@ export default {
       isShowWarningMultipleDelete: false,
       isShowResult: false,
       resultText: "",
+      departments: [],
+      positions: [],
     };
   },
 
@@ -236,12 +197,43 @@ export default {
     },
 
     /**
+     * lấy dữ liệu department và position
+     */
+    async getDepartmentAndPositionData() {
+      const departmentResponse = await getDepartments();
+      const positionResponse = await getPositions();
+      if (departmentResponse) {
+        this.departments = departmentResponse.data;
+      }
+      if (positionResponse) {
+        this.positions = positionResponse.data;
+      }
+    },
+
+    /**
+     * gán dữ liệu đơn vị và vị trí cho nhân viên
+     */
+    bindDepartmentAndPositionName() {
+      this.employees.forEach(emp => {
+        const empDepartment = this.departments.find(dpm => {
+          return dpm.DepartmentId === emp.DepartmentId;
+        });
+        const empPosition = this.positions.find(pst => {
+          return pst.PositionId === emp.PositionId;
+        });
+        emp.DepartmentName = empDepartment.DepartmentName;
+        emp.PositionName = empPosition.PositionName;
+      });
+    },
+
+    /**
      * lấy tắt cả dữ liệu từ bảng nhân viên theo filter và paging
      * author: vinhkt
      * created: 23/09/2022
      */
     getData: async function () {
       this.isLoading = true;
+      await this.getDepartmentAndPositionData();
       try {
         const response = await getEmployeesFilter(this.params);
         if (response.status === 200) {
@@ -249,6 +241,7 @@ export default {
           this.totalPage = response.data.TotalPage;
           this.totalRecord = response.data.TotalRecord;
           this.isLoading = false;
+          this.bindDepartmentAndPositionName();
         } else {
           // this.reloadData();
           this.isLoading = false;
@@ -362,7 +355,7 @@ export default {
       this.params.pageNumber = 1;
       this.getData();
     }, 500),
-    
+
     /**
      * ẩn hiện dropdown chức năng
      * author: vinhkt
@@ -388,7 +381,20 @@ export default {
     async exportData() {
       this.isLoading = true;
       try {
-        await exportAllEmployeesFilter({employeeFilter: this.searchInputValue})
+        const response = await exportAllEmployeesFilter({ employeeFilter: this.searchInputValue });
+        if (response) {
+          const url = URL.createObjectURL(
+            new Blob([response.data], {
+              type: "application/vnd.ms-excel"
+            }))
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `Danh sách nhân viên_${Date.now()}.xlsx`);
+          document.body.appendChild(link);
+          link.click();
+          this.isLoading = false;
+        }
+
       } catch (error) {
         console.log(error);
         this.isLoading = false;

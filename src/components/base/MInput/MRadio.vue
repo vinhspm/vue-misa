@@ -44,6 +44,7 @@ export default {
   watch: {
     selectedItem: {
       handler() {
+        this.selectedItem = this.selected;
       },
     }
   },

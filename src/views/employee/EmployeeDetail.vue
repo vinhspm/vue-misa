@@ -61,16 +61,12 @@
             <div class="col w-40">
               <label>Ngày sinh</label>
               <m-input type="date" :modelValue="employeeDetailData.DateOfBirth"
-                @update:modelValue="employeeDetailData.DateOfBirth = $event" />
+                @update:modelValue="employeeDetailData.DateOfBirth = $event" placeHolder="DD/MM/YYYY"/>
             </div>
             <div class="col w-60">
               <label>Giới tính</label>
               <div class="row align-center h-32">
-                <m-radio :data="genderData" :selected="employeeDetailData.Gender" @update:selectedItem="
-                  employeeDetailData.Gender = $event
-                    ? $event
-                    : employeeDetailData.Gender
-                "></m-radio>
+                <m-radio :data="genderData" :selected="employeeDetailData.Gender" @update:selectedItem="selectGender($event)"></m-radio>
               </div>
             </div>
           </div>
@@ -174,7 +170,7 @@ import { getPositions } from "@/axios/positionController/positionController.js";
 
 import { BaseValidateMixins } from "@/components/base/BaseValidateMixins.js";
 import { AxiosError } from "axios";
-
+import  {cloneDeep} from "lodash";
 export default {
   mixins: [BaseValidateMixins],
   name: "EmployeeDetail",
@@ -218,6 +214,9 @@ export default {
   },
 
   methods: {
+    selectGender(val){
+      this.employeeDetailData.Gender = val != null ? val : this.employeeDetailData.Gender
+    },
     /**
      * kích hoạt sự kiện đóng form chi tiết
      * author: vinhkt
@@ -241,8 +240,6 @@ export default {
         this.closeDialog();
       } else {
         this.isShowWarning = true;
-        console.log(JSON.stringify(this.employeeDetailData));
-        console.log(JSON.stringify(this.selectedEmployee));
       }
     },
 
@@ -276,7 +273,6 @@ export default {
      */
     updateListError() {
       const listError = this.validateData();
-      console.log(listError);
       for (let key of Object.keys(this.fieldValid)) {
         if (listError[key]) {
           this.fieldValid[key].value = false;
@@ -309,7 +305,6 @@ export default {
         this.isShowError = true;
       } else {
         this.bodyRequest = toCamel(this.employeeDetailData);
-        console.log(this.bodyRequest);
         if (this.isEdit) {
           this.updateEmployee();
         } else {
@@ -368,7 +363,7 @@ export default {
       try {
         const response = await postEmployee(body);
         if (response) {
-          console.log(response);
+          console.log(response.data);
           this.isLoading = false;
           if (this.isContinue) {
             this.clearForm();
@@ -395,7 +390,7 @@ export default {
       try {
         const response = await putEmployee(id, body);
         if (response) {
-          console.log(response);
+          console.log(response.data);
           this.isLoading = false;
           if (this.isContinue) {
             this.clearForm();
@@ -504,7 +499,6 @@ export default {
         return;
       } else {
         this.errorList.push(title);
-        console.log(this.errorList);
       }
     },
 
@@ -518,7 +512,6 @@ export default {
         const index = this.errorList.indexOf(title);
         if (index > -1) {
           this.errorList.splice(index, 1);
-          console.log(this.errorList);
         }
       } else {
         return;
@@ -547,9 +540,7 @@ export default {
    * created: 18/09/2022
    */
   created() {
-    this.fieldValid = {
-        ...DEFAULT_FIELD_VALID,
-      };
+    this.fieldValid = cloneDeep(DEFAULT_FIELD_VALID);
     this.getDepartmentAndPositionData();
     if (
       Object.prototype.hasOwnProperty.call(
