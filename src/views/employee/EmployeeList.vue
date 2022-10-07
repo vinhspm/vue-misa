@@ -78,9 +78,10 @@ export default {
   components: { MButton, EmployeeDetail, LoadingLayer },
   name: "EmployeeList",
 
-  created() {
+  async created() {
     // Gọi api lấy dữ liệu:
     this.params = { ...DEFAULT_PARAMS };
+    await this.getDepartmentAndPositionData();
     this.getData();
   },
 
@@ -122,14 +123,13 @@ export default {
       handler() {
         this.getData();
       },
-      deep: true,
     },
 
     "params.pageSize": {
       handler() {
         this.getData();
+
       },
-      deep: true,
     },
   },
 
@@ -181,7 +181,7 @@ export default {
      */
     warningMultipleDelete: function () {
       this.isShowWarningMultipleDelete = true;
-      this.warningText = WARNING_TXT.DELETE + "Những nhân viên đã chọn không ?";
+      this.warningText = WARNING_TXT.DELETE + "những nhân viên đã chọn không ?";
     },
 
     /**
@@ -221,8 +221,8 @@ export default {
         const empPosition = this.positions.find(pst => {
           return pst.PositionId === emp.PositionId;
         });
-        emp.DepartmentName = empDepartment.DepartmentName;
-        emp.PositionName = empPosition.PositionName;
+        emp.DepartmentName = empDepartment?.DepartmentName;
+        emp.PositionName = empPosition?.PositionName;
       });
     },
 
@@ -233,7 +233,6 @@ export default {
      */
     getData: async function () {
       this.isLoading = true;
-      await this.getDepartmentAndPositionData();
       try {
         const response = await getEmployeesFilter(this.params);
         if (response.status === 200) {
