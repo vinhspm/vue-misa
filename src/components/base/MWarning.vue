@@ -32,7 +32,7 @@
   </m-popup>
 </template>
 <script>
-import { DIALOG_TYPE } from "../../constants.js";
+import { DIALOG_TYPE } from "../../enum.js";
 
 export default {
   props: {

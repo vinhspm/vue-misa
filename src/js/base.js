@@ -12,7 +12,7 @@ export function formatDate(datetime) {
 // hàm thay đổi format ngày giờ thành YYYY/MM/DD
 export function formatDateInput(datetime) {
   if (datetime) {
-    return moment(datetime).format("YYYY-MM-DD");
+    return moment(datetime).format("YYYY-MM-DDTHH:mm:ss");
   } else {
     return undefined;
   }

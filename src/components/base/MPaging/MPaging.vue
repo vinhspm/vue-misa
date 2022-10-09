@@ -12,19 +12,19 @@
       </div>
 
       <div class="table__paging--center">
-        <button :disabled="currentPageProp === 1" class="paging__button" @click="toPrevPage">Trước</button>
+        <button :disabled="currentPageProp === 1 || !totalPage" class="paging__button" @click="toPrevPage">Trước</button>
         <div class="paging__button--group">
           <button :disabled="pageIndex === '...'" v-for="(pageIndex, index) in pageArray" :key="pageIndex+index"
             class="paging__number" :class="{'paging__number--selected': pageIndex === currentPage}"
             @click="changePage(pageIndex)">{{pageIndex}}</button>
         </div>
-        <button :disabled="currentPageProp === totalPage" class="paging__button" @click="toNextPage">Sau</button>
+        <button :disabled="currentPageProp === totalPage || !totalPage" class="paging__button" @click="toNextPage">Sau</button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { PAGING_OPTION } from '@/constants.js'
+import { PAGING_OPTION } from '@/enum.js'
 export default {
   created() {
     this.recordPerPage = this.recordPerPageProps.toString();
@@ -95,24 +95,28 @@ export default {
      * created: 22/09/2022
      */
     changePageArray() {
-      const firstPage = 1;
-      const lastPage = this.totalPage;
-      const nextPage = this.currentPageProp + 1;
-      const prevPage = this.currentPageProp - 1;
-      if (lastPage <= this.maxPage) {
-        this.pageArray = Array.from({ length: lastPage }, (_, i) => i + 1);
-      } else {
-        if (this.currentPageProp === firstPage || this.currentPageProp === firstPage + 1) {
-          this.pageArray = ([firstPage, firstPage + 1, firstPage + 2, '...', lastPage - 1, lastPage]);
-        } else if (this.currentPageProp === lastPage || this.currentPageProp === lastPage - 1) {
-          this.pageArray = ([firstPage, firstPage + 1, '...', lastPage - 2, lastPage - 1, lastPage]);
-        } else if (this.currentPageProp === firstPage + 2) {
-          this.pageArray = ([firstPage, firstPage + 1, firstPage + 2, firstPage + 3, '...', lastPage]);
-        } else if (this.currentPageProp === lastPage - 2) {
-          this.pageArray = ([firstPage, '...', lastPage - 3, lastPage - 2, lastPage - 1, lastPage]);
+      try {
+        const firstPage = 1;
+        const lastPage = this.totalPage;
+        const nextPage = this.currentPageProp + 1;
+        const prevPage = this.currentPageProp - 1;
+        if (lastPage <= this.maxPage) {
+          this.pageArray = Array.from({ length: lastPage }, (_, i) => i + 1);
         } else {
-          this.pageArray = ([firstPage, '...', prevPage, this.currentPageProp, nextPage, '...', lastPage]);
+          if (this.currentPageProp === firstPage || this.currentPageProp === firstPage + 1) {
+            this.pageArray = ([firstPage, firstPage + 1, firstPage + 2, '...', lastPage - 1, lastPage]);
+          } else if (this.currentPageProp === lastPage || this.currentPageProp === lastPage - 1) {
+            this.pageArray = ([firstPage, firstPage + 1, '...', lastPage - 2, lastPage - 1, lastPage]);
+          } else if (this.currentPageProp === firstPage + 2) {
+            this.pageArray = ([firstPage, firstPage + 1, firstPage + 2, firstPage + 3, '...', lastPage]);
+          } else if (this.currentPageProp === lastPage - 2) {
+            this.pageArray = ([firstPage, '...', lastPage - 3, lastPage - 2, lastPage - 1, lastPage]);
+          } else {
+            this.pageArray = ([firstPage, '...', prevPage, this.currentPageProp, nextPage, '...', lastPage]);
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
 
     }

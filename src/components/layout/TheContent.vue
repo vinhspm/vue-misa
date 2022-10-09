@@ -1,6 +1,6 @@
 <template>
-  <div class="content">
-    <router-view></router-view>
+  <div class="content" v-loading="isLoading">
+    <router-view @update:loading="changeLoading($event)"></router-view>
   </div>
 </template>
 <script>
@@ -8,9 +8,16 @@ export default {
   name: "TheContent",
   props: [],
   data() {
-    return {};
+    return {
+      isLoading: false,
+    };
   },
   components: {},
+  methods: {
+    changeLoading(event) {
+      this.isLoading = event;
+    }
+  }
 };
 </script>
 <style scoped>

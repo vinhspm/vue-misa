@@ -1,4 +1,4 @@
-import {TIME_OUT_VALUE} from '@/constants.js'
+import {TIME_OUT_VALUE} from '@/enum.js'
 import axios from "axios";
 
 axios.defaults.timeout = TIME_OUT_VALUE;

@@ -15,6 +15,9 @@
         class="input__form"
         :class="{ invalidInput: !isValidate | !isValidProp.value }"
         :title="title || isValidProp.msg"
+        @keyup.up="changeSelection($event)"
+        @keyup.down="changeSelection($event)"
+
       />
       <div class="input_action" @click="showOption">
         <div
@@ -51,7 +54,7 @@
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
-import { WARNING_TXT } from "@/constants";
+import { WARNING_TXT } from "@/resources";
 export default {
   extends: MBaseControl,
   name: "MDropdown",
@@ -118,12 +121,22 @@ export default {
     },
     modelValue: {
       handler() {
-        this.valueText = this.findNameByKey(this.modelValue);
+        // this.valueText = this.findNameByKey(this.modelValue);
       }
     }
   },
 
   methods: {
+    changeSelection(event) {
+      this.isShow = true;
+      if(event.code==="ArrowDown") {
+        console.log(this.itemSelect);
+        const index = this.dataSearch.findIndex(ele => {
+          return ele[this.fieldKey] === this.itemSelect[this.fieldKey];
+        })
+        console.log(index);
+      }
+    },
     /**
      * tìm kiếm đơn vị theo mã và theo tên, khi kết thúc nhập nếu giá trị của ô input không
      * trùng với một trong các giá trị được chọn thì gọi sự kiện đơn vị đang để trống
@@ -132,30 +145,34 @@ export default {
      * @param {val: input text} val
      */
     searchItem(val) {
-      this.isShow = true;
-      let keySearch = val.target.value;
-      this.dataSearch = this.data.filter((item) => {
-        return (
-          item[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()) |
-          item[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
-        );
-      });
-
-      // nếu xoá ô input thì reset lại select
-      if (!keySearch || keySearch == "") {
-        this.itemSelect = null;
-        this.dataSearch = this.data;
+      try {
+        this.isShow = true;
+        let keySearch = val.target.value;
+        this.dataSearch = this.data.filter((item) => {
+          return (
+            item[this.fieldName].toLowerCase().includes(keySearch.toLowerCase()) |
+            item[this.fieldCode].toLowerCase().includes(keySearch.toLowerCase())
+          );
+        });
+  
+        // nếu xoá ô input thì reset lại select
+        if (!keySearch || keySearch == "") {
+          this.itemSelect = null;
+          this.dataSearch = this.data;
+        }
+  
+        // nếu giá trị ô input không trùng khớp với dữ liệu đã cho thì gán selected = rỗng
+        let dataMatch = this.data.filter((item) => {
+          return item[this.fieldName].toLowerCase() === keySearch.toLowerCase();
+        });
+        if (dataMatch.length === 0) {
+          this.$emit("update:modelValue", "");
+        }
+        
+        this.checkInvalidInput(val);
+      } catch (err) {
+        console.log(err);
       }
-
-      // nếu giá trị ô input không trùng khớp với dữ liệu đã cho thì gán selected = rỗng
-      let dataMatch = this.data.filter((item) => {
-        return item[this.fieldName].toLowerCase() === keySearch.toLowerCase();
-      });
-      if (dataMatch.length === 0) {
-        this.$emit("update:modelValue", "");
-      }
-      
-      this.checkInvalidInput(val);
     },
 
     /**
@@ -165,12 +182,16 @@ export default {
      * @param {key} key
      */
     findNameByKey(key) {
-      for (let i = 0; i < this.data.length; i++) {
-        if (key === this.data[i][this.fieldKey]) {
-          this.itemSelect = this.data[i];
-          this.selectItem(this.itemSelect);
-          return this.data[i][this.fieldName];
+      try {
+        for (let i = 0; i < this.data.length; i++) {
+          if (key === this.data[i][this.fieldKey]) {
+            this.itemSelect = this.data[i];
+            this.selectItem(this.itemSelect);
+            return this.data[i][this.fieldName];
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
     },
 
@@ -211,13 +232,17 @@ export default {
      * @param {item} item
      */
     selectItem(item) {
-      this.itemSelect = item;
-      this.dataSearch = { ...this.data };
-      this.valueText = item[this.fieldName];
-      this.isShow = false;
-      this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
-
-      this.checkInvalidInputValue();
+      try {
+        this.itemSelect = item;
+        this.dataSearch = { ...this.data };
+        this.valueText = item[this.fieldName];
+        this.isShow = false;
+        this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
+  
+        this.checkInvalidInputValue();
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     /**
@@ -227,21 +252,25 @@ export default {
      * @param {event: $event} event
      */
     checkInvalidInput(event) {
-      if (this.isRequire) {
-        if (!event.target.value && event.type !== "input") {
-          this.isValidate = false;
-          this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit("field-invalid", this.title);
-        } else if (!this.dataSearch.length && event.type) {
-          this.isValidate = false;
-          this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
-          this.$emit("field-invalid", this.title);
-        } else {
-          this.isValidate = true;
-          this.$emit("field-valid", this.title);
-          this.title = "";
+      try {
+        if (this.isRequire) {
+          if (!event.target.value && event.type !== "input") {
+            this.isValidate = false;
+            this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
+            this.$emit("field-invalid", this.title);
+          } else if (!this.dataSearch.length && event.type) {
+            this.isValidate = false;
+            this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+            this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
+            this.$emit("field-invalid", this.title);
+          } else {
+            this.isValidate = true;
+            this.$emit("field-valid", this.title);
+            this.title = "";
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
     },
 
@@ -251,21 +280,25 @@ export default {
      * created: 21/09/2022
      */
     checkInvalidInputValue() {
-      if (this.isRequire) {
-        if (this.valueText === "") {
-          this.isValidate = false;
-          this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit("field-invalid", this.title);
-        } else if (this.dataSearch.length === 0) {
-          this.isValidate = false;
-          this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-          this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
-          this.$emit("field-invalid", this.title);
-        } else {
-          this.isValidate = true;
-          this.$emit("field-valid", this.title);
-          this.title = "";
+      try {
+        if (this.isRequire) {
+          if (this.valueText === "") {
+            this.isValidate = false;
+            this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
+            this.$emit("field-invalid", this.title);
+          } else if (this.dataSearch.length === 0) {
+            this.isValidate = false;
+            this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+            this.$emit("field-valid", this.fieldNameTxt + WARNING_TXT.REQUIRE);
+            this.$emit("field-invalid", this.title);
+          } else {
+            this.isValidate = true;
+            this.$emit("field-valid", this.title);
+            this.title = "";
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
     },
   },

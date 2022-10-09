@@ -15,7 +15,10 @@ import MCheckbox from "@/components/base/MInput/MCheckbox.vue";
 import Datepicker from 'vue3-datepicker'
 import VueClickAway from "vue3-click-away";
 import { createRouter, createWebHistory } from "vue-router";
-
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import '@/css/main.css'
+import vi from 'element-plus/es/locale/lang/vi'
 //B2: Định nghĩa các router:
 const routers = [
   { path: "/", redirect: "nhan-vien", name: "/" },
@@ -64,6 +67,9 @@ app.component("MCheckbox", MCheckbox);
 
 
 // B3: sử dụng router:
+app.use(ElementPlus, {
+  locale: vi,
+});
 app.use(VueClickAway);
 app.use(router);
 app.mount("#app");

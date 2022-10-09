@@ -17,6 +17,7 @@
               v-for="(item, index) in headers"
               :style="{ 'min-width': item.Width + 'px' }"
               :key="index"
+              :title="item.title ? item.title : null"
             >
               {{ item.Caption }}
             </th>
@@ -47,26 +48,26 @@
               :key="index"
               :class="item.CellClass"
             >
-              {{
-                getValueTxt(item, emp)    
-              }}
+              {{ getValueTxt(item, emp) }}
             </td>
-
             <td v-if="isShowFunctionDropdown" class="rowFunctionContainer">
               <button id="editButton" @click="toggleDialog(index)">Sửa</button>
               <div
                 class="dropdown"
                 style="float: right"
-                v-click-away="clickedEmployee.EmployeeId == emp.EmployeeId? closeFunctionDropdown: ''"
+                v-click-away="
+                  clickedEmployee.EmployeeId == emp.EmployeeId
+                    ? closeFunctionDropdown
+                    : ''
+                "
               >
                 <button
                   class="dropbtn"
                   @click="showDropdownFunction(emp)"
                 ></button>
-                <!-- @blur="closeFuntionDropdown()" -->
                 <div
                   class="dropdown-content"
-                  v-show="clickedEmployee.EmployeeId == emp.EmployeeId"
+                  v-if="clickedEmployee.EmployeeId == emp.EmployeeId"
                   tabindex="0"
                   ref="dropdown"
                 >
@@ -83,7 +84,7 @@
   </div>
 </template>
 <script>
-import {FIELD_NAME_EN} from '@/constants.js';
+import { FIELD_NAME_EN } from "@/resources.js";
 
 export default {
   props: {
@@ -115,12 +116,9 @@ export default {
     };
   },
 
-  created() {
-    
-  },
+  created() {},
 
   computed: {
-
     /**
      * thiết lập giá trị cho selectAll khi checkbox selectall được check / bỏ check
      * và check / bỏ check cho checkbox selectall khi mảng selected thay đổi
@@ -172,9 +170,6 @@ export default {
     },
   },
   methods: {
-    
-
-
     /**
      * ẩn hiện dialog
      * author: vinhkt
@@ -186,14 +181,13 @@ export default {
 
     /**
      * hàm lấy text hiển thị trên bảng
-     * @param {header_data} item 
-     * @param {employeeData} emp 
+     * @param {header_data} item
+     * @param {employeeData} emp
      */
     getValueTxt(item, emp) {
-
       return item.dataFormat
-              ? item.dataFormat(emp[item.Field])
-              : emp[item.Field]
+        ? item.dataFormat(emp[item.Field])
+        : emp[item.Field];
     },
 
     /**
@@ -202,10 +196,14 @@ export default {
      * created: 23/09/2022
      */
     showDropdownFunction: function (emp) {
-      if (this.clickedEmployee.EmployeeId === emp.EmployeeId) {
-        this.clickedEmployee = {};
-      } else {
-        this.clickedEmployee = emp;
+      try {
+        if (this.clickedEmployee.EmployeeId === emp.EmployeeId) {
+          this.clickedEmployee = {};
+        } else {
+          this.clickedEmployee = emp;
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
 

@@ -1,5 +1,5 @@
 import { formatDate } from "@/js/base.js";
-
+import {GENDER_DATA} from './enum.js'
 // route path và data của menu
 export const MENU_ITEMS = [
   {
@@ -100,14 +100,6 @@ export const MENU_ITEMS = [
   },
 ];
 
-// loại popup cảnh báo
-export const DIALOG_TYPE = {
-  ALERT: "alert",
-  WARNING: "warning",
-  SELECTABLE: "selectable",
-  ASK_CANCELABLE: "ask",
-};
-
 // text cảnh báo
 export const WARNING_TXT = {
   DELETE: "Bạn có thực sự muốn xoá ",
@@ -125,13 +117,11 @@ export const WARNING_TXT = {
 export const INFO_TXT = {
   DELETE_SUCCESS: "Xoá thành công",
   DELETE_FAIL: "Xoá thất bại",
-};
+  ADD_SUCCESS: "Thêm mới thành công",
+  ADD_FAIL: "Thêm mới thất bại",
+  UPDATE_SUCCESS: "Sửa thành công",
+  UPDATE_FAIL: "Sửa thất bại"
 
-//dữ liệu giới tính
-export const GENDER_DATA = {
-  0: "Nam",
-  1: "Nữ",
-  2: "Khác",
 };
 
 // dữ liệu các header của bảng nhân viên
@@ -141,14 +131,14 @@ export const EMPLOYEE_HEADER = [
     CellClass: "sticky_body_left_1",
     Caption: "Mã nhân viên",
     Field: "EmployeeCode",
-    Width: "130",
+    Width: "100",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "Tên nhân viên",
     Field: "FullName",
-    Width: "200",
+    Width: "150",
   },
   {
     Class: "text-align--left",
@@ -158,7 +148,7 @@ export const EMPLOYEE_HEADER = [
     dataFormat: (genderEnum) => {
       return GENDER_DATA[genderEnum];
     },
-    Width: "100",
+    Width: "70",
   },
   {
     Class: "text-align--center",
@@ -168,79 +158,54 @@ export const EMPLOYEE_HEADER = [
       return formatDate(date);
     },
     Field: "DateOfBirth",
-    Width: "150",
+    Width: "100",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "số cmnd",
     Field: "IdentityNumber",
-    Width: "150",
+    Width: "120",
+    title: "Số chứng minh nhân dân"
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "chức danh",
     Field: "PositionName",
-    Width: "200",
+    Width: "150",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "tên đơn vị",
     Field: "DepartmentName",
-    Width: "250",
+    Width: "200",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "số tài khoản",
     Field: "BankAccount",
-    Width: "200",
+    Width: "150",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "tên ngân hàng",
     Field: "BankName",
-    Width: "250",
+    Width: "150",
   },
   {
     Class: "text-align--left",
     CellClass: "text-align--left",
     Caption: "chi nhánh tk ngân hàng",
     Field: "BankBranch",
-    Width: "350",
+    Width: "300",
+    title: "Chi nhánh tài khoản ngân hàng"
   },
 ];
 
-//lựa chọn số bản ghi trên 1 trang
-export const PAGING_OPTION = [
-  { Value: "10", Name: "10 bản ghi trên 1 trang" },
-  { Value: "20", Name: "20 bản ghi trên 1 trang" },
-  { Value: "30", Name: "30 bản ghi trên 1 trang" },
-  { Value: "50", Name: "50 bản ghi trên 1 trang" },
-  { Value: "100", Name: "100 bản ghi trên 1 trang" },
-];
-
-//dữ liệu radio input giới tính
-export const GENDER_RADIO_DATA = [
-  {
-    value: 0,
-    name: "cbxGender",
-    labelTxt: "Nam",
-  },
-  {
-    value: 1,
-    name: "cbxGender",
-    labelTxt: "Nữ",
-  },
-  {
-    value: 2,
-    name: "cbxGender",
-    labelTxt: "Khác",
-  },
-];
 
 //text tiếng việt của các trường
 export const FIELD_NAME_VN = {
@@ -253,6 +218,9 @@ export const FIELD_NAME_VN = {
   POSITION: "Vị trí",
   EMPLOYEE: "Nhân viên",
   Email: "Email",
+  IdentityNumber: "Số chứng minh nhân dân",
+  Phone: "Điện thoại di động",
+  HomePhone: "Điện thoại cố định"
 };
 
 // field name tiếng anh
@@ -261,48 +229,3 @@ export const FIELD_NAME_EN = {
   PositionId: "PositionId",
 };
 
-// giá trị mặc định của phân trang
-export const DEFAULT_PARAMS = {
-  pageSize: 20,
-  pageNumber: 1,
-  employeeFilter: "",
-};
-
-// rules validate của các trường
-export const EMPLOYEE_FIELD_RULES = {
-  EmployeeCode: ["require"],
-  FullName: ["require"],
-  DepartmentId: ["require"],
-};
-
-// code các rules validate
-export const RULE_CODES = {
-  REQUIRE: "require",
-};
-
-// code các rules validate
-export const TIME_OUT_VALUE = 10000;
-
-// enum error code
-export const ERROR_CODE = {
-  EXCEPTION: 1,
-  INVALID_INPUT: 2,
-  NOTNULL_INPUT: 3,
-  DUPLICATE_INPUT: 4,
-};
-
-// GIÁ TRỊ VALID BAN ĐẦU CỦA CÁC TRƯỜNG CẦN VALIDATE BẢNG NHÂN VIÊN
-export const DEFAULT_FIELD_VALID = {
-  EmployeeCode: {
-    value: true,
-    msg: "",
-  },
-  FullName: {
-    value: true,
-    msg: "",
-  },
-  DepartmentId: {
-    value: true,
-    msg: "",
-  },
-}

@@ -9,14 +9,13 @@
     }"
     :name="name"
     @focusout="checkInvalidInput($event)"
-    :title="title || isValidData.msg"
+    :title="title || isValidData.msg || titleProp"
     :ref="fieldNameTxt"
-    :placeholder="placeHolder"
   />
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
-import { WARNING_TXT } from "@/constants";
+import { WARNING_TXT } from "@/resources";
 export default {
   extends: MBaseControl,
   name: "MInput",
@@ -43,7 +42,7 @@ export default {
       Type: Boolean,
       default: false
     },
-    placeHolder: {
+    titleProp: {
       Type: String,
       default: ""
     }
@@ -96,22 +95,33 @@ export default {
     },
 
     /**
+     * focus vào ô input hiện tại
+     */
+    focus() {
+      this.$nextTick(() => this.$refs[this.fieldNameTxt].focus())
+    },
+
+    /**
      * validate giá trị input có rỗng hay không dựa trên event
      * author: vinhkt
      * created: 21/09/2022
      * @param {event: $event} event
      */
     checkInvalidInput(event) {
-      if (this.isRequire) {
-        if (!event.target.value && event.type === "focusout") {
-          this.isValidate = false;
-          this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
-          this.$emit("field-invalid", this.title);
-        } else {
-          this.isValidate = true;
-          this.$emit("field-valid", this.title);
-          this.title = "";
+      try {
+        if (this.isRequire) {
+          if (!event.target.value && event.type === "focusout") {
+            this.isValidate = false;
+            this.title = this.fieldNameTxt + WARNING_TXT.REQUIRE;
+            this.$emit("field-invalid", this.title);
+          } else {
+            this.isValidate = true;
+            this.$emit("field-valid", this.title);
+            this.title = "";
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
     },
   },

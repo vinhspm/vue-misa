@@ -22,7 +22,7 @@
 </template>
 <script>
 import MBaseControl from "../MBaseControl.vue";
-import { WARNING_TXT } from "@/constants";
+import { WARNING_TXT } from "@/resources";
 
 export default {
   extends: MBaseControl,
@@ -101,15 +101,19 @@ export default {
      * @param {val: input value} val 
      */
     searchItem(val) {
-      let keySearch = val.target.value;
-      this.dataSearch = this.data.filter((x) =>
-        x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase())
-      );
-      if (!keySearch || keySearch == "") {
-        this.itemSelect = null;
-        this.dataSearch = this.data;
+      try {
+        let keySearch = val.target.value;
+        this.dataSearch = this.data.filter((x) =>
+          x[this.fieldName].toLowerCase().includes(keySearch.toLowerCase())
+        );
+        if (!keySearch || keySearch == "") {
+          this.itemSelect = null;
+          this.dataSearch = this.data;
+        }
+        this.checkInvalidInput(val);
+      } catch (err) {
+        console.log(err);
       }
-      this.checkInvalidInput(val);
     },
 
     /**
@@ -119,12 +123,16 @@ export default {
      * @param {key} key 
      */
     findNameByKey(key) {
-      for (let i = 0; i < this.data.length; i++) {
-        if (key === this.data[i][this.fieldKey]) {
-          this.itemSelect = this.data[i];
-          this.selectItem(this.itemSelect);
-          return this.data[i][this.fieldName];
+      try {
+        for (let i = 0; i < this.data.length; i++) {
+          if (key === this.data[i][this.fieldKey]) {
+            this.itemSelect = this.data[i];
+            this.selectItem(this.itemSelect);
+            return this.data[i][this.fieldName];
+          }
         }
+      } catch (err) {
+        console.log(err);
       }
     },
 
@@ -154,11 +162,15 @@ export default {
      * @param {item} item 
      */
     selectItem(item) {
-      this.itemSelect = item;
-      this.valueText = item[this.fieldName];
-      this.closeOption();
-      this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
-      this.checkInvalidInputValue();
+      try {
+        this.itemSelect = item;
+        this.valueText = item[this.fieldName];
+        this.closeOption();
+        this.$emit("update:modelValue", this.itemSelect[this.fieldKey]);
+        this.checkInvalidInputValue();
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     /**
@@ -169,14 +181,18 @@ export default {
      */
     checkInvalidInput(event) {
 
-      if (!this.dataSearch.length && event.type) {
-        this.isValidate = false;
-        this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-        this.$emit('field-invalid', this.title)
-      } else {
-        this.isValidate = true;
-        this.$emit('field-valid', this.title)
-        this.title = "";
+      try {
+        if (!this.dataSearch.length && event.type) {
+          this.isValidate = false;
+          this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+          this.$emit('field-invalid', this.title)
+        } else {
+          this.isValidate = true;
+          this.$emit('field-valid', this.title)
+          this.title = "";
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
 
@@ -186,14 +202,18 @@ export default {
      * created: 21/09/2022
      */
     checkInvalidInputValue() {
-      if (this.dataSearch.length === 0) {
-        this.isValidate = false;
-        this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
-        this.$emit('field-invalid', this.title)
-      } else {
-        this.isValidate = true;
-        this.$emit('field-valid', this.title)
-        this.title = "";
+      try {
+        if (this.dataSearch.length === 0) {
+          this.isValidate = false;
+          this.title = WARNING_TXT.dataNotInList(this.fieldNameTxt);
+          this.$emit('field-invalid', this.title)
+        } else {
+          this.isValidate = true;
+          this.$emit('field-valid', this.title)
+          this.title = "";
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
   },

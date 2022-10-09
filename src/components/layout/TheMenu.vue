@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import { MENU_ITEMS } from "../../constants.js";
+import { MENU_ITEMS } from "../../resources.js";
 export default {
   data() {
     return {
