@@ -1,5 +1,10 @@
 <template>
-  <div class="table__content">
+  <div
+    class="table__content"
+    tabindex="0"
+    ref="tableContainer"
+    @keydown.ctrl.a.prevent.stop="this.selectAll = !this.selectAll"
+  >
     <div class="table__content_body">
       <table id="tbEmployeeList" class="table">
         <thead class="table__header">
@@ -107,8 +112,8 @@ export default {
 
     selectEmployeesProp: {
       Type: Array,
-      default: []
-    }
+      default: [],
+    },
   },
 
   data() {
@@ -120,8 +125,6 @@ export default {
       positions: [],
     };
   },
-
-  created() {},
 
   computed: {
     /**
@@ -160,7 +163,6 @@ export default {
       handler() {
         this.$emit("update:selectEmployees", this.selected);
       },
-
     },
 
     /**
@@ -169,14 +171,14 @@ export default {
      * created: 10/10/2022
      */
     "selectEmployeesProp.length": {
-        handler() {
-          if(!this.selectEmployeesProp.length) {
-            this.selected = this.selectEmployeesProp;
-          }
-        },
-        immediate: true,
-        deep: true
+      handler() {
+        if (!this.selectEmployeesProp.length) {
+          this.selected = this.selectEmployeesProp;
+        }
       },
+      immediate: true,
+      deep: true,
+    },
 
     /**
      * update mảng selected về rỗng khi dataSource có sự thay đổi ( khi thêm, sửa, xoá data thành công)
@@ -235,6 +237,15 @@ export default {
      */
     closeFunctionDropdown: function () {
       this.clickedEmployee = {};
+    },
+
+    /**
+     * focus vào table
+     */
+    focus() {
+      this.$nextTick(() => {
+        this.$refs.tableContainer.focus();
+      });
     },
 
     /**

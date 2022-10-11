@@ -8,7 +8,7 @@
     @keydown.alt.s.prevent.stop="saveAndContinue"
   >
     <template #header>
-      <div class="title" >Thông tin nhân viên</div>
+      <div class="title">Thông tin nhân viên</div>
       <div class="employee__type__container">
         <div>
           <m-input
@@ -260,13 +260,13 @@
           content="Cất và Thêm (Alt + Shift + S)"
           placement="bottom"
         >
-        <button
-          @click="saveAndContinue"
-          class="button button__icon icon icon--save"
-          tabindex="2"
-        >
-          Cất và Thêm
-        </button>
+          <button
+            @click="saveAndContinue"
+            class="button button__icon icon icon--save"
+            tabindex="2"
+          >
+            Cất và Thêm
+          </button>
         </el-tooltip>
       </div>
     </template>
@@ -460,12 +460,7 @@ export default {
           this.errorText = this.errorList[0];
           this.isShowError = true;
         } else {
-          this.employeeDetailData.DateOfBirth = formatDateInput(
-            this.employeeDetailData.DateOfBirth
-          );
-          this.employeeDetailData.IdentityDate = formatDateInput(
-            this.employeeDetailData.IdentityDate
-          );
+          this.formatDateRequest();
           this.bodyRequest = toCamel(this.employeeDetailData);
           if (this.isEdit) {
             this.updateEmployee();
@@ -476,6 +471,20 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+
+    /**
+     * hàm format date để gửi lên server
+     * author: vinhkt
+     * created: 11/10/2022
+     */
+    formatDateRequest() {
+      this.employeeDetailData.DateOfBirth = formatDateInput(
+        this.employeeDetailData.DateOfBirth
+      );
+      this.employeeDetailData.IdentityDate = formatDateInput(
+        this.employeeDetailData.IdentityDate
+      );
     },
 
     /**
@@ -645,7 +654,7 @@ export default {
       this.isShowError = false;
       this.$nextTick(() => {
         this.$refs.EmployeeCode.focus();
-      })
+      });
       if (this.isCloseDialogAfterWarning) {
         this.closeDialog();
       }

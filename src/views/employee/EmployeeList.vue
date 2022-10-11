@@ -38,7 +38,7 @@
       </div>
     </div>
     <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)" @update:selectEmployees="selectEmployees = $event" :selectEmployeesProp="selectEmployees">
+      @warning-delete="(emp) => warningDelete(emp)" @update:selectEmployees="selectEmployees = $event" :selectEmployeesProp="selectEmployees" ref="pageTable">
     </m-table>
 
     <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
@@ -89,6 +89,10 @@ export default {
     this.params = { ...DEFAULT_PARAMS };
     await this.getDepartmentAndPositionData();
     this.getData();
+  },
+
+  mounted() {
+    this.$refs.pageTable.focus();
   },
 
   data() {
