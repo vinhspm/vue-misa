@@ -104,6 +104,11 @@ export default {
       Type: Array,
       default: [],
     },
+
+    selectEmployeesProp: {
+      Type: Array,
+      default: []
+    }
   },
 
   data() {
@@ -155,7 +160,23 @@ export default {
       handler() {
         this.$emit("update:selectEmployees", this.selected);
       },
+
     },
+
+    /**
+     * update mảng selected ở khi mảng selectEmployeesProp ở component cha thay đổi
+     * author: vinhkt
+     * created: 10/10/2022
+     */
+    "selectEmployeesProp.length": {
+        handler() {
+          if(!this.selectEmployeesProp.length) {
+            this.selected = this.selectEmployeesProp;
+          }
+        },
+        immediate: true,
+        deep: true
+      },
 
     /**
      * update mảng selected về rỗng khi dataSource có sự thay đổi ( khi thêm, sửa, xoá data thành công)

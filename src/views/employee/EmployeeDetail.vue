@@ -219,7 +219,7 @@
           />
           <input
             type="text"
-            style="opacity: 0"
+            style="opacity: 0; cursor: context-menu"
             @keyup.tab="
               () => this.$nextTick(() => this.$refs.saveButton.focus())
             "
@@ -234,7 +234,7 @@
       <input
         tabindex="4"
         type="text"
-        style="opacity: 0"
+        style="opacity: 0; cursor: context-menu"
         @keyup.tab="() => this.$nextTick(() => this.$refs.EmployeeCode.focus())"
       />
 
@@ -544,6 +544,7 @@ export default {
             message: this.infoTxt.ADD_SUCCESS,
             position: "bottom-right",
             type: "success",
+            duration: 1000,
           });
           this.$emit("reload-data");
         }
@@ -576,6 +577,7 @@ export default {
             message: this.infoTxt.UPDATE_SUCCESS,
             position: "bottom-right",
             type: "success",
+            duration: 1000,
           });
           this.$emit("reload-data");
         }
@@ -641,6 +643,9 @@ export default {
     closeWarning() {
       this.isShowWarning = false;
       this.isShowError = false;
+      this.$nextTick(() => {
+        this.$refs.EmployeeCode.focus();
+      })
       if (this.isCloseDialogAfterWarning) {
         this.closeDialog();
       }

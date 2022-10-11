@@ -210,17 +210,26 @@ export const EMPLOYEE_HEADER = [
 //text tiếng việt của các trường
 export const FIELD_NAME_VN = {
   CODE: "Mã nhân viên",
-  EmployeeCode: "Mã nhân viên",
   FULLNAME: "Họ và tên",
-  FullName: "Họ và tên",
   DEPARTMENT: "Đơn vị",
   DepartmentId: "Đơn vị",
   POSITION: "Vị trí",
   EMPLOYEE: "Nhân viên",
+
+  EmployeeCode: "Mã nhân viên",
+  FullName: "Họ và tên",
+  PositionId: "Vị trí",
+  Gender: "Giới tính",
   Email: "Email",
   IdentityNumber: "Số chứng minh nhân dân",
+  IdentityPlace: "Nơi cấp",
+  Address: "Địa chỉ",
   Phone: "Điện thoại di động",
-  HomePhone: "Điện thoại cố định"
+  HomePhone: "Điện thoại cố định",
+  BankAccount: "Tài khoản ngân hàng",
+  BankName: "Tên ngân hàng",
+  BankBranch: "Chi nhánh"
+
 };
 
 // field name tiếng anh

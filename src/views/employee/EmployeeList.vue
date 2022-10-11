@@ -1,42 +1,32 @@
 <template >
   <div class="page__header">
     <div class="page__header--title heading">Nhân viên</div>
-    <m-button
-      id="btnAdd"
-      class="page__header--button button button__icon button__icon--employee"
-      text="Thêm mới nhân viên"
-      @click="toggleDialog"
-    >
+    <m-button id="btnAdd" class="page__header--button button button__icon button__icon--employee"
+      text="Thêm mới nhân viên" @click="toggleDialog">
     </m-button>
   </div>
 
-  <div class="page__table" >
+  <div class="page__table">
     <div class="page__toolbar">
-      <div
-        class="page__toolbar--left"
-        @click="showDropdownFunction"
-        v-click-away="closeDropdownFunction"
-      >
-        <div>Thực hiện hàng loạt</div>
-        <div class="dropdown">
-          <button class="dropdown-btn"></button>
-          <div
-            class="multiple_item__dropdown_content"
-            v-if="isShowDropdown && selectEmployees.length"
-          >
-            <a href="#" @click="warningMultipleDelete()">Xoá</a>
+      <div class="page_toolbar_container--left">
+        <div class="page__toolbar--left" @click="showDropdownFunction" v-click-away="closeDropdownFunction">
+          <div>Thực hiện hàng loạt</div>
+          <div class="dropdown">
+            <button class="dropdown-btn"></button>
+            <div class="multiple_item__dropdown_content" v-if="isShowDropdown && selectEmployees.length">
+              <a href="#" @click="warningMultipleDelete()">Xoá</a>
+            </div>
           </div>
+
+        </div>
+        <div class="page__toolbar_selection_info" v-show="selectEmployees.length"><span>Đã chọn <strong>{{selectEmployees.length}}</strong></span>
+          <a  link @click="() => selectEmployees = []">Bỏ chọn</a>
         </div>
       </div>
       <div class="page__toolbar--right">
         <div class="page__toolbar--search">
-          <input
-            type="text"
-            class="input input__icon input__icon--search"
-            v-model="searchInputValue"
-            placeholder="Tìm theo mã, tên nhân viên"
-            @input="onSearch"
-          />
+          <input type="text" class="input input__icon input__icon--search" v-model="searchInputValue"
+            placeholder="Tìm theo mã, tên nhân viên" @input="onSearch" />
           <button @click="onSearch"></button>
         </div>
         <div class="page__toolbar--reload">
@@ -47,53 +37,23 @@
         </div>
       </div>
     </div>
-    <m-table
-      
-      :headers="employeeHeader"
-      :dataSource="employees"
-      @toggle-dialog="(index) => toggleDialog(index)"
-      @warning-delete="(emp) => warningDelete(emp)"
-      @update:selectEmployees="selectEmployees = $event"
-    >
+    <m-table :headers="employeeHeader" :dataSource="employees" @toggle-dialog="(index) => toggleDialog(index)"
+      @warning-delete="(emp) => warningDelete(emp)" @update:selectEmployees="selectEmployees = $event" :selectEmployeesProp="selectEmployees">
     </m-table>
 
-    <m-paging
-      :recordPerPageProps="params.pageSize"
-      :totalRecord="totalRecord"
-      :totalPage="totalPage"
-      @update:recordPerPage="params.pageSize = $event"
-      @update:currentPage="params.pageNumber = $event"
-      :currentPageProp="params.pageNumber"
-    ></m-paging>
+    <m-paging :recordPerPageProps="params.pageSize" :totalRecord="totalRecord" :totalPage="totalPage"
+      @update:recordPerPage="params.pageSize = $event" @update:currentPage="params.pageNumber = $event"
+      :currentPageProp="params.pageNumber"></m-paging>
   </div>
   <!-- DIALOG CHI TIẾT NHÂN VIÊN -->
-  <EmployeeDetail
-    v-if="isShow"
-    @close-dialog="toggleDialog"
-    :selectedEmployee="selectedEmployee"
-    @reload-data="reloadData"
-  ></EmployeeDetail>
+  <EmployeeDetail v-if="isShow" @close-dialog="toggleDialog" :selectedEmployee="selectedEmployee"
+    @reload-data="reloadData"></EmployeeDetail>
   <!-- POPUP CẢNH BÁO XOÁ  -->
-  <m-warning
-    v-if="isShowWarning"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarning"
-  ></m-warning>
-  <m-warning
-    v-if="isShowWarningMultipleDelete"
-    :text="warningText"
-    :dialogType="DIALOG_TYPE.SELECTABLE"
-    @close-warning="closeWarning"
-    @ok-warning="okWarningMultipleDelete"
-  ></m-warning>
-  <m-warning
-    v-if="isShowResult"
-    :text="resultText"
-    :dialogType="DIALOG_TYPE.WARNING"
-    @close-warning="closeWarning"
-  >
+  <m-warning v-if="isShowWarning" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE" @close-warning="closeWarning"
+    @ok-warning="okWarning"></m-warning>
+  <m-warning v-if="isShowWarningMultipleDelete" :text="warningText" :dialogType="DIALOG_TYPE.SELECTABLE"
+    @close-warning="closeWarning" @ok-warning="okWarningMultipleDelete"></m-warning>
+  <m-warning v-if="isShowResult" :text="resultText" :dialogType="DIALOG_TYPE.WARNING" @close-warning="closeWarning">
   </m-warning>
 </template>
 <script>
@@ -198,7 +158,7 @@ export default {
           if (typeof index == "number") {
             if (this.employees[index].EmployeeId) {
               this.selectedEmployee = { ...this.employees[index] };
-  
+
               console.log("selected", this.selectedEmployee);
             }
           }
@@ -363,6 +323,7 @@ export default {
           message: INFO_TXT.DELETE_SUCCESS,
           position: "bottom-right",
           type: 'success',
+          duration: 1000,
         });
       } catch (error) {
         console.log(error);
